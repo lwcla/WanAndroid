@@ -20,7 +20,7 @@ import com.konsung.cla.demo2.presenter.LoadHomeView
 class HomeFragment : BasicFragment() {
 
     private val refreshRv by lazy { rootView?.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
-    private val homeAdapter = HomeAdapter(mutableListOf())
+    private val homeAdapter by lazy { context?.let { HomeAdapter(it, mutableListOf()) } }
     private lateinit var headView: BannerHeadView
 
     private val loadBanner = initLoadBanner()
@@ -34,7 +34,7 @@ class HomeFragment : BasicFragment() {
 
     override fun initView() {
         headView = BannerHeadView(context!!)
-        homeAdapter.addHeaderView(headView)
+        homeAdapter?.addHeaderView(headView)
         initRefreshView()
     }
 
@@ -135,12 +135,12 @@ class HomeFragment : BasicFragment() {
                     isOver = t.isOver
 
                     myHandler.post {
-                        homeAdapter.addData(it)
+                        homeAdapter?.addData(it)
                     }
 
                     refreshRv?.apply {
                         finishRefresh()
-                        finishLoadMore(2000, true, isOver)
+                        finishLoadMore(200, true, isOver)
                     }
                 }
 
