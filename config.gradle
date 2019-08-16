@@ -1,0 +1,27 @@
+ext {
+
+    android = [
+            compileSdkVersion: 28,
+            minSdkVersion    : 19,
+            targetSdkVersion : 28,
+    ]
+
+    appcompat = "androidx.appcompat:appcompat:1.1.0-rc01"
+    constraintlayout = "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
+    gson = "com.google.code.gson:gson:2.8.5"
+    retrofit2 = "com.squareup.retrofit2:retrofit:2.6.1"
+    retrofit2_converter_gson = "com.squareup.retrofit2:converter-gson:2.6.1"
+    okhttp3_logging_interceptor = "com.squareup.okhttp3:logging-interceptor:4.0.1"
+    material = "com.google.android.material:material:1.0.0"
+    roundedimageview = "com.makeramen:roundedimageview:2.3.0"//圆形图片控件
+    magicIndicator = "com.github.hackware1993:MagicIndicator:1.6.0"//ViewPager滑动指示器
+    banner = "com.youth.banner:banner:1.4.10"//无限轮播
+    glide = "com.github.bumptech.glide:glide:4.9.0"//无限轮播
+    smart_refresh_layout = "com.scwang.smartrefresh:SmartRefreshLayout:1.1.0-alpha-14"
+    smart_refresh_header = "com.scwang.smartrefresh:SmartRefreshHeader:1.1.0-alpha-14"
+    design = "com.android.support:design:28.0.0"
+    base_recycler_view_adapter_helper = "com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.49-androidx"
+    recycler_view = "androidx.recyclerview:recyclerview:1.1.0-beta02"
+    multiple_status_view = "com.classic.common:multiple-status-view:1.6" //一个支持多种状态的自定义View,可以方便的切换到：加载中视图、错误视图、空数据视图、网络异常视图、内容视图。
+    av_loading_indicator_view  = "com.wang.avi:library:2.1.3"
+}

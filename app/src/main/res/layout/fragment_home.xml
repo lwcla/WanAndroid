@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.classic.common.MultipleStatusView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/multiplyStatusView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:errorView="@layout/view_custom_error"
+    app:loadingView="@layout/view_custom_loading"
+    app:noNetworkView="@layout/view_custom_no_network"
+    >
+
+    <com.konsung.basic.ui.RefreshRecyclerView
+        android:id="@+id/refreshRv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</com.classic.common.MultipleStatusView>

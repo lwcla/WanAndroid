@@ -1,0 +1,61 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+def config = rootProject.ext
+
+android {
+    compileSdkVersion config.android.compileSdkVersion
+    defaultConfig {
+        applicationId "com.konsung.cla.demo2"
+        minSdkVersion config.android.minSdkVersion
+        targetSdkVersion config.android.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        //必须要保证所有的flavor 都属于同一个维度
+        flavorDimensions "default"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    productFlavors {
+        //monday
+        monday {
+
+        }
+
+        //friday
+        friday {
+
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation project(':basicutil')
+
+    implementation config.appcompat
+    implementation config.constraintlayout
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test:runner:1.3.0-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0-alpha02'
+    implementation config.material
+    implementation config.roundedimageview
+    implementation config.magicIndicator
+    implementation config.banner  //无限轮播
+    implementation config.base_recycler_view_adapter_helper
+    implementation config.smart_refresh_layout
+    implementation config.smart_refresh_header
+    implementation config.recycler_view
+    implementation config.multiple_status_view
+    implementation config.av_loading_indicator_view
+}
