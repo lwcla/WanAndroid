@@ -27,13 +27,15 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
         const val SHOW_CONTENT = 0x004
     }
 
+    protected val multiplyStatusView by lazy { rootView?.findViewById<MultipleStatusView>(getMultiplyId()) }
     private var presenter: List<BasicPresenter>? = null
     private var loadHandler = false
     protected val myHandler: MyHandler by lazy { MyHandler(this) }
     protected var rootView: View? = null
     protected var resume = false
     private var firstShow = true
-    protected val multiplyStatusView by lazy { rootView?.findViewById<MultipleStatusView>(getMultiplyId()) }
+    var fragmentRefresh: FragmentRefresh? = null
+    var index: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -141,6 +143,13 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     }
 
     /**
+     * 刷新视图
+     */
+    open fun refreshView() {
+
+    }
+
+    /**
      * fragment隐藏
      */
     open fun pause() {
@@ -212,4 +221,12 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
             basicFragment.handleMessage(msg)
         }
     }
+}
+
+
+/**
+ * fragment刷新接口
+ */
+public interface FragmentRefresh {
+    fun refresh(isRefresh: Boolean, index: Int)
 }

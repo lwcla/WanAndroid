@@ -5,11 +5,12 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import androidx.fragment.app.Fragment
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.ui.BasicAty
+import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.ui.FragmentRefresh
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.ToastUtils
@@ -31,6 +32,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 open class MainActivity : BasicAty(), View.OnClickListener {
 
     private val netChangeReceiver = NetChangeReceiver()
+
 
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
@@ -80,7 +82,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
     override fun initData() {
         Debug.info(TAG, "MainActivity initData")
-//        RequestUtils.instance.getWeChatOfficial()
     }
 
 
@@ -98,17 +99,47 @@ open class MainActivity : BasicAty(), View.OnClickListener {
      */
     private fun initViewPager() {
 
-        val fragment1 = ThreeBean<String, Int, Fragment>(getString(R.string.home), R.string.icon_home, HomeFragment())
-        val fragment2 = ThreeBean<String, Int, Fragment>(getString(R.string.project), R.string.icon_project, ProjectFragment())
-        val fragment3 = ThreeBean<String, Int, Fragment>(getString(R.string.system), R.string.icon_system, SystemFragment())
-        val fragment4 = ThreeBean<String, Int, Fragment>(getString(R.string.navigation), R.string.icon_navigation, NavigationFragment())
+        lateinit var commonAdapter: CommonNavigatorAdapter
+        val titleViewList = mutableListOf<ViewPagerTitle>()
+        //当recyclerView往下拉的时候，把图标变为刷新的样子，点击之后滚动到顶部并刷新数据
+        val fragmentRefresh = object : FragmentRefresh {
+            override fun refresh(isRefresh: Boolean, index: Int) {
+
+                if (index >= titleViewList.size) {
+                    return
+                }
+
+                val titleView = titleViewList[index]
+                titleView.apply {
+                    if (isRefresh) {
+                        setIcon(R.string.icon_refresh)
+                        tvName.visibility = View.GONE
+                    } else {
+                        initIcon()
+                        tvName.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+
+        val homeFragment = HomeFragment()
+        homeFragment.fragmentRefresh = fragmentRefresh
+        val fragment1 = ThreeBean<String, Int, BasicFragment>(getString(R.string.home), R.string.icon_home, homeFragment)
+        val fragment2 = ThreeBean<String, Int, BasicFragment>(getString(R.string.project), R.string.icon_project, ProjectFragment())
+        val fragment3 = ThreeBean<String, Int, BasicFragment>(getString(R.string.system), R.string.icon_system, SystemFragment())
+        val fragment4 = ThreeBean<String, Int, BasicFragment>(getString(R.string.navigation), R.string.icon_navigation, NavigationFragment())
         val fragmentList = listOf(fragment1, fragment2, fragment3, fragment4)
+
+        for (i in 0 until fragmentList.size) {
+            val threeBean = fragmentList[i]
+            threeBean.c.index = i
+        }
 
         viewPager.adapter = MyFragmentPagerAdapter(supportFragmentManager, fragmentList)
 
         val commonNavigator = CommonNavigator(this)
         commonNavigator.isAdjustMode = true
-        val commonAdapter = object : CommonNavigatorAdapter() {
+        commonAdapter = object : CommonNavigatorAdapter() {
 
             override fun getCount(): Int = fragmentList.size
 
@@ -117,7 +148,17 @@ open class MainActivity : BasicAty(), View.OnClickListener {
             override fun getTitleView(context: Context, index: Int): IPagerTitleView {
                 val threeBean = fragmentList[index]
                 val viewPagerTitle = ViewPagerTitle(context, threeBean.b, threeBean.a)
-                viewPagerTitle.setOnClickListener { viewPager.currentItem = index }
+                viewPagerTitle.setOnClickListener {
+                    if (viewPager.currentItem != index) {
+                        //点击之后切换到对应的fragment
+                        viewPager.currentItem = index
+                        return@setOnClickListener
+                    }
+
+                    //点击的是当前fragment的下标，那就刷新本页
+                    fragmentList[index].c.refreshView()
+                }
+                titleViewList.add(viewPagerTitle)
                 return viewPagerTitle
             }
         }

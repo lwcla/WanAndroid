@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
+import com.konsung.basic.util.Debug
 import com.konsung.basic.util.StringUtils
 import com.konsung.cla.demo2.R
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView
@@ -14,9 +15,14 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.Common
 @SuppressLint("ViewConstructor")
 class ViewPagerTitle(context: Context, @StringRes private val stringRes: Int, text: String) : CommonPagerTitleView(context) {
 
+    companion object {
+        val TAG = ViewPagerTitle::class.java.simpleName
+    }
+
     private var customLayout: View = LayoutInflater.from(context).inflate(R.layout.view_pager_title, null)
-    private var tvName: TextView
+    var tvName: TextView
     private var tvIcon: TextView
+    private var currentText: Int? = null
 
     init {
         tvName = customLayout.findViewById(R.id.title_text) as TextView
@@ -52,6 +58,16 @@ class ViewPagerTitle(context: Context, @StringRes private val stringRes: Int, te
 
     @SuppressLint("ResourceType")
     fun initIcon() {
-        tvIcon.setText(stringRes)
+        setIcon(stringRes)
+        tvName.visibility = View.VISIBLE
+    }
+
+    fun setIcon(@StringRes textRes: Int) {
+        Debug.info(TAG, "ViewPagerTitle setIcon currentText=$currentText textRes=$textRes currentText==textRes?${currentText == textRes}")
+        if (currentText == textRes) {
+            return
+        }
+        currentText = textRes
+        tvIcon.setText(textRes)
     }
 }

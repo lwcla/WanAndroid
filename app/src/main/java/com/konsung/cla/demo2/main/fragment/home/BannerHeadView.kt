@@ -31,7 +31,7 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
         val view = inflater.inflate(R.layout.view_header_banner, this, true)
 
         val height = resources.getDimension(R.dimen.dp_200)//获取对应资源文件下的dp值
-        Debug.info(TAG, "BannerHeadView dpValue=$height")
+//        Debug.info(TAG, "BannerHeadView dpValue=$height")
         this.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, height.toInt())
         this.background = ContextCompat.getDrawable(context, android.R.color.white)
 

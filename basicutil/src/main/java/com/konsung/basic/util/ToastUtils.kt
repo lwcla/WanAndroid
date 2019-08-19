@@ -6,6 +6,8 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 
 class ToastUtils private constructor() {
 
@@ -81,4 +83,41 @@ class ToastUtils private constructor() {
         }
     }
 
+}
+
+fun Context?.toast(tag: String, @StringRes textRes: Int) {
+    this?.let {
+        ToastUtils.instance.toast(this, tag, textRes)
+    }
+}
+
+fun Context?.toast(tag: String, text: String) {
+    this?.let {
+        ToastUtils.instance.toast(this, tag, text)
+    }
+}
+
+fun Fragment?.toast(tag: String, text: String) {
+    this?.let {
+        context.toast(tag, text)
+    }
+}
+
+fun Fragment?.toast(tag: String, @StringRes textRes: Int) {
+    this?.let {
+        context.toast(tag, textRes)
+    }
+}
+
+
+fun AppCompatActivity?.toast(tag: String, text: String) {
+    this?.let {
+        ToastUtils.instance.toast(it, tag, text)
+    }
+}
+
+fun AppCompatActivity?.toast(tag: String, @StringRes textRes: Int) {
+    this?.let {
+        ToastUtils.instance.toast(it, tag, textRes)
+    }
 }

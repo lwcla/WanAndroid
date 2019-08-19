@@ -9,84 +9,103 @@
     tools:context=".main.MainActivity"
     >
 
-    <RelativeLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_50"
-            android:background="@color/red"
-            android:gravity="center_vertical"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat"
             >
 
-            <RelativeLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="@dimen/dp_50"
+                android:background="@color/red"
+                android:gravity="center_vertical"
+                app:layout_scrollFlags="scroll"
                 >
 
-                <com.makeramen.roundedimageview.RoundedImageView
-                    android:id="@+id/rivHead"
-                    android:layout_width="@dimen/dp_35"
-                    android:layout_height="@dimen/dp_35"
-                    android:layout_centerVertical="true"
-                    android:src="@mipmap/ic_launcher_round"
-                    app:riv_oval="true"
-                    />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    >
 
-                <TextView
-                    android:id="@+id/tvTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_15"
-                    android:layout_toEndOf="@id/rivHead"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/sp_15"
-                    tools:text="测试"
-                    />
+                    <com.makeramen.roundedimageview.RoundedImageView
+                        android:id="@+id/rivHead"
+                        android:layout_width="@dimen/dp_35"
+                        android:layout_height="@dimen/dp_35"
+                        android:layout_centerVertical="true"
+                        android:src="@mipmap/ic_launcher_round"
+                        app:riv_oval="true"
+                        />
 
-                <TextView
-                    android:id="@+id/tvIconSearch"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="@dimen/dp_20"
-                    android:text="@string/icon_search"
-                    android:textColor="@android:color/white"
-                    android:textSize="@dimen/sp_22"
-                    tools:text="测试"
-                    />
-            </RelativeLayout>
-        </androidx.appcompat.widget.Toolbar>
+                    <TextView
+                        android:id="@+id/tvTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/dp_15"
+                        android:layout_toEndOf="@id/rivHead"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/sp_15"
+                        tools:text="测试"
+                        />
 
-        <androidx.viewpager.widget.ViewPager
-            android:id="@+id/viewPager"
+                    <TextView
+                        android:id="@+id/tvIconSearch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/dp_20"
+                        android:text="@string/icon_search"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/sp_22"
+                        tools:text="测试"
+                        />
+                </RelativeLayout>
+            </androidx.appcompat.widget.Toolbar>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/toolbar"
-            android:layout_marginBottom="@dimen/dp_47"
-            />
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_47"
-            android:layout_alignParentBottom="true"
-            app:cardCornerRadius="1dp"
-            app:cardElevation="4dp"
+            android:layout_below="@id/appBar"
+            android:orientation="vertical"
+            app:layout_anchor="@id/toolbar"
             >
 
-            <net.lucode.hackware.magicindicator.MagicIndicator
-                android:id="@+id/magicIndicator"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginBottom="@dimen/dp_47"
+                app:behavior_overlapTop="@dimen/dp_30"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 />
-        </androidx.cardview.widget.CardView>
 
-    </RelativeLayout>
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_47"
+                android:layout_alignParentBottom="true"
+                app:cardCornerRadius="1dp"
+                app:cardElevation="4dp"
+                >
+
+                <net.lucode.hackware.magicindicator.MagicIndicator
+                    android:id="@+id/magicIndicator"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    />
+            </androidx.cardview.widget.CardView>
+        </RelativeLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/nvLeft"

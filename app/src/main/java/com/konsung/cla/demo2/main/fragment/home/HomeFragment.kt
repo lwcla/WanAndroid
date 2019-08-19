@@ -1,6 +1,7 @@
 package com.konsung.cla.demo2.main.fragment.home
 
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.ui.BasicFragment
@@ -8,6 +9,7 @@ import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.ui.SpaceDecoration
 import com.konsung.basic.util.Debug
+import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.presenter.BannerPresenter
 import com.konsung.cla.demo2.presenter.HomeDataPresenter
@@ -27,6 +29,7 @@ class HomeFragment : BasicFragment() {
     private val loadHomeData = initLoadHomeData()
     private var page = 0
     private var isOver = false
+    private var needRefresh = false
 
     override fun getLayoutId(): Int = R.layout.fragment_home
 
@@ -34,7 +37,22 @@ class HomeFragment : BasicFragment() {
 
     override fun initView() {
         headView = BannerHeadView(context!!)
-        homeAdapter?.addHeaderView(headView)
+        homeAdapter?.apply {
+            addHeaderView(headView)
+
+            setOnItemClickListener { adapter, view, position ->
+                toast(TAG, "点击$position")
+            }
+
+            setOnItemChildClickListener { adapter, view, position ->
+                when (view.id) {
+                    R.id.imvEnvelopePic -> toast(TAG, "点击图片 $position")
+                    R.id.imvStart -> toast(TAG, "点击收藏 $position")
+                    R.id.llNice -> toast(TAG, "点击赞 $position")
+                }
+            }
+        }
+
         initRefreshView()
     }
 
@@ -67,12 +85,37 @@ class HomeFragment : BasicFragment() {
     private fun initRefreshView() {
 
         refreshRv?.apply {
+
             rv.apply {
                 val manager = LinearLayoutManager(context)
                 val space = context.resources.getDimension(R.dimen.dp_8)
                 addItemDecoration(SpaceDecoration(space.toInt(), true))
                 adapter = homeAdapter
                 layoutManager = manager
+                addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        Debug.info(TAG, "HomeFragment onScrollStateChanged newState=$newState")
+                        if (newState == 0) {//停止滚动
+                            needRefresh = false
+                            if (!recyclerView.canScrollVertically(-1)) {  //滑动到顶部
+                                fragmentRefresh?.refresh(false, index)
+                                if (needRefresh) {
+//                                refreshRv?.autoRefresh() //数据加载完成之后会闪一下，还是不要这一句了
+                                    refreshData()
+                                }
+                            }
+                        }
+                    }
+
+                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+//                        Debug.info(TAG, "HomeFragment onScrolled dy=$dy")
+                        if (dy > 0) {
+                            //向下滚动
+                            fragmentRefresh?.refresh(true, index)
+                        }
+                    }
+                })
             }
 
             setOnRefreshListener {
@@ -101,7 +144,13 @@ class HomeFragment : BasicFragment() {
         }
 
         page = 0
+        homeAdapter?.data?.clear()
         fetchHomeData()
+    }
+
+    override fun refreshView() {
+        refreshRv?.rv?.smoothScrollToPosition(0)
+        needRefresh = true
     }
 
     private fun initLoadBanner(): BannerPresenter {
@@ -168,5 +217,4 @@ class HomeFragment : BasicFragment() {
             }
         })
     }
-
 }

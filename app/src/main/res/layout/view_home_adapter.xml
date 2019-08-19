@@ -10,12 +10,12 @@
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingStart="@dimen/dp_13"
         android:paddingTop="@dimen/dp_8"
         android:paddingEnd="@dimen/dp_13"
-        android:paddingBottom="@dimen/dp_8"
         >
 
         <TextView
@@ -41,23 +41,25 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_8"
             android:layout_marginBottom="@dimen/dp_30"
+            android:focusable="false"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvAuthor"
+            app:layout_constraintTop_toBottomOf="@id/tvAuthor"
             >
 
             <ImageView
                 android:id="@+id/imvEnvelopePic"
-                android:layout_width="@dimen/dp_70"
-                android:layout_height="@dimen/dp_115"
+                android:layout_width="@dimen/dp_46"
+                android:layout_height="@dimen/dp_76"
                 android:layout_gravity="center"
-                android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginEnd="@dimen/dp_8"
-                android:layout_marginBottom="@dimen/dp_8"
+                android:background="@color/bg_menu"
+                android:scaleType="fitXY"
                 android:visibility="gone"
                 app:layout_constraintVertical_bias="0.148"
+                tools:ignore="ContentDescription"
                 />
 
             <TextView
@@ -67,6 +69,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
                 android:ellipsize="end"
+                android:focusable="false"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_16"
                 tools:ignore="RtlSymmetry"
@@ -81,72 +84,110 @@
             android:layout_marginStart="@dimen/dp_8"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/sp_12"
-            app:layout_constraintBottom_toBottomOf="@+id/tvAuthor"
+            app:layout_constraintBottom_toBottomOf="@id/tvAuthor"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/tvNiceNum"
-            app:layout_constraintTop_toTopOf="@+id/tvAuthor"
+            app:layout_constraintStart_toEndOf="@id/llNice"
+            app:layout_constraintTop_toTopOf="@id/tvAuthor"
             app:layout_constraintVertical_bias="0.6"
             tools:text="基础知识"
             />
 
         <ImageView
             android:id="@+id/imvStart"
-            android:layout_width="@dimen/dp_20"
-            android:layout_height="@dimen/dp_20"
-            android:layout_marginStart="@dimen/dp_15"
-            android:layout_marginEnd="@dimen/dp_8"
+            android:layout_width="@dimen/dp_57"
+            android:layout_height="@dimen/dp_41"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
             android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_21"
+            android:paddingTop="@dimen/dp_13"
+            android:paddingEnd="@dimen/dp_21"
+            android:paddingBottom="@dimen/dp_13"
+            app:layout_constraintBottom_toBottomOf="@id/llNice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@+id/tvNiceNum"
-            app:layout_constraintTop_toTopOf="@+id/imvNice"
+            app:layout_constraintStart_toEndOf="@id/llNice"
+            app:layout_constraintTop_toTopOf="@id/llNice"
             app:layout_constraintVertical_bias="0.5"
             app:srcCompat="@mipmap/start_off"
             tools:ignore="ContentDescription"
             />
 
-        <ImageView
-            android:id="@+id/imvNice"
-            android:layout_width="@dimen/dp_19"
-            android:layout_height="@dimen/dp_19"
-            android:layout_marginTop="@dimen/dp_5"
-            android:scaleType="fitXY"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@+id/tvAuthor"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
-            app:srcCompat="@mipmap/nice_off"
-            tools:ignore="ContentDescription"
-            />
-
-        <TextView
-            android:id="@+id/tvNiceNum"
+        <LinearLayout
+            android:id="@+id/llNice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="@dimen/dp_5"
-            android:textSize="@dimen/sp_13"
-            app:layout_constraintBottom_toBottomOf="@+id/imvNice"
-            app:layout_constraintStart_toEndOf="@+id/imvNice"
-            app:layout_constraintTop_toTopOf="@+id/imvNice"
-            app:layout_constraintVertical_bias="0.5"
-            tools:text="100"
-            />
+            android:paddingTop="@dimen/dp_8"
+            android:paddingEnd="@dimen/dp_30"
+            android:paddingBottom="@dimen/dp_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/tvAuthor"
+            app:layout_constraintTop_toBottomOf="@id/tvBottomLine"
+            app:layout_constraintVertical_bias="0.777"
+            tools:ignore="RtlSymmetry"
+            >
+
+            <ImageView
+                android:id="@+id/imvNice"
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_25"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="@dimen/dp_5"
+                android:scaleType="fitXY"
+                app:srcCompat="@mipmap/nice_off"
+                tools:ignore="ContentDescription"
+                />
+
+            <TextView
+                android:id="@+id/tvNiceNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="bottom"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintBottom_toBottomOf="@id/imvNice"
+                app:layout_constraintStart_toEndOf="@id/imvNice"
+                app:layout_constraintTop_toTopOf="@id/imvNice"
+                app:layout_constraintVertical_bias="0.7"
+                tools:text="100"
+                />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="@dimen/sp_10"
-            app:layout_constraintBottom_toBottomOf="@+id/imvStart"
-            app:layout_constraintEnd_toEndOf="@+id/tvChapter"
+            app:layout_constraintBottom_toBottomOf="@id/imvStart"
+            app:layout_constraintEnd_toEndOf="@id/tvChapter"
             app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toEndOf="@+id/tvNiceNum"
-            app:layout_constraintTop_toTopOf="@+id/imvStart"
+            app:layout_constraintStart_toEndOf="@id/llNice"
+            app:layout_constraintTop_toTopOf="@id/imvStart"
             app:layout_constraintVertical_bias="0.5"
             tools:text="2019-08-15 11:30"
+            />
+
+        <TextView
+            android:id="@+id/tvBottomLine"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_0_1"
+            android:background="@color/value_default"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+            app:layout_constraintVertical_bias="0.3"
+            tools:layout_editor_absoluteX="15dp"
+            tools:layout_editor_absoluteY="102dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
