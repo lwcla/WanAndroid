@@ -1,5 +1,6 @@
 package com.konsung.cla.demo2.main.fragment.home
 
+import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.konsung.basic.bean.BannerData
@@ -10,7 +11,9 @@ import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.ui.SpaceDecoration
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
+import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.config.Config
 import com.konsung.cla.demo2.presenter.BannerPresenter
 import com.konsung.cla.demo2.presenter.HomeDataPresenter
 import com.konsung.cla.demo2.presenter.LoadBannerView
@@ -41,7 +44,15 @@ class HomeFragment : BasicFragment() {
             addHeaderView(headView)
 
             setOnItemClickListener { adapter, view, position ->
-                toast(TAG, "点击$position")
+                context?.let {
+                    val d = homeAdapter?.data?.get(position)
+                    val cxt = it
+                    d?.let {
+                        val intent = Intent()
+                        intent.putExtra(Config.WEB_URL, d.link)
+                        App.productUtils.startWebAty(cxt, intent)
+                    }
+                }
             }
 
             setOnItemChildClickListener { adapter, view, position ->

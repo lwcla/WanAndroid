@@ -4,7 +4,7 @@
           package="com.konsung.cla.demo2">
 
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <!-- 得到屏幕正常的物理尺寸 -->
     <supports-screens
@@ -34,6 +34,7 @@
         </activity>
 
         <activity android:name=".main.MainActivity"/>
+        <activity android:name=".web.WebViewAty"/>
 
     </application>
 
