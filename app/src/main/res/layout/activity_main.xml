@@ -10,6 +10,7 @@
     >
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -72,38 +73,29 @@
             </androidx.appcompat.widget.Toolbar>
         </com.google.android.material.appbar.AppBarLayout>
 
-        <RelativeLayout
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/appBar"
-            android:orientation="vertical"
-            app:layout_anchor="@id/toolbar"
+            android:layout_marginBottom="@dimen/dp_47"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_47"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            app:cardCornerRadius="1dp"
+            app:cardElevation="4dp"
             >
 
-            <androidx.viewpager.widget.ViewPager
-                android:id="@+id/viewPager"
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magicIndicator"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/dp_47"
-                app:behavior_overlapTop="@dimen/dp_30"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
                 />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_47"
-                android:layout_alignParentBottom="true"
-                app:cardCornerRadius="1dp"
-                app:cardElevation="4dp"
-                >
-
-                <net.lucode.hackware.magicindicator.MagicIndicator
-                    android:id="@+id/magicIndicator"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    />
-            </androidx.cardview.widget.CardView>
-        </RelativeLayout>
+        </androidx.cardview.widget.CardView>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

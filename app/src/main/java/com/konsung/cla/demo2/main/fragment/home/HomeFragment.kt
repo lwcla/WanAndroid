@@ -90,21 +90,32 @@ class HomeFragment : BasicFragment() {
                 val manager = LinearLayoutManager(context)
                 val space = context.resources.getDimension(R.dimen.dp_8)
                 addItemDecoration(SpaceDecoration(space.toInt(), true))
+                homeAdapter?.setHasStableIds(true)
+                itemAnimator?.changeDuration = 0
                 adapter = homeAdapter
                 layoutManager = manager
                 addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                        Debug.info(TAG, "HomeFragment onScrollStateChanged newState=$newState")
-                        if (newState == 0) {//停止滚动
+//                        Debug.info(TAG, "HomeFragment onScrollStateChanged newState=$newState")
+
+                        //newState ==0 时表示滚动停止
+                        if (newState != 0) {
+                            return
+                        }
+
+
+                        //recyclerView.canScrollVertically(-1)为false时表示滚动到顶部
+                        if (recyclerView.canScrollVertically(-1)) {
+                            return
+                        }
+
+                        fragmentRefresh?.refresh(false, index)
+
+                        if (needRefresh) {
                             needRefresh = false
-                            if (!recyclerView.canScrollVertically(-1)) {  //滑动到顶部
-                                fragmentRefresh?.refresh(false, index)
-                                if (needRefresh) {
-//                                refreshRv?.autoRefresh() //数据加载完成之后会闪一下，还是不要这一句了
-                                    refreshData()
-                                }
-                            }
+                            refreshRv?.autoRefresh()
+                            refreshData()
                         }
                     }
 
@@ -149,8 +160,16 @@ class HomeFragment : BasicFragment() {
     }
 
     override fun refreshView() {
-        refreshRv?.rv?.smoothScrollToPosition(0)
+
+        val size = homeAdapter?.data?.size ?: 0
+        if (size == 0) {
+            refreshRv?.autoRefresh()
+            refreshData()
+            return
+        }
+
         needRefresh = true
+        refreshRv?.scrollToTop()
     }
 
     private fun initLoadBanner(): BannerPresenter {

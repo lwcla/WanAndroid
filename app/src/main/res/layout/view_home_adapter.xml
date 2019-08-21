@@ -51,30 +51,52 @@
 
             <ImageView
                 android:id="@+id/imvEnvelopePic"
-                android:layout_width="@dimen/dp_46"
-                android:layout_height="@dimen/dp_76"
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_115"
                 android:layout_gravity="center"
                 android:layout_marginEnd="@dimen/dp_8"
                 android:background="@color/bg_menu"
                 android:scaleType="fitXY"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintVertical_bias="0.148"
                 tools:ignore="ContentDescription"
                 />
 
-            <TextView
-                android:id="@+id/tvTitle"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:ellipsize="end"
-                android:focusable="false"
-                android:textColor="@android:color/black"
-                android:textSize="@dimen/sp_16"
-                tools:ignore="RtlSymmetry"
-                tools:text="反思|Android View机制设计与实现：布局流程"
-                />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:maxLines="2"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_16"
+                    tools:ignore="RtlSymmetry"
+                    tools:text="可定制化阴影的万能阴影布局ShadowLayout 2.0 震撼上线，效果赶超CardView。（需要阴影地方，被它嵌套即可享受阴影，阴影可定制化）"
+                    />
+
+                <TextView
+                    android:id="@+id/tvDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:maxLines="4"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="可定制化阴影的万能阴影布局ShadowLayout 2.0 震撼上线。效果赶超CardView。阴影支持x,y轴偏移，支持阴影扩散程度，支持阴影圆角，支持单边或多边不显示阴影；支持随意更改颜色值，支持随意更改颜色值，支持随意更改颜色值。重要的事情说三遍"
+                    />
+
+            </LinearLayout>
+
         </LinearLayout>
 
         <TextView
@@ -120,7 +142,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="@dimen/dp_8"
-            android:paddingEnd="@dimen/dp_30"
+            android:paddingEnd="@dimen/dp_15"
             android:paddingBottom="@dimen/dp_8"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -137,6 +159,7 @@
                 android:layout_height="@dimen/dp_25"
                 android:clickable="true"
                 android:focusable="true"
+                android:visibility="gone"
                 android:focusableInTouchMode="true"
                 android:padding="@dimen/dp_5"
                 android:scaleType="fitXY"

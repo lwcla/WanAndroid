@@ -5,6 +5,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
+import com.google.android.material.snackbar.Snackbar
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.ui.BasicAty
@@ -71,6 +72,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         Debug.info(TAG, "MainActivity initEvent")
 
         rivHead.setOnClickListener(this)
+        tvIconSearch.setOnClickListener(this)
 
         nvLeft.setNavigationItemSelectedListener { item ->
             val title = item.title.toString()
@@ -83,7 +85,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
     override fun initData() {
         Debug.info(TAG, "MainActivity initData")
     }
-
 
     /**
      * 初始化左边抽屉界面
@@ -175,6 +176,14 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
             R.id.rivHead -> {
                 drawerLayout.openDrawer(nvLeft)
+            }
+
+            R.id.tvIconSearch -> {
+                Snackbar.make(coordinator, "点击搜索", Snackbar.LENGTH_INDEFINITE)
+                        .setAction("搜索") {
+                            ToastUtils.instance.toast(context, TAG, "点击有效")
+                        }
+                        .show()
             }
 
         }

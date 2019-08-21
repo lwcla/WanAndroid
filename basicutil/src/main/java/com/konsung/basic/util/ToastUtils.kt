@@ -37,7 +37,6 @@ class ToastUtils private constructor() {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-
     }
 
     /**
@@ -77,12 +76,11 @@ class ToastUtils private constructor() {
         }
 
         handler.post {
-            val toast = map.get(tag)
+            val toast = map[tag]
             toast?.apply { cancel() }
             map.remove(tag)
         }
     }
-
 }
 
 fun Context?.toast(tag: String, @StringRes textRes: Int) {

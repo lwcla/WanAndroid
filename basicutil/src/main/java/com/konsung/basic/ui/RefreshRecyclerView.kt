@@ -3,6 +3,7 @@ package com.konsung.basic.ui
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.konsung.basic.util.R
 import com.scwang.smartrefresh.header.MaterialHeader
@@ -13,7 +14,7 @@ import com.scwang.smartrefresh.layout.footer.ClassicsFooter
 class RefreshRecyclerView : SmartRefreshLayout {
 
     companion object {
-        val TAG = RefreshRecyclerView::class.java.simpleName
+        val TAG: String = RefreshRecyclerView::class.java.simpleName
     }
 
     var rv: RecyclerView
@@ -30,5 +31,19 @@ class RefreshRecyclerView : SmartRefreshLayout {
         setRefreshFooter(ClassicsFooter(context).setSpinnerStyle(SpinnerStyle.Scale))
         setRefreshHeader(MaterialHeader(context).setShowBezierWave(false))
         setPrimaryColorsId(R.color.colorPrimary, android.R.color.white, R.color.colorAccent, R.color.btn_search_color)
+    }
+
+    fun scrollToTop() {
+        rv.apply {
+            if (layoutManager is LinearLayoutManager) {
+                val position = (layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                if (position > 10) {
+                    //先滚动到10的位置，然后再以动画的方式滚动到顶部
+                    scrollToPosition(10)
+                }
+            }
+
+            smoothScrollToPosition(0)
+        }
     }
 }

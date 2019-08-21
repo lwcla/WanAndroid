@@ -12,5 +12,6 @@
     <string name="data_request_error">数据请求出错</string>
     <string name="no_network_view_hint">网络异常</string>
     <string name="error_view_hint">加载失败</string>
+    <string name="agree">赞同</string>
 
 </resources>

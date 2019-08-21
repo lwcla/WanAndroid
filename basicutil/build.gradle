@@ -43,6 +43,7 @@ dependencies {
     implementation config.recycler_view
     implementation config.av_loading_indicator_view
     implementation config.multiple_status_view
+    implementation config.design
 }
 
 repositories {
