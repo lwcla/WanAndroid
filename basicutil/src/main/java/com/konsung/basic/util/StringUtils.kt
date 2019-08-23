@@ -31,9 +31,11 @@ class StringUtils {
         return string
     }
 
-    fun loadTextIcon(context: Context, textView: TextView) {
-        val iconFont = Typeface.createFromAsset(context.assets, "iconfont.ttf")
-        textView.typeface = iconFont
+    fun loadTextIcon(context: Context?, textView: TextView) {
+        context?.let {
+            val iconFont = Typeface.createFromAsset(it.assets, "iconfont.ttf")
+            textView.typeface = iconFont
+        }
     }
 
     fun formHtml(string: String?): String {

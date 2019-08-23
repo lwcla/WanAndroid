@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/llContent"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/dp_14"
+    android:paddingTop="@dimen/dp_10"
+    android:paddingEnd="@dimen/dp_14"
+    android:paddingBottom="@dimen/dp_10"
+    >
+
+    <TextView
+        android:id="@+id/tvIcon"
+        android:layout_width="@dimen/dp_43"
+        android:layout_height="@dimen/dp_43"
+        android:background="@drawable/bg_white_round"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:gravity="center"
+        android:padding="@dimen/dp_5"
+        android:text="@string/icon_collect"
+        android:textSize="@dimen/sp_25"
+        />
+
+    <TextView
+        android:id="@+id/tvName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_5"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:textSize="@dimen/sp_11"
+        tools:text="收藏"
+        />
+
+</LinearLayout>

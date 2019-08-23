@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">BasicUtil</string>
+    <!--搜索-->
+    <string name="icon_search">&#xe60b;</string>
+    <!--项目-->
+    <string name="icon_project">&#xe64a;</string>
+    <!--首页-->
+    <string name="icon_home">&#xe618;</string>
+    <!--系统-->
+    <string name="icon_system">&#xe605;</string>
+    <!--导航-->
+    <string name="icon_navigation">&#xe72c;</string>
+    <!--刷新-->
+    <string name="icon_refresh">&#xe6b2;</string>
+    <!--更多-->
+    <string name="icon_more_1">&#xe634;</string>
+    <!--更多-->
+    <string name="icon_more_2">&#xe641;</string>
+    <!--收藏-->
+    <string name="icon_collect">&#xe606;</string>
+    <!--链接-->
+    <string name="icon_link">&#xe63c;</string>
+    <!--浏览器-->
+    <string name="icon_browser">&#xe607;</string>
+    <!--qq-->
+    <string name="icon_qq">&#xe601;</string>
+    <!--微信-->
+    <string name="icon_we_chat">&#xe608;</string>
+    <!--朋友圈-->
+    <string name="icon_circle_of_friends">&#xe69a;</string>
+    <!--QQ空间-->
+    <string name="icon_qq_space">&#xe633;</string>
+    <!--其他-->
+    <string name="icon_other">&#xe62b;</string>
+</resources>

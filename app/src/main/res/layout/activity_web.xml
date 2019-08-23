@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/webRootView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,11 +15,52 @@
         android:background="@color/red"
         android:gravity="center_vertical"
         android:minHeight="?attr/actionBarSize"
-        />
+        >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:paddingEnd="@dimen/dp_25"
+            tools:ignore="RtlSymmetry"
+            >
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_65"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:singleLine="true"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp_15"
+                tools:ignore="RtlSymmetry"
+                tools:text="每日一问 Parcelable 为什么效率高于 Serializable ？为什么效果比Serializable高？"
+                />
+
+            <TextView
+                android:id="@+id/tvMore"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:gravity="center"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:text="@string/icon_more_2"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/sp_20"
+                />
+
+        </RelativeLayout>
+    </androidx.appcompat.widget.Toolbar>
 
     <RelativeLayout
         android:id="@+id/rlWebView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dp_50"
+        />
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

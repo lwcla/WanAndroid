@@ -1,17 +1,25 @@
 package com.konsung.cla.demo2.web
 
 import android.view.KeyEvent
+import android.view.View
+import android.webkit.WebView
 import android.widget.RelativeLayout
 import com.just.agentweb.AgentWeb
+import com.just.agentweb.DefaultWebClient
+import com.just.agentweb.WebChromeClient
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.ToastUtils
 import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.config.Config.Companion.WEB_TITLE
 import com.konsung.cla.demo2.config.Config.Companion.WEB_URL
+import com.konsung.cla.demo2.view.ShareDialog
 import kotlinx.android.synthetic.main.activity_web.*
 
 
-class WebViewAty : BasicAty() {
+class WebViewAty : BasicAty(), View.OnClickListener {
+
 
     companion object {
         val TAG: String = WebViewAty::class.java.simpleName
@@ -30,28 +38,38 @@ class WebViewAty : BasicAty() {
             return
         }
 
-//        val title = intent.getStringExtra(WEB_TITLE) ?: getString(R.string.unknown)
-//        toolbar.title = title
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        toolbar.setNavigationOnClickListener {
-            finish()
+        tvTitle.isSelected = true
+        StringUtils.instance.loadTextIcon(context, tvMore)
+
+        val webChromeClient: WebChromeClient? = object : WebChromeClient() {
+            override fun onReceivedTitle(view: WebView, title: String) {
+                super.onReceivedTitle(view, title)
+                tvTitle.text = StringUtils.instance.formHtml(title)
+            }
         }
 
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(rlWebView as RelativeLayout, RelativeLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
+                .setWebChromeClient(webChromeClient)
+                .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
                 .createAgentWeb()
                 .ready()
                 .go(url)
     }
 
-    override fun initEvent() {
-
+    override fun initData() {
+        val title = intent.getStringExtra(WEB_TITLE) ?: getString(R.string.unknown)
+        tvTitle.text = StringUtils.instance.formHtml(title)
     }
 
-    override fun initData() {
-
+    override fun initEvent() {
+        tvMore.setOnClickListener(this)
+        toolbar.setNavigationOnClickListener {
+            finish()
+        }
     }
 
     override fun onResume() {
@@ -69,6 +87,8 @@ class WebViewAty : BasicAty() {
         super.onDestroy()
     }
 
+    override fun initPresenter(): List<BasicPresenter>? = null
+
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
 
         return if (mAgentWeb.handleKeyEvent(keyCode, event)) {
@@ -76,6 +96,15 @@ class WebViewAty : BasicAty() {
         } else super.onKeyDown(keyCode, event)
     }
 
-    override fun initPresenter(): List<BasicPresenter>? = null
+    override fun onClick(v: View) {
+        when (v.id) {
 
+            R.id.tvMore -> {
+                val shareDialog = ShareDialog()
+                if (!shareDialog.isAdded) {
+                    shareDialog.show(supportFragmentManager, ShareDialog::class.java.simpleName)
+                }
+            }
+        }
+    }
 }

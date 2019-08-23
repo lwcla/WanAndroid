@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <color name="qq_color">#4CAFE9</color>
+    <color name="qq_space_color">#FFCD00</color>
+    <color name="qq_we_char_color">#00C800</color>
+
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
@@ -9,5 +14,9 @@
     <color name="normal_color1">#22000000</color>
     <color name="value_default">#808080</color>
     <color name="light_grey">#FCFCFC</color>
+    <color name="light_grey1">#F4F4F4</color>
+    <color name="light_grey2">#F0F0F0</color>
+    <color name="background_color">#50000000</color>
+
 
 </resources>

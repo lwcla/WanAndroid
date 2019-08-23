@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.presenter
+package com.konsung.cla.demo2.main.fragment.home
 
 import android.content.Context
 import com.konsung.basic.bean.BannerData

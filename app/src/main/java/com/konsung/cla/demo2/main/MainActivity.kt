@@ -39,6 +39,10 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         val TAG: String = MainActivity::class.java.simpleName
     }
 
+    override fun getLayoutId(): Int = R.layout.activity_main
+
+    override fun initPresenter(): List<BasicPresenter>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,10 +58,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         super.onDestroy()
         unregisterReceiver(netChangeReceiver)
     }
-
-    override fun getLayoutId(): Int = R.layout.activity_main
-
-    override fun initPresenter(): List<BasicPresenter>? = null
 
     override fun initView() {
         Debug.info(TAG, "MainActivity initView")

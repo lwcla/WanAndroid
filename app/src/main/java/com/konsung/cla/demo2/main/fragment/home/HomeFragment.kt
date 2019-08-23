@@ -14,10 +14,6 @@ import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.config.Config
-import com.konsung.cla.demo2.presenter.BannerPresenter
-import com.konsung.cla.demo2.presenter.HomeDataPresenter
-import com.konsung.cla.demo2.presenter.LoadBannerView
-import com.konsung.cla.demo2.presenter.LoadHomeView
 
 
 /**
