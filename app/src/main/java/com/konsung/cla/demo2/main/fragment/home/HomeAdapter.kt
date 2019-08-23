@@ -1,16 +1,14 @@
 package com.konsung.cla.demo2.main.fragment.home
 
 import android.content.Context
-import android.os.Build
-import android.text.Html
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.konsung.basic.bean.HomeData
+import com.konsung.basic.config.ImageLoadUtil
 import com.konsung.basic.util.DateUtils
-import com.konsung.basic.util.ImageLoad
 import com.konsung.basic.util.StringUtils
 import com.konsung.cla.demo2.R
 
@@ -22,7 +20,7 @@ class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) 
 
     override fun convert(helper: BaseViewHolder, item: HomeData.DatasBean) {
         item.apply {
-            helper.setText(R.id.tvTitle, title?.trim())
+            helper.setText(R.id.tvTitle, StringUtils.instance.formHtml(title))
                     .setText(R.id.tvAuthor, author)
                     .setText(R.id.tvChapter, "$superChapterName/$chapterName")
                     .setText(R.id.tvTime, DateUtils.fromToday(publishTime))
@@ -47,11 +45,7 @@ class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) 
                 tvDesc.visibility = View.GONE
             } else {
                 tvDesc.visibility = View.VISIBLE
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    tvDesc.text = Html.fromHtml(description, Html.FROM_HTML_MODE_COMPACT)
-                } else {
-                    tvDesc.text = Html.fromHtml(description)
-                }
+                tvDesc.text = StringUtils.instance.formHtml(description)
             }
 
             val imvHead = helper.getView<ImageView>(R.id.imvEnvelopePic)
@@ -59,12 +53,37 @@ class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) 
                 imvHead.visibility = View.GONE
             } else {
                 imvHead.visibility = View.VISIBLE
-                ImageLoad.into(context, envelopePic!!, imvHead)
+                ImageLoadUtil.imageLoad.into(context, envelopePic!!, imvHead)
             }
 
         }
     }
 
     override fun getItemId(position: Int): Long = position.toLong()
+
+    fun findDataByPosition(position: Int): HomeData.DatasBean? {
+
+        val size = data.size
+        if (position >= size) {
+            return null
+        }
+
+        return data[position]
+    }
+
+    fun findImageByPosition(position: Int): String? {
+
+        val size = data.size
+        if (position >= size) {
+            return null
+        }
+
+        val url = StringUtils.instance.clearNull(data[position].envelopePic)
+        return if (url.isEmpty()) {
+            null
+        } else {
+            url
+        }
+    }
 }
 

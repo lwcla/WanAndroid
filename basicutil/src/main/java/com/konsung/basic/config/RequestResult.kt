@@ -1,6 +1,8 @@
 package com.konsung.basic.config
 
-abstract class RequestResult<T> {
+import com.konsung.basic.ui.BasicView
+
+abstract class RequestResult<T>(private val view: BasicView<T>?) {
 
     /**
      * 是否在拿到请求结果时就弹出toast提示
@@ -8,14 +10,14 @@ abstract class RequestResult<T> {
     var toast = true
 
     open fun success(t: T) {
-
+        view?.success(t)
     }
 
     open fun failed(message: String) {
-
+        view?.failed(message)
     }
 
     open fun noNetwork() {
-
+        view?.noNetwork()
     }
 }

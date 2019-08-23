@@ -20,7 +20,6 @@ class App : Application() {
         super.onCreate()
         context = applicationContext
         AppUtils.instance.init(BasicConfigImpl.instance)
-
     }
 
 }

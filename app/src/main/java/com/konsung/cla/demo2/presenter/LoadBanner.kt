@@ -14,7 +14,7 @@ class BannerPresenter(var view: LoadBannerView?) : BasicPresenter() {
 
         val ctx = context ?: return
 
-        val result = object : RequestResult<List<BannerData>>() {
+        val result = object : RequestResult<List<BannerData>>(view) {
 
             override fun success(t: List<BannerData>) {
                 view?.success(t)

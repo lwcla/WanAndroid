@@ -4,7 +4,16 @@
           package="com.konsung.cla.demo2">
 
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
     <!-- 得到屏幕正常的物理尺寸 -->
     <supports-screens
@@ -34,7 +43,11 @@
         </activity>
 
         <activity android:name=".main.MainActivity"/>
-        <activity android:name=".web.WebViewAty"/>
+        <activity
+            android:name=".web.WebViewAty"
+            android:configChanges="orientation|screenSize"
+            android:hardwareAccelerated="true"
+            />
 
     </application>
 

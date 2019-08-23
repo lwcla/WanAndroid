@@ -13,7 +13,7 @@ class HomeDataPresenter(private var view: LoadHomeView?) : BasicPresenter() {
 
         val ctx = context ?: return
 
-        val result = object : RequestResult<HomeData>() {
+        val result = object : RequestResult<HomeData>(view) {
 
             override fun success(t: HomeData) {
                 if (t.datas == null || t.datas!!.isEmpty()) {
@@ -22,10 +22,6 @@ class HomeDataPresenter(private var view: LoadHomeView?) : BasicPresenter() {
                 }
 
                 view?.success(t)
-            }
-
-            override fun noNetwork() {
-                view?.noNetwork()
             }
         }
 

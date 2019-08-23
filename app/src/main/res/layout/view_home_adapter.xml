@@ -3,10 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@android:color/white"
-    app:cardElevation="@dimen/dp_2"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardElevation="@dimen/dp_4"
+    tools:targetApi="lollipop"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -40,13 +45,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_8"
-            android:layout_marginBottom="@dimen/dp_30"
             android:focusable="false"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvAuthor"
+            app:layout_constraintVertical_bias="0"
             >
 
             <ImageView
@@ -117,16 +122,16 @@
 
         <ImageView
             android:id="@+id/imvStart"
-            android:layout_width="@dimen/dp_57"
-            android:layout_height="@dimen/dp_41"
+            android:layout_width="@dimen/dp_41"
+            android:layout_height="@dimen/dp_35"
             android:clickable="true"
             android:focusable="true"
             android:focusableInTouchMode="true"
             android:orientation="horizontal"
-            android:paddingStart="@dimen/dp_21"
-            android:paddingTop="@dimen/dp_13"
-            android:paddingEnd="@dimen/dp_21"
-            android:paddingBottom="@dimen/dp_13"
+            android:paddingStart="@dimen/dp_13"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_13"
+            android:paddingBottom="@dimen/dp_10"
             app:layout_constraintBottom_toBottomOf="@id/llNice"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -141,6 +146,7 @@
             android:id="@+id/llNice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:paddingTop="@dimen/dp_8"
             android:paddingEnd="@dimen/dp_15"
             android:paddingBottom="@dimen/dp_8"
@@ -148,8 +154,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@id/tvAuthor"
-            app:layout_constraintTop_toBottomOf="@id/tvBottomLine"
-            app:layout_constraintVertical_bias="0.777"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+            app:layout_constraintVertical_bias="0"
             tools:ignore="RtlSymmetry"
             >
 
@@ -159,10 +165,10 @@
                 android:layout_height="@dimen/dp_25"
                 android:clickable="true"
                 android:focusable="true"
-                android:visibility="gone"
                 android:focusableInTouchMode="true"
                 android:padding="@dimen/dp_5"
                 android:scaleType="fitXY"
+                android:visibility="gone"
                 app:srcCompat="@mipmap/nice_off"
                 tools:ignore="ContentDescription"
                 />
@@ -195,22 +201,6 @@
             app:layout_constraintTop_toTopOf="@id/imvStart"
             app:layout_constraintVertical_bias="0.5"
             tools:text="2019-08-15 11:30"
-            />
-
-        <TextView
-            android:id="@+id/tvBottomLine"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_0_1"
-            android:background="@color/value_default"
-            android:visibility="invisible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/linearLayout2"
-            app:layout_constraintVertical_bias="0.3"
-            tools:layout_editor_absoluteX="15dp"
-            tools:layout_editor_absoluteY="102dp"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

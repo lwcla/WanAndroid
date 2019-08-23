@@ -13,14 +13,21 @@ import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.ToastUtils
 import okhttp3.Interceptor
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.logging.HttpLoggingInterceptor
+import okio.Buffer
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+import java.net.URLDecoder
 import java.util.concurrent.TimeoutException
+
 
 class MyRetrofitUtils private constructor() {
 
@@ -55,7 +62,18 @@ class MyRetrofitUtils private constructor() {
                 }
             }
 
+//            val charsetInterceptor = object : Interceptor {
+//                override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+//
+//                    var request = chain.request()
+//                    val requestBuilder = request.newBuilder()
+//                    request = requestBuilder.post(URLDecoder.decode(bodyToString(request.body), "UTF-8").toRequestBody("application/x-www-form-urlencoded;charset=GBK".toMediaTypeOrNull())).build()
+//                    return chain.proceed(request)
+//                }
+//            }
+
             val okHttpClient = OkHttpClient.Builder()
+//                    .addInterceptor(charsetInterceptor)
                     .addInterceptor(httpLoggingInterceptor)
                     .addInterceptor(net)
                     .build()
@@ -68,6 +86,19 @@ class MyRetrofitUtils private constructor() {
         }
 
         return retrofit!!.create(InfoApi::class.java)
+    }
+
+    private fun bodyToString(request: RequestBody?): String {
+        try {
+            val buffer = Buffer()
+            if (request != null)
+                request.writeTo(buffer)
+            else
+                return ""
+            return buffer.readUtf8()
+        } catch (e: IOException) {
+            return "did not work"
+        }
     }
 
     fun getWeChatOfficial() {

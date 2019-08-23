@@ -2,6 +2,8 @@ package com.konsung.basic.util
 
 import android.content.Context
 import android.graphics.Typeface
+import android.os.Build
+import android.text.Html
 import android.text.TextUtils
 import android.widget.TextView
 
@@ -32,5 +34,19 @@ class StringUtils {
     fun loadTextIcon(context: Context, textView: TextView) {
         val iconFont = Typeface.createFromAsset(context.assets, "iconfont.ttf")
         textView.typeface = iconFont
+    }
+
+    fun formHtml(string: String?): String {
+
+        val text = clearNull(string?.trim())
+        if (text.isEmpty()) {
+            return ""
+        }
+
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            Html.fromHtml(text, Html.FROM_HTML_MODE_COMPACT).toString()
+        } else {
+            Html.fromHtml(text).toString()
+        }
     }
 }

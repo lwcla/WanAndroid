@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.widget.TextView
 import androidx.annotation.StringRes
-import com.konsung.basic.util.Debug
 import com.konsung.basic.util.StringUtils
 import com.konsung.cla.demo2.R
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.titles.CommonPagerTitleView
@@ -63,7 +62,7 @@ class ViewPagerTitle(context: Context, @StringRes private val stringRes: Int, te
     }
 
     fun setIcon(@StringRes textRes: Int) {
-        Debug.info(TAG, "ViewPagerTitle setIcon currentText=$currentText textRes=$textRes currentText==textRes?${currentText == textRes}")
+//        Debug.info(TAG, "ViewPagerTitle setIcon currentText=$currentText textRes=$textRes currentText==textRes?${currentText == textRes}")
         if (currentText == textRes) {
             return
         }

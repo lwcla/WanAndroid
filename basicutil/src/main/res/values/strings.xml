@@ -14,5 +14,6 @@
     <string name="error_view_hint">加载失败</string>
     <string name="agree">赞同</string>
     <string name="data_error">数据出错，请重试</string>
+    <string name="unknown">未知</string>
 
 </resources>

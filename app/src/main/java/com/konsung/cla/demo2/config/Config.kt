@@ -6,5 +6,9 @@ class Config {
 
         const val WEB_URL = "webView_Url"
 
+        const val WEB_TITLE = "webView_title"
+
+        const val WEB_ARTICLE_ID = "webView_article_id"
+
     }
 }

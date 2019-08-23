@@ -19,6 +19,7 @@ import com.konsung.cla.demo2.presenter.HomeDataPresenter
 import com.konsung.cla.demo2.presenter.LoadBannerView
 import com.konsung.cla.demo2.presenter.LoadHomeView
 
+
 /**
  * 首页
  */
@@ -45,11 +46,12 @@ class HomeFragment : BasicFragment() {
 
             setOnItemClickListener { adapter, view, position ->
                 context?.let {
-                    val d = homeAdapter?.data?.get(position)
+                    val d = homeAdapter?.findDataByPosition(position)
                     val cxt = it
                     d?.let {
                         val intent = Intent()
                         intent.putExtra(Config.WEB_URL, d.link)
+                        intent.putExtra(Config.WEB_TITLE, d.title)
                         App.productUtils.startWebAty(cxt, intent)
                     }
                 }
@@ -57,7 +59,14 @@ class HomeFragment : BasicFragment() {
 
             setOnItemChildClickListener { adapter, view, position ->
                 when (view.id) {
-                    R.id.imvEnvelopePic -> toast(TAG, "点击图片 $position")
+                    R.id.imvEnvelopePic -> {
+
+                        val url = homeAdapter?.findImageByPosition(position)
+                        url?.let {
+                            toast(TAG, "图片地址：$url")
+                        }
+                    }
+
                     R.id.imvStart -> toast(TAG, "点击收藏 $position")
                     R.id.llNice -> toast(TAG, "点击赞 $position")
                 }
@@ -238,12 +247,15 @@ class HomeFragment : BasicFragment() {
                     finishLoadMore(0, false, false)
                 }
 
-                myHandler.sendEmptyMessage(SHOW_ERROR)
-
+                if (homeAdapter?.data?.isEmpty() == null) {
+                    myHandler.sendEmptyMessage(SHOW_ERROR)
+                }
             }
 
             override fun noNetwork() {
-                myHandler.sendEmptyMessageDelayed(SHOW_NO_NETWORK, 1000)
+                if (homeAdapter?.data?.isEmpty() == null) {
+                    myHandler.sendEmptyMessageDelayed(SHOW_NO_NETWORK, 1000)
+                }
             }
         })
     }
