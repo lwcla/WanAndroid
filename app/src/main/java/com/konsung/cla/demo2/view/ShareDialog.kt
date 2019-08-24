@@ -2,14 +2,11 @@ package com.konsung.cla.demo2.view
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.view.Window.FEATURE_NO_TITLE
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
@@ -29,16 +26,26 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
         val TAG: String = ShareDialog::class.java.simpleName
     }
 
+    private var rootView: View? = null
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        context?.let {
+            (rootView?.parent as? View)?.setBackgroundColor(ContextCompat.getColor(it, android.R.color.transparent))
+        }
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        rootView = inflater.inflate(R.layout.dialog_share, container, false)
+        initAdapter1(rootView!!)
+        initAdapter2(rootView!!)
 
-        dialog!!.requestWindowFeature(FEATURE_NO_TITLE)
-        val window = dialog!!.window
-        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        val tvCancel = rootView!!.findViewById<TextView>(R.id.tvCancel)
+        tvCancel.setOnClickListener {
+            dismissAllowingStateLoss()
+        }
 
-        val view = inflater.inflate(R.layout.dialog_share, container, false)
-        initAdapter1(view)
-        initAdapter2(view)
-        return view
+        return rootView
     }
 
     private fun initAdapter1(view: View) {

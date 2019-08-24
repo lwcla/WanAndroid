@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_10"
     android:background="@drawable/bg_dialog_top_corner"
     android:orientation="vertical"
-    android:paddingTop="@dimen/dp_10"
-    android:layout_marginTop="@dimen/dp_10"
-    android:paddingBottom="@dimen/dp_10"
-    >
+    android:paddingTop="@dimen/dp_18">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvShare1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        />
+        android:orientation="horizontal" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvShare2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
-        android:orientation="horizontal"
-        />
+        android:orientation="horizontal" />
+
+    <TextView
+        android:id="@+id/tvCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:gravity="center"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingBottom="@dimen/dp_18"
+        android:text="@string/cancel"
+        android:textSize="@dimen/sp_15" />
+
 
 </LinearLayout>

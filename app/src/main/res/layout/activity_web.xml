@@ -47,7 +47,6 @@
                 android:layout_alignParentEnd="true"
                 android:gravity="center"
                 android:paddingStart="@dimen/dp_10"
-                android:paddingEnd="@dimen/dp_10"
                 android:text="@string/icon_more_2"
                 android:textColor="@android:color/white"
                 android:textSize="@dimen/sp_20"
