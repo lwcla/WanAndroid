@@ -73,11 +73,11 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
         val iconRes = v.getTag(R.id.recycler_view_adapter_item_click) as? Int
         iconRes?.let {
             when (it) {
-                R.string.icon_qq -> toast(TAG, "点击qq")
-                R.string.icon_qq_space -> toast(TAG, "点击qq空间")
-                R.string.icon_we_chat -> toast(TAG, "点击微信")
-                R.string.icon_circle_of_friends -> toast(TAG, "点击朋友圈")
-                R.string.icon_other -> toast(TAG, "点击其他")
+                R.string.icon_qq -> toast(TAG, "qq")
+                R.string.icon_qq_space -> toast(TAG, "qq空间")
+                R.string.icon_we_chat -> toast(TAG, "微信")
+                R.string.icon_circle_of_friends -> toast(TAG, "朋友圈")
+                R.string.icon_other -> toast(TAG, "其他")
                 R.string.icon_collect -> toast(TAG, "收藏")
                 R.string.icon_link -> toast(TAG, "复制链接")
                 R.string.icon_browser -> toast(TAG, "浏览器打开")
