@@ -11,6 +11,7 @@ import android.widget.TextView
 class StringUtils {
 
     companion object {
+        val TAG: String = StringUtils::class.java.simpleName
         val instance by lazy { StringUtils() }
     }
 

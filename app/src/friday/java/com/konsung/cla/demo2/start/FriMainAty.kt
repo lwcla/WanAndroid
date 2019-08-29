@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.aty
+package com.konsung.cla.demo2.start
 
 import com.konsung.cla.demo2.main.MainActivity
 

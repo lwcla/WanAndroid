@@ -19,7 +19,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
-        AppUtils.instance.init(BasicConfigImpl.instance)
+        AppUtils.init(BasicConfigImpl.instance)
     }
 
 }

@@ -12,13 +12,15 @@ import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.ToastUtils
 import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.config.Config.Companion.WEB_ARTICLE_ID
 import com.konsung.cla.demo2.config.Config.Companion.WEB_TITLE
 import com.konsung.cla.demo2.config.Config.Companion.WEB_URL
 import com.konsung.cla.demo2.view.ShareDialog
+import com.konsung.cla.demo2.view.ShareDialogListener
 import kotlinx.android.synthetic.main.activity_web.*
 
 
-class WebViewAty : BasicAty(), View.OnClickListener {
+class WebViewAty : BasicAty(), View.OnClickListener ,ShareDialogListener{
 
 
     companion object {
@@ -26,17 +28,24 @@ class WebViewAty : BasicAty(), View.OnClickListener {
     }
 
     private lateinit var mAgentWeb: AgentWeb
+    private lateinit var link: String
+    private var artId: Int = -1
 
     override fun getLayoutId(): Int = R.layout.activity_web
 
     override fun initView() {
 
         val url = intent.getStringExtra(WEB_URL)
-        if (url.isNullOrEmpty()) {
+        val articleId = intent.getIntExtra(WEB_ARTICLE_ID, -1)
+
+        if (url.isNullOrEmpty() || articleId == -1) {
             ToastUtils.instance.toast(context, TAG, R.string.data_error)
             finish()
             return
         }
+
+        link = url
+        artId = articleId
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -87,6 +96,10 @@ class WebViewAty : BasicAty(), View.OnClickListener {
         super.onDestroy()
     }
 
+    override fun collect() {
+
+    }
+
     override fun initPresenter(): List<BasicPresenter>? = null
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
@@ -101,8 +114,9 @@ class WebViewAty : BasicAty(), View.OnClickListener {
 
             R.id.tvMore -> {
                 val shareDialog = ShareDialog()
+                shareDialog.shareDialogListener = this
                 if (!shareDialog.isAdded) {
-                    shareDialog.show(supportFragmentManager, ShareDialog::class.java.simpleName)
+                    shareDialog.show(supportFragmentManager, ShareDialog::class.java.simpleName, link)
                 }
             }
         }

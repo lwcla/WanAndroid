@@ -1,9 +1,8 @@
-package com.konsung.cla.demo2.aty
+package com.konsung.cla.demo2.start
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.konsung.cla.demo2.App
-import com.konsung.cla.demo2.R
 
 class StartAty : AppCompatActivity() {
 

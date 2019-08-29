@@ -59,4 +59,6 @@ dependencies {
     implementation config.multiple_status_view
     implementation config.av_loading_indicator_view
     implementation config.agentweb
+    implementation config.agent_web_file_chooser
+    implementation config.agent_web_downloader
 }

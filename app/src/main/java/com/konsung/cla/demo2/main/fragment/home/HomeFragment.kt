@@ -1,6 +1,5 @@
 package com.konsung.cla.demo2.main.fragment.home
 
-import android.content.Intent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.konsung.basic.bean.BannerData
@@ -13,7 +12,6 @@ import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.config.Config
 
 
 /**
@@ -44,11 +42,8 @@ class HomeFragment : BasicFragment() {
                 context?.let {
                     val d = homeAdapter?.findDataByPosition(position)
                     val cxt = it
-                    d?.let {
-                        val intent = Intent()
-                        intent.putExtra(Config.WEB_URL, d.link)
-                        intent.putExtra(Config.WEB_TITLE, d.title)
-                        App.productUtils.startWebAty(cxt, intent)
+                    d?.apply {
+                        App.productUtils.startWebAty(cxt, title, link, chapterId)
                     }
                 }
             }

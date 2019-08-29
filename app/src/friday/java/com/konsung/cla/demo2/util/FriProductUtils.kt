@@ -2,7 +2,7 @@ package com.konsung.cla.demo2.util
 
 import android.content.Context
 import android.content.Intent
-import com.konsung.cla.demo2.aty.FriMainAty
+import com.konsung.cla.demo2.start.FriMainAty
 
 class FriProductUtils : ProductUtils() {
 

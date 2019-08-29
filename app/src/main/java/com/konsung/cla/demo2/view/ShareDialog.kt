@@ -9,11 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.konsung.basic.bean.TwoBean
+import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App.Companion.context
@@ -27,6 +29,9 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
     }
 
     private var rootView: View? = null
+
+    private var link: String? = null
+    var shareDialogListener: ShareDialogListener? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -84,13 +89,34 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
                 R.string.icon_qq_space -> toast(TAG, "qq空间")
                 R.string.icon_we_chat -> toast(TAG, "微信")
                 R.string.icon_circle_of_friends -> toast(TAG, "朋友圈")
-                R.string.icon_other -> toast(TAG, "其他")
+
+                R.string.icon_other -> {
+                    AppUtils.instance.shareToSystem(context, link)
+                }
+
                 R.string.icon_collect -> toast(TAG, "收藏")
-                R.string.icon_link -> toast(TAG, "复制链接")
-                R.string.icon_browser -> toast(TAG, "浏览器打开")
+
+                R.string.icon_link -> {
+                    AppUtils.instance.copyToClip(context, link)
+                }
+
+                R.string.icon_browser -> {
+                    AppUtils.instance.openByBrowser(context, link)
+                }
             }
         }
+
+        dismissAllowingStateLoss()
     }
+
+    fun show(manager: FragmentManager, tag: String?, link: String) {
+        this.link = link
+        show(manager, tag)
+    }
+}
+
+interface ShareDialogListener {
+    fun collect()
 }
 
 class ShareAdapter(private val list: List<TwoBean<Int, Int>>) : RecyclerView.Adapter<ShareAdapter.ShareViewHolder>() {

@@ -8,7 +8,7 @@ import com.konsung.basic.util.AppUtils
 class NetChangeReceiver : BroadcastReceiver() {
 
     companion object {
-        var mType = NetworkUtil.getNetworkType(AppUtils.instance.getContext())
+        var mType = NetworkUtil.getNetworkType(AppUtils.getContext())
         private val mObservers = mutableListOf<NetStateChangeObserver>()
 
         fun registerObserver(observer: NetStateChangeObserver?) {

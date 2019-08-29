@@ -47,7 +47,7 @@ class MyRetrofitUtils private constructor() {
         if (retrofit == null) {
 
             val httpLoggingInterceptor = HttpLoggingInterceptor()
-            if (AppUtils.instance.isDebug()) {
+            if (AppUtils.isDebug()) {
                 httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
             }
 

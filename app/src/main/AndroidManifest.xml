@@ -34,7 +34,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".aty.StartAty">
+        <activity android:name=".start.StartAty">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

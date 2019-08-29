@@ -9,7 +9,7 @@ class Debug {
 
         fun info(tag: String, info: String) {
 
-            if (!AppUtils.instance.isDebug()) {
+            if (!AppUtils.isDebug()) {
                 return
             }
 
