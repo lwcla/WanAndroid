@@ -3,6 +3,7 @@ package com.konsung.cla.demo2.util
 import android.content.Context
 import android.content.Intent
 import com.konsung.cla.demo2.config.Config
+import com.konsung.cla.demo2.login.LoginAty
 import com.konsung.cla.demo2.main.MainActivity
 import com.konsung.cla.demo2.web.WebViewAty
 
@@ -25,5 +26,13 @@ open class ProductUtils {
         intent.putExtra(Config.WEB_URL, link)
         intent.putExtra(Config.WEB_ARTICLE_ID, artId)
         startWebAty(context, intent)
+    }
+
+    open fun startLoginAty(context: Context?) {
+        context?.let {
+            val intent = Intent()
+            intent.setClass(it, LoginAty::class.java)
+            it.startActivity(intent)
+        }
     }
 }

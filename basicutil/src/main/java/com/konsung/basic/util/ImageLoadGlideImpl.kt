@@ -29,8 +29,8 @@ class ImageLoadGlideImpl private constructor() : ImageLoad {
             Glide.with(context)
                     .asBitmap()
                     .load(path)
-                    .placeholder(R.drawable.placeholder)
-                    .error(R.drawable.pic_loading_fail)
+                    .placeholder(R.mipmap.placeholder)
+                    .error(R.mipmap.pic_loading_fail)
                     .listener(object : RequestListener<Bitmap> {
                         override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Bitmap>?, isFirstResource: Boolean): Boolean {
                             result.failed(null)

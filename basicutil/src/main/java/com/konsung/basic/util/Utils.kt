@@ -3,6 +3,7 @@ package com.konsung.basic.util
 import android.content.Context
 import android.net.ConnectivityManager
 import android.util.DisplayMetrics
+import android.view.View
 import android.view.WindowManager
 
 class Utils {
@@ -39,6 +40,26 @@ class Utils {
                     .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
             val networkInfo = connectivityManager.activeNetworkInfo
             return networkInfo != null && networkInfo.isConnectedOrConnecting
+        }
+
+        /**
+         * 拿到view的真实高度，即使状态是gone
+         * @param view view
+         * @return height
+         */
+        fun getUnDisplayViewHeight(view: View): Int {
+            view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+            return view.measuredHeight
+        }
+
+        /**
+         * 拿到view的真实高度，即使状态是gone
+         * @param view view
+         * @return height
+         */
+        fun getUnDisplayViewWidth(view: View): Int {
+            view.measure(View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED), View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED))
+            return view.measuredWidth
         }
     }
 

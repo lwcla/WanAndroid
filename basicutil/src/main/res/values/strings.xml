@@ -19,5 +19,12 @@
     <string name="cancel">取消</string>
     <string name="link_copy_success">链接复制成功</string>
     <string name="share_to_other">分享到</string>
+    <string name="please_input_ser_name">请输入账号</string>
+    <string name="please_input_pass_word">请输入密码</string>
+    <string name="please_confirm_pass_word">确认密码</string>
+    <string name="login">登录</string>
+    <string name="registered">注册</string>
+    <string name="there_is_no_account_to_registered">还没有账号？前去注册</string>
+    <string name="you_already_have_an_account_log_in">已经有账号了，去登录</string>
 
 </resources>

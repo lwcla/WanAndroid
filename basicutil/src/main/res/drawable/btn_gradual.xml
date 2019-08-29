@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:state_pressed="true">
+        <shape>
+            <corners android:radius="30dp"/>
+            <gradient
+                android:centerColor="@color/tool_bar_center_pressed"
+                android:endColor="@color/tool_bar_center"
+                android:startColor="@color/tool_bar_center"/>
+        </shape>
+    </item>
+
+    <item>
+        <shape>
+            <corners android:radius="30dp"/>
+            <gradient
+                android:centerColor="@color/tool_bar_center"
+                android:endColor="@color/tool_bar_right"
+                android:startColor="@color/tool_bar_left"/>
+        </shape>
+    </item>
+</selector>

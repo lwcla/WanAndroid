@@ -2,7 +2,7 @@ ext {
 
     android = [
             compileSdkVersion: 28,
-            minSdkVersion    : 19,
+            minSdkVersion    : 21,
             targetSdkVersion : 28,
     ]
 
@@ -28,4 +28,5 @@ ext {
     agentweb  = "com.just.agentweb:agentweb:4.1.2"
     agent_web_file_chooser = "com.just.agentweb:filechooser:4.1.2"
     agent_web_downloader = "com.download.library:Downloader:4.1.2"
+    blurry = "jp.wasabeef:blurry:3.0.0"//毛玻璃效果
 }

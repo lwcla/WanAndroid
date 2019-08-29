@@ -1,7 +1,9 @@
 package com.konsung.basic.ui
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +11,7 @@ import androidx.core.content.ContextCompat
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.StatusBarUtil
+
 
 abstract class BasicAty : AppCompatActivity() {
 
@@ -81,6 +84,18 @@ abstract class BasicAty : AppCompatActivity() {
      */
     protected fun settStatusBarColor(@ColorRes colorRes: Int) {
         StatusBarUtil.setStatusBarColor(this, ContextCompat.getColor(this, colorRes))
+    }
+
+
+    /**
+     * 隐藏软键盘(只适用于Activity，不适用于Fragment)
+     */
+    fun hideSoftKeyboard(activity: Activity) {
+        val view = activity.currentFocus
+        view?.let {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(it.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
     }
 
     @LayoutRes
