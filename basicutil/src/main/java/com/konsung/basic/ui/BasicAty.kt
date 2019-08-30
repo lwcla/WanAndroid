@@ -3,6 +3,7 @@ package com.konsung.basic.ui
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
@@ -11,6 +12,9 @@ import androidx.core.content.ContextCompat
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.StatusBarUtil
+import androidx.core.content.ContextCompat.getSystemService
+
+
 
 
 abstract class BasicAty : AppCompatActivity() {
@@ -95,6 +99,14 @@ abstract class BasicAty : AppCompatActivity() {
         view?.let {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(it.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+        }
+    }
+
+    fun showKeyboard(view: View) {
+        val imm = view.context.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+        if (imm != null) {
+            view.requestFocus()
+            imm.showSoftInput(view, 0)
         }
     }
 

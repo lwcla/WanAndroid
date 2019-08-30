@@ -6,12 +6,14 @@ import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.view.View
-import android.view.animation.LinearInterpolator
+import android.view.animation.DecelerateInterpolator
+import com.konsung.basic.bean.UserDto
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.HeightView
 import com.konsung.basic.util.FileUtils
 import com.konsung.basic.util.Utils
+import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_login.*
@@ -24,9 +26,10 @@ class LoginAty : BasicAty(), View.OnClickListener {
     }
 
     private val heightView by lazy { HeightView(tilPassWord2) }
-    private var animatorSet: AnimatorSet? = null
+    private val registerPresenter by lazy { initRegisterPresenter() }
 
     override fun getLayoutId(): Int = R.layout.activity_login
+    private var animatorSet: AnimatorSet? = null
 
     override fun initView() {
         initBg()
@@ -46,7 +49,9 @@ class LoginAty : BasicAty(), View.OnClickListener {
 
     }
 
-    override fun initPresenter(): List<BasicPresenter>? = null
+    override fun initPresenter(): List<BasicPresenter>? {
+        return listOf(registerPresenter)
+    }
 
     /**
      * 初始化背景
@@ -69,20 +74,75 @@ class LoginAty : BasicAty(), View.OnClickListener {
 
     }
 
+    private fun resetEditStatus() {
+        tilUser.error = ""
+        tilPassWord.error = ""
+        tilPassWord2.error = ""
+    }
+
     /**
      * 注册
      */
     private fun register() {
+        resetEditStatus()
+
+        val userName = etUser.text.toString()
+
+        if (userName.isEmpty()) {
+            tilUser.error = getString(R.string.account_can_not_be_empty)
+            etUser.requestFocus()
+            showKeyboard(etUser)
+            return
+        }
+
+        val pass1 = etPassWord.text.toString()
+
+        if (pass1.isEmpty()) {
+            tilPassWord.error = getString(R.string.pass_word_can_not_be_empty)
+            etPassWord.requestFocus()
+            showKeyboard(etPassWord)
+            return
+        }
+
+        val pass2 = etPassWord2.text.toString()
+        if (pass2.isEmpty()) {
+            tilPassWord2.error = getString(R.string.pass_word2_can_not_be_empty)
+            etPassWord2.requestFocus()
+            showKeyboard(etPassWord2)
+            return
+        }
+
+        if (pass1 != pass2) {
+            tilPassWord2.error = getString(R.string.inconsistent_password_input)
+            return
+        }
+
+        registerPresenter.register(this, userName, pass1, pass2)
 
     }
 
     /**
      * 显示注册
+     * @param login 是否切换为登录状态
      */
-    private fun showRegister() {
+    private fun showRegister(login: Boolean) {
 
-        //是否切换为登录状态
-        val login: Boolean = tilPassWord2.visibility != View.GONE
+        if (login && tilPassWord2.visibility == View.GONE) {
+            //已经是登录状态
+            return
+        }
+
+        if (!login && tilPassWord2.visibility == View.VISIBLE) {
+            //已经是注册状态
+            return
+        }
+
+        resetEditStatus()
+
+        if (!login) {
+            //切换到注册状态时，清空确认密码的输入框
+            etPassWord2.setText("")
+        }
 
         animatorSet?.cancel()
         tilPassWord2.visibility = View.VISIBLE
@@ -138,8 +198,8 @@ class LoginAty : BasicAty(), View.OnClickListener {
         animatorSet?.play(hAnimator)?.with(loginAnimator)?.with(registerAnimator)?.with(tvLoginAnimator)?.with(tvRegisterAnimator)
 
         animatorSet?.apply {
-            duration = 300
-            interpolator = LinearInterpolator()
+            duration = 200
+            interpolator = DecelerateInterpolator()
             start()
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
@@ -160,13 +220,27 @@ class LoginAty : BasicAty(), View.OnClickListener {
         }
     }
 
+    private fun initRegisterPresenter(): RegisterPresenter {
+
+        val view = object : RegisterView() {
+
+            override fun success(t: UserDto) {
+                toast(TAG, "注册成功")
+                showRegister(true)
+            }
+        }
+
+        return RegisterPresenter(view)
+    }
+
     override fun onClick(v: View) {
         when (v.id) {
             R.id.imvBg -> hideSoftKeyboard(this)
 
-            R.id.rlRegister -> showRegister()
+            R.id.rlRegister -> showRegister(tilPassWord2.visibility != View.GONE)
 
             R.id.cardViewLogin -> {
+                resetEditStatus()
                 val login: Boolean = tilPassWord2.visibility == View.GONE
                 if (login) {
                     //去登录

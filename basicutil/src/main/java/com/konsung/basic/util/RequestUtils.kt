@@ -3,6 +3,7 @@ package com.konsung.basic.util
 import android.content.Context
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.HomeData
+import com.konsung.basic.bean.UserDto
 import com.konsung.basic.config.RequestResult
 import com.konsung.basic.net.MyRetrofitUtils
 
@@ -22,4 +23,7 @@ class RequestUtils private constructor() {
         request.loadHome(context, page, result)
     }
 
+    fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>) {
+        request.register(context, userName, password1, password2, result)
+    }
 }

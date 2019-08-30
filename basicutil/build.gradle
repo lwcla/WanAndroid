@@ -2,6 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'org.greenrobot.greendao'
 
 def config = rootProject.ext
 
@@ -24,7 +25,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    greendao {
+        schemaVersion 1 //数据库版本号
+        daoPackage 'com.greendao.dao' //
+        targetGenDir 'src/main/java' //java
+    }
 }
+
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
@@ -45,6 +53,10 @@ dependencies {
     implementation config.av_loading_indicator_view
     implementation config.multiple_status_view
     implementation config.design
+
+    //数据库升级
+    implementation config.green_dao_upgrade_helper
+    implementation config.green_dao
 }
 
 repositories {

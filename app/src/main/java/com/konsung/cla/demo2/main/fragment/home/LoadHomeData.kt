@@ -9,6 +9,10 @@ import com.konsung.basic.util.RequestUtils
 
 class HomeDataPresenter(private var view: LoadHomeView?) : BasicPresenter() {
 
+    override fun destroy() {
+        view = null
+    }
+
     fun load(context: Context?, page: Int) {
 
         val ctx = context ?: return
@@ -27,11 +31,6 @@ class HomeDataPresenter(private var view: LoadHomeView?) : BasicPresenter() {
 
         RequestUtils.instance.loadHomeData(ctx, page, result)
     }
-
-    override fun destroy() {
-        view = null
-    }
-
 }
 
 open class LoadHomeView : BasicView<HomeData>()

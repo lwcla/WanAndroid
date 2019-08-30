@@ -29,4 +29,6 @@ ext {
     agent_web_file_chooser = "com.just.agentweb:filechooser:4.1.2"
     agent_web_downloader = "com.download.library:Downloader:4.1.2"
     blurry = "jp.wasabeef:blurry:3.0.0"//毛玻璃效果
+    green_dao_upgrade_helper = "com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.1.0"//数据库升级
+    green_dao = "org.greenrobot:greendao:3.2.2"//数据库
 }

@@ -12,4 +12,10 @@
         <item name="android:textSize">@dimen/sp_16</item>
     </style>
 
+    <style name="TextAppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorControlNormal">@color/normal_color1</item> <!--默认显示下划线的颜色-->
+        <item name="colorControlActivated">@color/tool_bar_right</item><!--点击后下划线的颜色-->
+        <item name="colorPrimary">@color/tool_bar_right</item>
+    </style>
+
 </resources>
