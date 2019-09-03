@@ -7,7 +7,6 @@ import com.konsung.cla.demo2.BuildConfig
 
 class BasicConfigImpl private constructor() : BasicConfig {
 
-
     companion object {
         val instance by lazy { BasicConfigImpl() }
     }

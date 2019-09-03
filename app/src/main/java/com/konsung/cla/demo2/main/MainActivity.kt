@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.konsung.basic.bean.ThreeBean
@@ -15,6 +16,7 @@ import com.konsung.basic.ui.FragmentRefresh
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.ToastUtils
+import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
 import com.konsung.cla.demo2.main.fragment.NavigationFragment
@@ -77,6 +79,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         nvLeft.setNavigationItemSelectedListener { item ->
             val title = item.title.toString()
             ToastUtils.instance.toast(context, TAG, title)
+            //关闭的动画时间太短，影响体验，先不关闭了
 //            drawerLayout.closeDrawer(nvLeft)
             true
         }
@@ -91,6 +94,9 @@ open class MainActivity : BasicAty(), View.OnClickListener {
      */
     private fun initNavigationView() {
         val headView = nvLeft.inflateHeaderView(R.layout.view_aty_main_left_navigation)
+        val rlHead = headView.findViewById<RelativeLayout>(R.id.rlHead)
+        rlHead.setOnClickListener(this)
+
         val tvInfo = headView.findViewById<TextView>(R.id.tvInfo)
         tvInfo.text = getString(R.string.not_log_in)
     }
@@ -174,9 +180,9 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
         when (v?.id) {
 
-            R.id.rivHead -> {
-                drawerLayout.openDrawer(nvLeft)
-            }
+            R.id.rivHead -> drawerLayout.openDrawer(nvLeft)
+
+            R.id.rlHead -> App.productUtils.startLoginAty(this)
 
             R.id.tvIconSearch -> {
                 Snackbar.make(coordinator, "点击搜索", Snackbar.LENGTH_INDEFINITE)
@@ -185,7 +191,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
                         }
                         .show()
             }
-
         }
     }
 }

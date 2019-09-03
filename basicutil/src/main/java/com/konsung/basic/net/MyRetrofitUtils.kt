@@ -96,8 +96,8 @@ class MyRetrofitUtils private constructor() {
         call.enqueue(CallInterceptor(context, result))
     }
 
-    fun register(context: Context,userName:String,password1:String,password2:String,result:RequestResult<UserDto>){
-        val call = getRetrofit().register(userName,password1,password2)
+    fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>) {
+        val call = getRetrofit().register(userName, password1, password2)
         call.enqueue(CallInterceptor(context, result))
     }
 }

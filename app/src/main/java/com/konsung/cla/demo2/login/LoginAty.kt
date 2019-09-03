@@ -7,6 +7,9 @@ import android.animation.ObjectAnimator
 import android.graphics.Color
 import android.view.View
 import android.view.animation.DecelerateInterpolator
+import androidx.annotation.StringRes
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
@@ -18,11 +21,13 @@ import com.konsung.cla.demo2.R
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_login.*
 
-
+/**
+ * 登录
+ */
 class LoginAty : BasicAty(), View.OnClickListener {
 
     companion object {
-        val TAG = LoginAty::class.java.simpleName
+        val TAG: String = LoginAty::class.java.simpleName
     }
 
     private val heightView by lazy { HeightView(tilPassWord2) }
@@ -71,6 +76,21 @@ class LoginAty : BasicAty(), View.OnClickListener {
      * 登录
      */
     private fun login() {
+        hideSoftKeyboard(this)
+        resetEditStatus()
+
+        val userName = etUser.text.toString()
+        if (userName.isEmpty()) {
+            showError(tilUser, etUser, R.string.account_can_not_be_empty)
+            return
+        }
+
+        val pass1 = etPassWord.text.toString()
+        if (pass1.isEmpty()) {
+            showError(tilPassWord, etPassWord, R.string.pass_word_can_not_be_empty)
+            return
+        }
+
 
     }
 
@@ -80,6 +100,12 @@ class LoginAty : BasicAty(), View.OnClickListener {
         tilPassWord2.error = ""
     }
 
+    private fun showError(tvInput: TextInputLayout, etInput: TextInputEditText, @StringRes errorRes: Int) {
+        tvInput.error = getString(errorRes)
+        etInput.requestFocus()
+        showKeyboard(etInput)
+    }
+
     /**
      * 注册
      */
@@ -87,38 +113,29 @@ class LoginAty : BasicAty(), View.OnClickListener {
         resetEditStatus()
 
         val userName = etUser.text.toString()
-
         if (userName.isEmpty()) {
-            tilUser.error = getString(R.string.account_can_not_be_empty)
-            etUser.requestFocus()
-            showKeyboard(etUser)
+            showError(tilUser, etUser, R.string.account_can_not_be_empty)
             return
         }
 
         val pass1 = etPassWord.text.toString()
-
         if (pass1.isEmpty()) {
-            tilPassWord.error = getString(R.string.pass_word_can_not_be_empty)
-            etPassWord.requestFocus()
-            showKeyboard(etPassWord)
+            showError(tilPassWord, etPassWord, R.string.pass_word_can_not_be_empty)
             return
         }
 
         val pass2 = etPassWord2.text.toString()
         if (pass2.isEmpty()) {
-            tilPassWord2.error = getString(R.string.pass_word2_can_not_be_empty)
-            etPassWord2.requestFocus()
-            showKeyboard(etPassWord2)
+            showError(tilPassWord2, etPassWord2, R.string.pass_word2_can_not_be_empty)
             return
         }
 
         if (pass1 != pass2) {
-            tilPassWord2.error = getString(R.string.inconsistent_password_input)
+            showError(tilPassWord2, etPassWord2, R.string.inconsistent_password_input)
             return
         }
 
         registerPresenter.register(this, userName, pass1, pass2)
-
     }
 
     /**

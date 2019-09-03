@@ -107,7 +107,6 @@ fun Fragment?.toast(tag: String, @StringRes textRes: Int) {
     }
 }
 
-
 fun AppCompatActivity?.toast(tag: String, text: String) {
     this?.let {
         ToastUtils.instance.toast(it, tag, text)

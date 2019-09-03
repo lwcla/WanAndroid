@@ -45,7 +45,7 @@ private constructor(context: Context) {
          */
         fun getInstance(context: Context): GreenDaoManager? {
             if (instance == null) {
-                synchronized(GreenDaoManager::class.java) {
+                synchronized(lock = GreenDaoManager::class.java) {
                     //保证异步处理安全操作
                     if (instance == null) {
                         instance = GreenDaoManager(context)

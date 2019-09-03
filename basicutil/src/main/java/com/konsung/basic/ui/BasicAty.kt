@@ -12,9 +12,6 @@ import androidx.core.content.ContextCompat
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.StatusBarUtil
-import androidx.core.content.ContextCompat.getSystemService
-
-
 
 
 abstract class BasicAty : AppCompatActivity() {

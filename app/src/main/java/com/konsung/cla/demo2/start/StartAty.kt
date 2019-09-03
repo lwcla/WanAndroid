@@ -8,7 +8,7 @@ class StartAty : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        App.productUtils.startLoginAty(this)
+        App.productUtils.startMainAty(this)
         finish()
     }
 }

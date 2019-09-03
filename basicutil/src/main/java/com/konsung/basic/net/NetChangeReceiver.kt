@@ -5,6 +5,9 @@ import android.content.Context
 import android.content.Intent
 import com.konsung.basic.util.AppUtils
 
+/**
+ * 网络状态
+ */
 class NetChangeReceiver : BroadcastReceiver() {
 
     companion object {
