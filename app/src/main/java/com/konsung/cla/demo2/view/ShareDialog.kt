@@ -94,7 +94,7 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
                     AppUtils.instance.shareToSystem(context, link)
                 }
 
-                R.string.icon_collect -> toast(TAG, "收藏")
+                R.string.icon_collect -> shareDialogListener?.collect()
 
                 R.string.icon_link -> {
                     AppUtils.instance.copyToClip(context, link)
@@ -102,6 +102,10 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
 
                 R.string.icon_browser -> {
                     AppUtils.instance.openByBrowser(context, link)
+                }
+
+                else -> {
+
                 }
             }
         }

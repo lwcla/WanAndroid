@@ -12,8 +12,6 @@ import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
-import com.youth.banner.listener.OnBannerListener
-
 
 /**
  * 首页

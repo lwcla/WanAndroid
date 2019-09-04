@@ -11,6 +11,7 @@ import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.ToastUtils
+import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.config.Config.Companion.WEB_ARTICLE_ID
 import com.konsung.cla.demo2.config.Config.Companion.WEB_TITLE
@@ -20,14 +21,14 @@ import com.konsung.cla.demo2.view.ShareDialogListener
 import kotlinx.android.synthetic.main.activity_web.*
 
 
-class WebViewAty : BasicAty(), View.OnClickListener ,ShareDialogListener{
-
+class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
 
     companion object {
         val TAG: String = WebViewAty::class.java.simpleName
     }
 
     private lateinit var mAgentWeb: AgentWeb
+    private val collectPresenter by lazy { initCollectPresenter() }
     private lateinit var link: String
     private var artId: Int = -1
 
@@ -96,11 +97,32 @@ class WebViewAty : BasicAty(), View.OnClickListener ,ShareDialogListener{
         super.onDestroy()
     }
 
-    override fun collect() {
+    private fun initCollectPresenter(): CollectPresenter {
 
+        val view = object : CollectView() {
+
+            override fun success() {
+                toast(TAG, R.string.collect_success)
+            }
+        }
+
+        return CollectPresenter(view)
     }
 
-    override fun initPresenter(): List<BasicPresenter>? = null
+    /**
+     * 收藏
+     */
+    override fun collect() {
+
+        if (artId < 0) {
+            toast(TAG, R.string.data_error)
+            return
+        }
+
+        collectPresenter.collect(this, artId)
+    }
+
+    override fun initPresenter(): List<BasicPresenter>? = listOf(collectPresenter)
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
 

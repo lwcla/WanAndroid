@@ -22,6 +22,9 @@ interface InfoApi {
     fun register(@Query("username") username: String, @Query("password") password: String, @Query("repassword") repassword: String): Call<BasicData<UserDto>>
 
     @POST("user/login")
-    fun login(@Query("username") username: String, @Query("password") password: String):Call<BasicData<UserDto>>
+    fun login(@Query("username") username: String, @Query("password") password: String): Call<BasicData<UserDto>>
+
+    @POST("lg/collect/{id}/json")
+    fun collect(@Path("id") id: Int): Call<BasicData<String>>
 
 }

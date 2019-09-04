@@ -30,4 +30,9 @@ class RequestUtils private constructor() {
     fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>) {
         request.login(context, userName, passWord, result)
     }
+
+    fun collect(context: Context, id: Int, result: RequestResult<String>) {
+        request.collect(context, id, result)
+    }
+
 }

@@ -115,12 +115,19 @@ class MyRetrofitUtils private constructor() {
                 .login(userName, passWord)
                 .enqueue(CallInterceptor(context, result))
     }
+
+    fun collect(context: Context, id: Int, result: RequestResult<String>) {
+        getRetrofit(context)
+                .collect(id)
+                .enqueue(CallInterceptor(context, result, true))
+    }
 }
 
 /**
  * 对请求的数据进一步处理
+ * @param dataWillNull 返回的data是否为null
  */
-class CallInterceptor<T>(private val context: Context, private val result: RequestResult<T>) : Callback<BasicData<T>> {
+class CallInterceptor<T>(private val context: Context, private val result: RequestResult<T>, private val dataWillNull: Boolean = false) : Callback<BasicData<T>> {
 
     companion object {
         val TAG: String = CallInterceptor::class.java.simpleName
@@ -187,14 +194,21 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
         }
 
         val resultData = data.data
-        if (resultData == null) {
+        if (!dataWillNull && resultData == null) {
             failed(R.string.data_request_error)
             return
         }
 
         if (!result.stop) {
             result.complete()
-            result.success(resultData)
+            result.success()
+
+            if (!dataWillNull) {
+                try {
+                    result.success(resultData!!)
+                } catch (e: Exception) {
+                }
+            }
         }
     }
 

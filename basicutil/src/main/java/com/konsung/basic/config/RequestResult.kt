@@ -15,6 +15,10 @@ abstract class RequestResult<T>(private val view: BasicView<T>?) {
         view?.success(t)
     }
 
+    open fun success() {
+        view?.success()
+    }
+
     open fun failed(message: String) {
         view?.failed(message)
     }

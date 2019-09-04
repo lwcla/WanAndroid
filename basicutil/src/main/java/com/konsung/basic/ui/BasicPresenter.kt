@@ -12,6 +12,10 @@ abstract class BasicView<T> {
 
     }
 
+    open fun success() {
+
+    }
+
     open fun failed(string: String) {
 
     }
