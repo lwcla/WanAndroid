@@ -26,4 +26,8 @@ class RequestUtils private constructor() {
     fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>) {
         request.register(context, userName, password1, password2, result)
     }
+
+    fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>) {
+        request.login(context, userName, passWord, result)
+    }
 }

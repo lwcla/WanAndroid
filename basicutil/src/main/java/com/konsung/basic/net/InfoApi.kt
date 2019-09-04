@@ -22,6 +22,6 @@ interface InfoApi {
     fun register(@Query("username") username: String, @Query("password") password: String, @Query("repassword") repassword: String): Call<BasicData<UserDto>>
 
     @POST("user/login")
-    fun login(@Query("username") username: String, @Query("password") password: String)
+    fun login(@Query("username") username: String, @Query("password") password: String):Call<BasicData<UserDto>>
 
 }

@@ -3,19 +3,21 @@ package com.konsung.cla.demo2.main
 import android.content.Context
 import android.content.IntentFilter
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.view.GravityCompat
 import com.google.android.material.snackbar.Snackbar
 import com.konsung.basic.bean.ThreeBean
+import com.konsung.basic.config.Config
 import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.FragmentRefresh
-import com.konsung.basic.util.Debug
-import com.konsung.basic.util.StringUtils
-import com.konsung.basic.util.ToastUtils
+import com.konsung.basic.util.*
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
@@ -34,12 +36,14 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 
 open class MainActivity : BasicAty(), View.OnClickListener {
 
-    private val netChangeReceiver = NetChangeReceiver()
-
-
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
     }
+
+    private val netChangeReceiver = NetChangeReceiver()
+
+    private var tvHeadName: TextView? = null
+    private var lastBackTime = 0L
 
     override fun getLayoutId(): Int = R.layout.activity_main
 
@@ -56,6 +60,11 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         registerReceiver(netChangeReceiver, filter)
     }
 
+    override fun onResume() {
+        super.onResume()
+        initUserName()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(netChangeReceiver)
@@ -65,6 +74,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         Debug.info(TAG, "MainActivity initView")
         tvTitle.text = getString(R.string.not_log_in)
         StringUtils.instance.loadTextIcon(context, tvIconSearch)
+        initToolBar()
         initNavigationView()
         initViewPager()
     }
@@ -89,6 +99,50 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         Debug.info(TAG, "MainActivity initData")
     }
 
+    private fun initToolBar() {
+        val drawerToggle = object : ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name) {
+            override fun onDrawerOpened(drawerView: View) {//完全打开时触发
+                super.onDrawerOpened(drawerView)
+            }
+
+            override fun onDrawerClosed(drawerView: View) {//完全关闭时触发
+                super.onDrawerClosed(drawerView)
+            }
+
+            /**
+             * 当抽屉被滑动的时候调用此方法
+             * slideOffset表示 滑动的幅度（0-1）
+             */
+            override fun onDrawerSlide(drawerView: View, slideOffset: Float) {
+                super.onDrawerSlide(drawerView, slideOffset)
+            }
+
+            /**
+             * 当抽屉滑动状态改变的时候被调用
+             * 状态值是STATE_IDLE（闲置--0）, STATE_DRAGGING（拖拽的--1）, STATE_SETTLING（固定--2）中之一。
+             * 具体状态可以慢慢调试
+             */
+            override fun onDrawerStateChanged(newState: Int) {
+                super.onDrawerStateChanged(newState)
+            }
+        }
+
+        //通过下面这句实现toolbar和Drawer的联动：如果没有这行代码，箭头是不会随着侧滑菜单的开关而变换的（或者没有箭头），
+        // 可以尝试一下，不影响正常侧滑
+        drawerToggle.syncState()
+        drawerLayout.addDrawerListener(drawerToggle)
+
+        setSupportActionBar(toolbar)
+        //toolbar设置的图标控制drawerlayout的侧滑
+        toolbar.setNavigationOnClickListener {
+            if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                drawerLayout.closeDrawer(GravityCompat.START)
+            } else {
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+    }
+
     /**
      * 初始化左边抽屉界面
      */
@@ -97,8 +151,19 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         val rlHead = headView.findViewById<RelativeLayout>(R.id.rlHead)
         rlHead.setOnClickListener(this)
 
-        val tvInfo = headView.findViewById<TextView>(R.id.tvInfo)
-        tvInfo.text = getString(R.string.not_log_in)
+        tvHeadName = headView.findViewById<TextView>(R.id.tvInfo)
+    }
+
+    private fun initUserName() {
+        val userName = SpUtils.getString(context, Config.USER_NAME, "")
+        if (userName.isNullOrEmpty()) {
+            tvHeadName?.text = getString(R.string.not_log_in)
+            tvTitle.text = getString(R.string.not_log_in)
+
+        } else {
+            tvHeadName?.text = userName
+            tvTitle.text = userName
+        }
     }
 
     /**
@@ -192,5 +257,32 @@ open class MainActivity : BasicAty(), View.OnClickListener {
                         .show()
             }
         }
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+
+        if (event.action == KeyEvent.ACTION_DOWN) {
+
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                if (lastBackTime == 0L) {
+                    lastBackTime = System.currentTimeMillis()
+                    toast(TAG, R.string.press_again_to_exit_the_application)
+                    return true
+                }
+
+                val time = System.currentTimeMillis()
+                return if (time - lastBackTime < 1000) {
+                    finish()
+                    true
+                } else {
+                    lastBackTime = time
+                    toast(TAG, R.string.press_again_to_exit_the_application)
+                    true
+                }
+            }
+        }
+
+        return super.onKeyDown(keyCode, event)
     }
 }

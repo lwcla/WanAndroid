@@ -11,12 +11,16 @@ import androidx.annotation.StringRes
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.konsung.basic.bean.UserDto
+import com.konsung.basic.config.Config
+import com.konsung.basic.dialog.BasicDialog
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.HeightView
 import com.konsung.basic.util.FileUtils
+import com.konsung.basic.util.SpUtils
 import com.konsung.basic.util.Utils
 import com.konsung.basic.util.toast
+import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_login.*
@@ -32,6 +36,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
 
     private val heightView by lazy { HeightView(tilPassWord2) }
     private val registerPresenter by lazy { initRegisterPresenter() }
+    private val loginPresenter by lazy { initLoginPresenter() }
 
     override fun getLayoutId(): Int = R.layout.activity_login
     private var animatorSet: AnimatorSet? = null
@@ -55,13 +60,14 @@ class LoginAty : BasicAty(), View.OnClickListener {
     }
 
     override fun initPresenter(): List<BasicPresenter>? {
-        return listOf(registerPresenter)
+        return listOf(registerPresenter, loginPresenter)
     }
 
     /**
      * 初始化背景
      */
     private fun initBg() {
+        //毛玻璃背景
         val bitmap = FileUtils.getAssetsBitmap(this, "timg.jpg")
         Blurry.with(context)
                 .radius(10)//模糊半径
@@ -76,7 +82,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
      * 登录
      */
     private fun login() {
-        hideSoftKeyboard(this)
+//        hideSoftKeyboard(this)
         resetEditStatus()
 
         val userName = etUser.text.toString()
@@ -85,13 +91,14 @@ class LoginAty : BasicAty(), View.OnClickListener {
             return
         }
 
-        val pass1 = etPassWord.text.toString()
-        if (pass1.isEmpty()) {
+        val pass = etPassWord.text.toString()
+        if (pass.isEmpty()) {
             showError(tilPassWord, etPassWord, R.string.pass_word_can_not_be_empty)
             return
         }
 
-
+        showLoadingDialog(R.string.login_please_wait, false)
+        loginPresenter.login(context, userName, pass)
     }
 
     private fun resetEditStatus() {
@@ -242,12 +249,45 @@ class LoginAty : BasicAty(), View.OnClickListener {
         val view = object : RegisterView() {
 
             override fun success(t: UserDto) {
-                toast(TAG, "注册成功")
+                toast(TAG, R.string.registered_success)
                 showRegister(true)
             }
         }
 
         return RegisterPresenter(view)
+    }
+
+    private fun initLoginPresenter(): LoginPresenter {
+
+        val view = object : LoginView() {
+
+            override fun success(t: UserDto) {
+                toast(TAG, R.string.login_success)
+                SpUtils.putString(context, Config.USER_NAME, t.username)
+                App.productUtils.startMainAty(context)
+                finish()
+            }
+
+            override fun failed(string: String) {
+                if (string.contains("账号")) {
+                    tilUser.error = string
+                } else if (string.contains("密码")) {
+                    tilPassWord.error = string
+                }
+            }
+
+            override fun complete() {
+                dismissLoadingDialog()
+            }
+
+        }
+
+        return LoginPresenter(view)
+    }
+
+    override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
+        //弹窗被手动关闭，取消登录
+        loginPresenter.stop()
     }
 
     override fun onClick(v: View) {
@@ -269,4 +309,5 @@ class LoginAty : BasicAty(), View.OnClickListener {
             }
         }
     }
+
 }

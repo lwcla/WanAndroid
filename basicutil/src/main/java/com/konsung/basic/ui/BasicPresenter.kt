@@ -2,6 +2,8 @@ package com.konsung.basic.ui
 
 abstract class BasicPresenter {
     abstract fun destroy()
+
+    public open fun stop() {}
 }
 
 abstract class BasicView<T> {
@@ -15,6 +17,10 @@ abstract class BasicView<T> {
     }
 
     open fun noNetwork() {
+
+    }
+
+    open fun complete(){
 
     }
 }

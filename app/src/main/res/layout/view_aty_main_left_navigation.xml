@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/rlHead"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_170"
+        android:layout_height="@dimen/dp_200"
         android:background="@color/red"
         >
 

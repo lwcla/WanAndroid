@@ -38,7 +38,12 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".main.MainActivity"/>
+
+        <activity
+            android:name=".main.MainActivity"
+            android:launchMode="singleTask"
+            />
+
         <activity
             android:name=".web.WebViewAty"
             android:configChanges="orientation|screenSize"

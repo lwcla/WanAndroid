@@ -7,14 +7,18 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.konsung.basic.dialog.BasicDialog
+import com.konsung.basic.dialog.DismissListener
+import com.konsung.basic.dialog.LoadingDialog
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.StatusBarUtil
 
 
-abstract class BasicAty : AppCompatActivity() {
+abstract class BasicAty : AppCompatActivity(), DismissListener {
 
     companion object {
         val TAG: String = BasicAty::class.java.simpleName
@@ -22,6 +26,7 @@ abstract class BasicAty : AppCompatActivity() {
 
     private var presenters: List<BasicPresenter>? = null
     protected lateinit var context: Context
+    private var loadingDialog: LoadingDialog? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,13 +85,20 @@ abstract class BasicAty : AppCompatActivity() {
 //        }
     }
 
+    fun dismissLoadingDialog() {
+        if (loadingDialog != null && loadingDialog?.isVisible == true) {
+            loadingDialog?.dismissAllowingStateLoss()
+        }
+
+        loadingDialog = null
+    }
+
     /**
      * 设置状态栏颜色
      */
     protected fun settStatusBarColor(@ColorRes colorRes: Int) {
         StatusBarUtil.setStatusBarColor(this, ContextCompat.getColor(this, colorRes))
     }
-
 
     /**
      * 隐藏软键盘(只适用于Activity，不适用于Fragment)
@@ -105,6 +117,34 @@ abstract class BasicAty : AppCompatActivity() {
             view.requestFocus()
             imm.showSoftInput(view, 0)
         }
+    }
+
+    fun showLoadingDialog(@StringRes textRes: Int = R.string.loading_please_wait, cancel: Boolean = true) {
+
+        val tag = LoadingDialog::class.java.simpleName
+
+        try {
+            loadingDialog = supportFragmentManager.findFragmentByTag(tag) as LoadingDialog?
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        loadingDialog?.let {
+            supportFragmentManager.beginTransaction().remove(it).commitAllowingStateLoss()
+        }
+
+        if (loadingDialog == null) {
+            loadingDialog = LoadingDialog()
+            loadingDialog?.dismissListener = this
+        }
+
+        if (loadingDialog?.isAdded != true) {
+            loadingDialog?.show(supportFragmentManager, tag, textRes, cancel)
+        }
+    }
+
+    override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
+
     }
 
     @LayoutRes

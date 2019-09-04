@@ -9,6 +9,8 @@ abstract class RequestResult<T>(private val view: BasicView<T>?) {
      */
     var toast = true
 
+    var stop = false
+
     open fun success(t: T) {
         view?.success(t)
     }
@@ -19,5 +21,9 @@ abstract class RequestResult<T>(private val view: BasicView<T>?) {
 
     open fun noNetwork() {
         view?.noNetwork()
+    }
+
+    open fun complete(){
+        view?.complete()
     }
 }

@@ -5,6 +5,9 @@ import androidx.annotation.StringRes
 import com.konsung.basic.bean.*
 import com.konsung.basic.config.NoNetworkException
 import com.konsung.basic.config.RequestResult
+import com.konsung.basic.net.cookie.PersistentCookieJar
+import com.konsung.basic.net.cookie.cache.SetCookieCache
+import com.konsung.basic.net.cookie.persistence.SharedPrefsCookiePersistor
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
@@ -12,17 +15,18 @@ import com.konsung.basic.util.ToastUtils
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
-import retrofit2.Retrofit
+import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import java.net.SocketException
+import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 import java.util.concurrent.TimeoutException
+import javax.net.ssl.SSLHandshakeException
 
 
 class MyRetrofitUtils private constructor() {
 
-    private var retrofit: Retrofit? = null
+    private var retrofit: Retrofit
 
     companion object {
         const val BASE_URL = "https://www.wanandroid.com/"
@@ -32,46 +36,48 @@ class MyRetrofitUtils private constructor() {
 
     init {
 
-    }
+        val context = AppUtils.getContext()
 
-    private fun getRetrofit(): InfoApi {
-        if (retrofit == null) {
+        Debug.info(TAG, "MyRetrofitUtils context=$context")
 
-            val httpLoggingInterceptor = HttpLoggingInterceptor()
-            if (AppUtils.isDebug()) {
-                httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
-            }
-
-            val net = object : Interceptor {
-                override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
-
-                    if (NetChangeReceiver.mType == NetworkType.NETWORK_NO) {
-                        throw NoNetworkException()
-                    }
-
-                    return chain.proceed(chain.request())
-                }
-            }
-
-
-            val okHttpClient = OkHttpClient.Builder()
-                    .addInterceptor(httpLoggingInterceptor)
-                    .addInterceptor(net)
-                    .build()
-
-            retrofit = Retrofit.Builder()
-                    .client(okHttpClient)
-                    .baseUrl(BASE_URL)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build()
+        val httpLoggingInterceptor = HttpLoggingInterceptor()
+        if (AppUtils.isDebug()) {
+            httpLoggingInterceptor.level = HttpLoggingInterceptor.Level.BODY
         }
 
-        return retrofit!!.create(InfoApi::class.java)
+        val net = object : Interceptor {
+            override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
+
+                if (NetChangeReceiver.mType == NetworkType.NETWORK_NO) {
+                    throw NoNetworkException()
+                }
+
+                return chain.proceed(chain.request())
+            }
+        }
+
+        val cookieJar = PersistentCookieJar(context, SetCookieCache(), SharedPrefsCookiePersistor(context))
+
+        val okHttpClient = OkHttpClient.Builder()
+                .addInterceptor(httpLoggingInterceptor)
+                .addInterceptor(net)
+                .cookieJar(cookieJar)
+                .build()
+
+        retrofit = Retrofit.Builder()
+                .client(okHttpClient)
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
     }
 
-    fun getWeChatOfficial() {
+    private fun getRetrofit(context: Context): InfoApi {
+        return retrofit.create(InfoApi::class.java)
+    }
 
-        val call = getRetrofit().getWeChatOfficial()
+    fun getWeChatOfficial(context: Context) {
+
+        val call = getRetrofit(context).getWeChatOfficial()
 
         call.enqueue(object : Callback<WeChatOfficial> {
 
@@ -87,18 +93,27 @@ class MyRetrofitUtils private constructor() {
     }
 
     fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
-        val call = getRetrofit().loadBanner()
-        call.enqueue(CallInterceptor(context, result))
+        getRetrofit(context)
+                .loadBanner()
+                .enqueue(CallInterceptor(context, result))
     }
 
     fun loadHome(context: Context, page: Int, result: RequestResult<HomeData>) {
-        val call = getRetrofit().loadHomeData(page)
-        call.enqueue(CallInterceptor(context, result))
+        getRetrofit(context)
+                .loadHomeData(page)
+                .enqueue(CallInterceptor(context, result))
     }
 
     fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>) {
-        val call = getRetrofit().register(userName, password1, password2)
-        call.enqueue(CallInterceptor(context, result))
+        getRetrofit(context)
+                .register(userName, password1, password2)
+                .enqueue(CallInterceptor(context, result))
+    }
+
+    fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>) {
+        getRetrofit(context)
+                .login(userName, passWord)
+                .enqueue(CallInterceptor(context, result))
     }
 }
 
@@ -117,12 +132,36 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
 
         if (t is NoNetworkException) {
             failed(R.string.network_is_not_connected)
-            result.noNetwork()
+            if (!result.stop) {
+                result.complete()
+                result.noNetwork()
+            }
             return
         }
 
-        if (t is TimeoutException) {
+        if (t is TimeoutException || t is SocketTimeoutException || t is SocketException) {
             failed(R.string.network_is_timeout)
+            return
+        }
+
+        if (t is SSLHandshakeException) {
+            failed(R.string.abnormal_security_certificate)
+            return
+        }
+
+        if (t is UnknownHostException) {
+            failed(R.string.domain_resolution_failed)
+            return
+        }
+
+        if (t is HttpException) {
+            when (t.code()) {
+                504 -> failed(R.string.network_exception_please_check_your_network_status)
+                404 -> failed(R.string.invalid_network_address)
+                401 -> failed(R.string.authentication_failed)
+                else -> failed(R.string.data_request_failed)
+            }
+
             return
         }
 
@@ -153,7 +192,10 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
             return
         }
 
-        result.success(resultData)
+        if (!result.stop) {
+            result.complete()
+            result.success(resultData)
+        }
     }
 
     private fun failed(@StringRes textRes: Int) {
@@ -167,10 +209,15 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
 
     private fun failed(text: String) {
 
+        if (result.stop) {
+            return
+        }
+
         if (result.toast) {
             ToastUtils.instance.toast(context, TAG, text)
         }
 
+        result.complete()
         result.failed(text)
     }
 }

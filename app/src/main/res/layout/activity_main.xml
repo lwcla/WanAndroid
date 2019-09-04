@@ -55,6 +55,7 @@
                         android:layout_toEndOf="@id/rivHead"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/sp_15"
+                        android:visibility="gone"
                         tools:text="测试"
                         />
 

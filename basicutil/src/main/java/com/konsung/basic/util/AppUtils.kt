@@ -25,8 +25,8 @@ class AppUtils {
             return basicConfig?.debug() ?: true
         }
 
-        fun getContext(): Context? {
-            return basicConfig?.getContext()
+        fun getContext(): Context {
+            return basicConfig?.getContext() ?: throw NullPointerException()
         }
     }
 

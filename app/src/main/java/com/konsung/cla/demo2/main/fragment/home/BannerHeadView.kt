@@ -9,8 +9,9 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import com.konsung.basic.bean.BannerData
-import com.konsung.basic.util.Debug
+import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
+import com.youth.banner.listener.OnBannerListener
 
 
 class BannerHeadView(context: Context) : RelativeLayout(context) {
@@ -23,8 +24,9 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
     var loadSuccess = false
     private val banner: MyBanner
     private val imvPlace: ImageView
-    private var pathList: MutableList<String>? = null
-    private var titleList: MutableList<String>? = null
+    private var pathList: MutableList<String> = mutableListOf()
+    private var titleList: MutableList<String> = mutableListOf()
+    private var dataList: MutableList<BannerData> = mutableListOf()
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -36,6 +38,18 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
         this.background = ContextCompat.getDrawable(context, android.R.color.white)
 
         banner = view.findViewById(R.id.banner)
+        banner.setOnBannerListener(object : OnBannerListener {
+            override fun OnBannerClick(position: Int) {
+                if (position >= dataList.size) {
+                    return
+                }
+
+                val data = dataList[position]
+
+                App.productUtils.startWebAty(context, data.title, data.url, data.id)
+            }
+        })
+
         imvPlace = view.findViewById(R.id.imvPlace)
         imvPlace.layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
     }
@@ -55,16 +69,22 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
      */
     fun setData(dataList: List<BannerData>, playNow: Boolean) {
 
-        pathList = mutableListOf()
-        titleList = mutableListOf()
+        this.dataList.addAll(dataList)
+
         for (d in dataList) {
+
+            /* if (d.isVisible !=View.VISIBLE){
+                 continue
+             }*/
+
             d.imagePath?.let {
-                pathList?.add(it)
-                titleList?.add(d.title ?: "")
+
+                pathList.add(it)
+                titleList.add(d.title ?: "")
             }
         }
 
-        if (pathList?.size == 0) {
+        if (pathList.size == 0) {
             return
         }
 
@@ -72,7 +92,7 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
 
         mHandler.post {
             if (playNow) {
-                banner.init(pathList!!, titleList!!)
+                banner.init(pathList, titleList)
             }
 
             banner.visibility = View.VISIBLE
@@ -82,8 +102,8 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
 
     fun startPlay() {
 
-        if (!banner.hasInit && pathList != null) {
-            banner.init(pathList!!, titleList!!)
+        if (!banner.hasInit) {
+            banner.init(pathList, titleList)
             return
         }
 

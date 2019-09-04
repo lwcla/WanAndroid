@@ -17,6 +17,8 @@
     <color name="light_grey1">#F4F4F4</color>
     <color name="light_grey2">#F0F0F0</color>
     <color name="background_color">#50000000</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
     <color name="tool_bar_center_pressed">#6fb5fc</color>
     <color name="tool_bar_center" tools:ignore="MissingDefaultResource">#54a7fb</color>
     <color name="tool_bar_right">#3597fa</color>
