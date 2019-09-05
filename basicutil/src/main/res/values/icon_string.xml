@@ -17,8 +17,10 @@
     <string name="icon_more_1">&#xe634;</string>
     <!--更多-->
     <string name="icon_more_2">&#xe641;</string>
+    <!--未收藏-->
+    <string name="icon_collect_off">&#xe606;</string>
     <!--收藏-->
-    <string name="icon_collect">&#xe606;</string>
+    <string name="icon_collect">&#xe61f;</string>
     <!--链接-->
     <string name="icon_link">&#xe63c;</string>
     <!--浏览器-->

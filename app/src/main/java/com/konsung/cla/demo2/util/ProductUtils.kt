@@ -32,7 +32,7 @@ open class ProductUtils {
         intent.putExtra(Config.WEB_TITLE, title)
         intent.putExtra(Config.WEB_URL, link)
         intent.putExtra(Config.WEB_ARTICLE_ID, artId)
-        intent.putExtra(Config.IS_COLLECT, artId)
+        intent.putExtra(Config.IS_COLLECT, collect)
         startWebAty(context, intent)
     }
 

@@ -73,14 +73,13 @@ class HomeFragment : BasicFragment() {
 
                         //先把状态设置为收藏成功，如果收藏失败的话，再改回来
                         val data = homeAdapter?.findDataByPosition(position)
-                        var collectFlag = true
+                        var collectFlag: Boolean
                         data?.let {
                             collectFlag = it.collect
                             it.collect = !collectFlag
                             homeAdapter?.notifyItemChanged(position)
+                            collectPresenter.collect(context, position, id, collectFlag)
                         }
-
-                        collectPresenter.collect(context, position, id, collectFlag)
                     }
 
                     //点赞

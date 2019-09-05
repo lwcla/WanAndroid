@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.konsung.basic.bean.ThreeBean
-import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
@@ -73,19 +72,21 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
     private fun initAdapter2(view: View) {
         val rvShare2 = view.findViewById<RecyclerView>(R.id.rvShare2)
 
-        val collectColor: Int = if (collectFlag) {
-            R.color.qq_space_color
+        val collectColor: Int
+        val collectText: Int
+        val collectIcon: Int
+
+        if (collectFlag) {
+            collectColor = R.color.qq_space_color
+            collectText = R.string.cancel_collect
+            collectIcon = R.string.icon_collect
         } else {
-            R.color.normal_color1
+            collectColor = R.color.normal_color1
+            collectText = R.string.collect
+            collectIcon = R.string.icon_collect_off
         }
 
-        val collectText: Int = if (collectFlag) {
-            R.string.cancel_collect
-        } else {
-            R.string.collect
-        }
-
-        val collect = ThreeBean(R.string.icon_collect, collectText, collectColor)
+        val collect = ThreeBean(collectIcon, collectText, collectColor)
         val link = ThreeBean(R.string.icon_link, R.string.copy_link, R.color.normal_color1)
         val browser = ThreeBean(R.string.icon_browser, R.string.open_in_browser, R.color.normal_color1)
         val list2 = listOf(collect, link, browser)
@@ -110,7 +111,7 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
                 }
 
                 //收藏
-                R.string.icon_collect -> {
+                R.string.icon_collect, R.string.icon_collect_off -> {
                     collectFlag = !collectFlag
                     shareDialogListener?.collect()
                 }
@@ -168,14 +169,13 @@ class ShareAdapter(private val list: List<ThreeBean<Int, Int, Int>>) : RecyclerV
 
         private val tvIcon: TextView = view.findViewById(R.id.tvIcon)
         private val tvName: TextView = view.findViewById(R.id.tvName)
-        private var two: TwoBean<Int, Int>? = null
-
+        private var three: ThreeBean<Int, Int, Int>? = null
 
         init {
             StringUtils.instance.loadTextIcon(context, tvIcon)
 
             view.setOnClickListener { v ->
-                two?.let {
+                three?.let {
                     v.setTag(R.id.recycler_view_adapter_item_click, it.a)
                     listener?.onClick(v)
                 }
@@ -192,6 +192,8 @@ class ShareAdapter(private val list: List<ThreeBean<Int, Int, Int>>) : RecyclerV
         }
 
         fun bind(three: ThreeBean<Int, Int, Int>) {
+            this.three = three
+
             tvIcon.setText(three.a)
             tvName.setText(three.b)
             tvIcon.setTextColor(ContextCompat.getColor(context, three.c))
