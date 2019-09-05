@@ -20,11 +20,19 @@ open class ProductUtils {
         context.startActivity(intent)
     }
 
-    open fun startWebAty(context: Context, title: String?, link: String?, artId: Int) {
+    /**
+     * 启动webActivity
+     * @param context context
+     * @param title 标题
+     * @param link url
+     * @param collect 是否已经收藏
+     */
+    open fun startWebAty(context: Context, title: String?, link: String?, artId: Int, collect: Boolean) {
         val intent = Intent()
         intent.putExtra(Config.WEB_TITLE, title)
         intent.putExtra(Config.WEB_URL, link)
         intent.putExtra(Config.WEB_ARTICLE_ID, artId)
+        intent.putExtra(Config.IS_COLLECT, artId)
         startWebAty(context, intent)
     }
 

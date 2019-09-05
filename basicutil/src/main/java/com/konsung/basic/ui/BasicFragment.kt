@@ -52,8 +52,8 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
             multiplyStatusView?.apply {
                 showLoading()
                 setOnRetryClickListener {
-                    myHandler.sendEmptyMessage(SHOW_LOADING)
-                    refreshData()
+                    showLoadView()
+                    resetHomeData()
                 }
             }
         }
@@ -164,6 +164,22 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
 
     }
 
+    protected fun showContentView() {
+        myHandler.sendEmptyMessage(SHOW_CONTENT)
+    }
+
+    protected fun showErrorView() {
+        myHandler.sendEmptyMessage(SHOW_ERROR)
+    }
+
+    protected fun showLoadView() {
+        myHandler.sendEmptyMessage(SHOW_LOADING)
+    }
+
+    protected fun showNoNetworkView() {
+        myHandler.sendEmptyMessageDelayed(SHOW_NO_NETWORK, 1000)
+    }
+
     @LayoutRes
     abstract fun getLayoutId(): Int
 
@@ -180,7 +196,7 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
      * 数据获取失败之后刷新数据
      * @param
      */
-    abstract fun refreshData()
+    abstract fun resetHomeData()
 
     protected class MyHandler(fragment: BasicFragment) : Handler(Looper.getMainLooper()) {
 
@@ -227,6 +243,11 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
 /**
  * fragment刷新接口
  */
-public interface FragmentRefresh {
+interface FragmentRefresh {
+    /**
+     * 现在是否为可以刷新的状态
+     * @param isRefresh true表示现在recyclerView已经滚动了一段距离了，可以刷新
+     * @param index 表示当前fragment的位置
+     */
     fun refresh(isRefresh: Boolean, index: Int)
 }

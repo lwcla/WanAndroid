@@ -146,7 +146,7 @@ class HomeData {
 
     var curPage: Int = 0
     var offset: Int = 0
-    var isOver: Boolean = false
+    var over: Boolean = false
     var pageCount: Int = 0
     var size: Int = 0
     var total: Int = 0
@@ -186,11 +186,11 @@ class HomeData {
         var author: String? = null
         var chapterId: Int = 0
         var chapterName: String? = null
-        var isCollect: Boolean = false
+        var collect: Boolean = false
         var courseId: Int = 0
         var desc: String? = null
         var envelopePic: String? = null
-        var isFresh: Boolean = false
+        var fresh: Boolean = false
         var id: Int = 0
         var link: String? = null
         var niceDate: String? = null
@@ -222,11 +222,11 @@ class HomeData {
         }
 
         override fun toString(): String {
-            return "DatasBean(apkLink=$apkLink, author=$author, chapterId=$chapterId, chapterName=$chapterName, isCollect=$isCollect, courseId=$courseId, desc=$desc, envelopePic=$envelopePic, isFresh=$isFresh, id=$id, link=$link, niceDate=$niceDate, origin=$origin, prefix=$prefix, projectLink=$projectLink, publishTime=$publishTime, superChapterId=$superChapterId, superChapterName=$superChapterName, title=$title, type=$type, userId=$userId, visible=$visible, zan=$zan, tags=$tags)"
+            return "DatasBean(apkLink=$apkLink, author=$author, chapterId=$chapterId, chapterName=$chapterName, collect=$collect, courseId=$courseId, desc=$desc, envelopePic=$envelopePic, fresh=$fresh, id=$id, link=$link, niceDate=$niceDate, origin=$origin, prefix=$prefix, projectLink=$projectLink, publishTime=$publishTime, superChapterId=$superChapterId, superChapterName=$superChapterName, title=$title, type=$type, userId=$userId, visible=$visible, zan=$zan, tags=$tags)"
         }
     }
 
     override fun toString(): String {
-        return "HomeData(curPage=$curPage, offset=$offset, isOver=$isOver, pageCount=$pageCount, size=$size, total=$total, datas=$datas)"
+        return "HomeData(curPage=$curPage, offset=$offset, over=$over, pageCount=$pageCount, size=$size, total=$total, datas=$datas)"
     }
 }

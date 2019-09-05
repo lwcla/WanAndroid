@@ -3,6 +3,7 @@ package com.konsung.basic.net
 import android.content.Context
 import androidx.annotation.StringRes
 import com.konsung.basic.bean.*
+import com.konsung.basic.config.Config
 import com.konsung.basic.config.NoNetworkException
 import com.konsung.basic.config.RequestResult
 import com.konsung.basic.net.cookie.PersistentCookieJar
@@ -29,7 +30,6 @@ class MyRetrofitUtils private constructor() {
     private var retrofit: Retrofit
 
     companion object {
-        const val BASE_URL = "https://www.wanandroid.com/"
         val TAG: String = MyRetrofitUtils::class.java.simpleName
         val instance by lazy { MyRetrofitUtils() }
     }
@@ -52,7 +52,9 @@ class MyRetrofitUtils private constructor() {
                     throw NoNetworkException()
                 }
 
-                return chain.proceed(chain.request())
+                val request = chain.request()
+//                Debug.info(TAG,"MyRetrofitUtils intercept request=$request")
+                return chain.proceed(request)
             }
         }
 
@@ -66,7 +68,7 @@ class MyRetrofitUtils private constructor() {
 
         retrofit = Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl(BASE_URL)
+                .baseUrl(Config.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
     }
@@ -104,6 +106,12 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
+    fun loadTopArticle(context: Context, result: RequestResult<List<HomeData.DatasBean>>) {
+        getRetrofit(context)
+                .loadTopArticle()
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>) {
         getRetrofit(context)
                 .register(userName, password1, password2)
@@ -119,6 +127,12 @@ class MyRetrofitUtils private constructor() {
     fun collect(context: Context, id: Int, result: RequestResult<String>) {
         getRetrofit(context)
                 .collect(id)
+                .enqueue(CallInterceptor(context, result, true))
+    }
+
+    fun unCollect(context: Context, id: Int, result: RequestResult<String>) {
+        getRetrofit(context)
+                .unCollect(id)
                 .enqueue(CallInterceptor(context, result, true))
     }
 }

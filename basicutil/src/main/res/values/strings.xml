@@ -14,7 +14,11 @@
     <string name="data_error">数据出错，请重试</string>
     <string name="unknown">未知</string>
     <string name="collect">收藏</string>
+    <string name="cancel_collect">取消收藏</string>
     <string name="collect_success">收藏成功</string>
+    <string name="cancel_collect_success">已经取消收藏</string>
+    <string name="cancel_collect_failed">取消收藏失败</string>
+    <string name="collect_failed" tools:ignore="ExtraTranslation">收藏失败</string>
     <string name="copy_link">复制链接</string>
     <string name="open_in_browser">浏览器打开</string>
     <string name="qq">QQ</string>
@@ -41,5 +45,7 @@
     <string name="loading_please_wait">加载中，请稍等</string>
     <string name="login_please_wait">登录中，请稍等</string>
     <string name="press_again_to_exit_the_application">再按一次退出应用</string>
+    <string name="tag_placed_at_the_top">置顶</string>
+    <string name="tag_new">新</string>
 
 </resources>

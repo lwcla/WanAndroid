@@ -25,7 +25,7 @@ class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) 
                     .setText(R.id.tvChapter, "$superChapterName/$chapterName")
                     .setText(R.id.tvTime, DateUtils.fromToday(publishTime))
                     .setText(R.id.tvNiceNum, "$zan  ${context.getString(R.string.agree)}")
-                    .setImageResource(R.id.imvStart, if (isCollect) {
+                    .setImageResource(R.id.imvStart, if (collect) {
                         R.mipmap.start
                     } else {
                         R.mipmap.start_off
@@ -56,6 +56,21 @@ class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) 
                 ImageLoadUtil.imageLoad.into(context, envelopePic!!, imvHead)
             }
 
+            helper.getView<TextView>(R.id.tvTop).visibility = if (type == 1) View.VISIBLE else View.GONE
+            helper.getView<TextView>(R.id.tvFresh).visibility = if (fresh) View.VISIBLE else View.GONE
+
+            var tag = ""
+            if (tags?.size ?: 0 > 0) {
+                tag = tags?.get(0)?.name ?: ""
+            }
+
+            val tvTag = helper.getView<TextView>(R.id.tvTag)
+            if (!tag.isEmpty()) {
+                tvTag.visibility = View.VISIBLE
+                tvTag.text = tags?.get(0)?.name
+            } else {
+                tvTag.visibility = View.GONE
+            }
         }
     }
 
@@ -71,19 +86,24 @@ class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) 
         return data[position]
     }
 
+    /**
+     * 通过position找到图片地址
+     */
     fun findImageByPosition(position: Int): String? {
 
-        val size = data.size
-        if (position >= size) {
-            return null
-        }
-
-        val url = StringUtils.instance.clearNull(data[position].envelopePic)
+        val url = StringUtils.instance.clearNull(findDataByPosition(position)?.envelopePic)
         return if (url.isEmpty()) {
             null
         } else {
             url
         }
+    }
+
+    /**
+     * 通过Position找到id
+     */
+    fun findIdByPosition(position: Int): Int {
+        return findDataByPosition(position)?.chapterId ?: -1
     }
 }
 

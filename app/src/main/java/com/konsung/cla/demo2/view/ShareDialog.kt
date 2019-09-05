@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.StringUtils
@@ -32,6 +33,7 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
 
     private var link: String? = null
     var shareDialogListener: ShareDialogListener? = null
+    var collectFlag = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -55,11 +57,11 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
 
     private fun initAdapter1(view: View) {
         val rvShare1 = view.findViewById<RecyclerView>(R.id.rvShare1)
-        val qq = TwoBean(R.string.icon_qq, R.string.qq)
-        val qqSpace = TwoBean(R.string.icon_qq_space, R.string.qq_space)
-        val weChat = TwoBean(R.string.icon_we_chat, R.string.we_chat)
-        val friend = TwoBean(R.string.icon_circle_of_friends, R.string.circle_of_friends)
-        val other = TwoBean(R.string.icon_other, R.string.other)
+        val qq = ThreeBean(R.string.icon_qq, R.string.qq, R.color.qq_color)
+        val qqSpace = ThreeBean(R.string.icon_qq_space, R.string.qq_space, R.color.qq_space_color)
+        val weChat = ThreeBean(R.string.icon_we_chat, R.string.we_chat, R.color.qq_we_char_color)
+        val friend = ThreeBean(R.string.icon_circle_of_friends, R.string.circle_of_friends, R.color.qq_we_char_color)
+        val other = ThreeBean(R.string.icon_other, R.string.other, R.color.normal_color1)
         val list1 = listOf(qq, qqSpace, weChat, friend, other)
 
         val adapter1 = ShareAdapter(list1)
@@ -70,9 +72,22 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
 
     private fun initAdapter2(view: View) {
         val rvShare2 = view.findViewById<RecyclerView>(R.id.rvShare2)
-        val collect = TwoBean(R.string.icon_collect, R.string.collect)
-        val link = TwoBean(R.string.icon_link, R.string.copy_link)
-        val browser = TwoBean(R.string.icon_browser, R.string.open_in_browser)
+
+        val collectColor: Int = if (collectFlag) {
+            R.color.qq_space_color
+        } else {
+            R.color.normal_color1
+        }
+
+        val collectText: Int = if (collectFlag) {
+            R.string.cancel_collect
+        } else {
+            R.string.collect
+        }
+
+        val collect = ThreeBean(R.string.icon_collect, collectText, collectColor)
+        val link = ThreeBean(R.string.icon_link, R.string.copy_link, R.color.normal_color1)
+        val browser = ThreeBean(R.string.icon_browser, R.string.open_in_browser, R.color.normal_color1)
         val list2 = listOf(collect, link, browser)
 
         val adapter2 = ShareAdapter(list2)
@@ -94,7 +109,11 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
                     AppUtils.instance.shareToSystem(context, link)
                 }
 
-                R.string.icon_collect -> shareDialogListener?.collect()
+                //收藏
+                R.string.icon_collect -> {
+                    collectFlag = !collectFlag
+                    shareDialogListener?.collect()
+                }
 
                 R.string.icon_link -> {
                     AppUtils.instance.copyToClip(context, link)
@@ -123,7 +142,7 @@ interface ShareDialogListener {
     fun collect()
 }
 
-class ShareAdapter(private val list: List<TwoBean<Int, Int>>) : RecyclerView.Adapter<ShareAdapter.ShareViewHolder>() {
+class ShareAdapter(private val list: List<ThreeBean<Int, Int, Int>>) : RecyclerView.Adapter<ShareAdapter.ShareViewHolder>() {
 
     var listener: View.OnClickListener? = null
 
@@ -144,12 +163,13 @@ class ShareAdapter(private val list: List<TwoBean<Int, Int>>) : RecyclerView.Ada
     class ShareViewHolder @SuppressLint("ClickableViewAccessibility") constructor(context: Context, view: View, listener: View.OnClickListener?) : RecyclerView.ViewHolder(view) {
 
         companion object {
-            val TAG = ShareViewHolder::class.java.simpleName
+            val TAG: String = ShareViewHolder::class.java.simpleName
         }
 
         private val tvIcon: TextView = view.findViewById(R.id.tvIcon)
         private val tvName: TextView = view.findViewById(R.id.tvName)
         private var two: TwoBean<Int, Int>? = null
+
 
         init {
             StringUtils.instance.loadTextIcon(context, tvIcon)
@@ -171,20 +191,10 @@ class ShareAdapter(private val list: List<TwoBean<Int, Int>>) : RecyclerView.Ada
             }
         }
 
-        fun bind(two: TwoBean<Int, Int>) {
-
-            this.two = two
-            var colorRes = R.color.normal_color1
-            when (two.a) {
-                R.string.icon_qq -> colorRes = R.color.qq_color
-                R.string.icon_qq_space -> colorRes = R.color.qq_space_color
-                R.string.icon_we_chat -> colorRes = R.color.qq_we_char_color
-                R.string.icon_circle_of_friends -> colorRes = R.color.qq_we_char_color
-            }
-
-            tvIcon.setText(two.a)
-            tvIcon.setTextColor(ContextCompat.getColor(context, colorRes))
-            tvName.setText(two.b)
+        fun bind(three: ThreeBean<Int, Int, Int>) {
+            tvIcon.setText(three.a)
+            tvName.setText(three.b)
+            tvIcon.setTextColor(ContextCompat.getColor(context, three.c))
 
         }
     }

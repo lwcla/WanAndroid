@@ -2,32 +2,17 @@ package com.konsung.cla.demo2.main.fragment.home
 
 import android.content.Context
 import com.konsung.basic.bean.BannerData
-import com.konsung.basic.config.RequestResult
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.ui.BasePresenter
 import com.konsung.basic.ui.BasicView
-import com.konsung.basic.util.RequestUtils
 
-class BannerPresenter(var view: LoadBannerView?) : BasicPresenter() {
-
+class BannerPresenter(view: LoadBannerView?) : BasePresenter<List<BannerData>, LoadBannerView>(view) {
 
     fun load(context: Context?) {
-
-        val ctx = context ?: return
-
-        val result = object : RequestResult<List<BannerData>>(view) {
-
-            override fun success(t: List<BannerData>) {
-                view?.success(t)
-            }
+        request(context) { ctx, result ->
+            httpHelper.loadBanner(ctx, result)
         }
-
-        RequestUtils.instance.loadBanner(ctx, result)
-
     }
 
-    override fun destroy() {
-        view = null
-    }
 }
 
 open class LoadBannerView : BasicView<List<BannerData>>()

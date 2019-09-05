@@ -13,6 +13,7 @@ import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.ToastUtils
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.config.Config.Companion.IS_COLLECT
 import com.konsung.cla.demo2.config.Config.Companion.WEB_ARTICLE_ID
 import com.konsung.cla.demo2.config.Config.Companion.WEB_TITLE
 import com.konsung.cla.demo2.config.Config.Companion.WEB_URL
@@ -31,6 +32,8 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
     private val collectPresenter by lazy { initCollectPresenter() }
     private lateinit var link: String
     private var artId: Int = -1
+    private var collect = false
+    private var shareDialog: ShareDialog? = null
 
     override fun getLayoutId(): Int = R.layout.activity_web
 
@@ -38,6 +41,7 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
 
         val url = intent.getStringExtra(WEB_URL)
         val articleId = intent.getIntExtra(WEB_ARTICLE_ID, -1)
+        collect = intent.getBooleanExtra(IS_COLLECT, false)
 
         if (url.isNullOrEmpty() || articleId == -1) {
             ToastUtils.instance.toast(context, TAG, R.string.data_error)
@@ -101,8 +105,23 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
 
         val view = object : CollectView() {
 
-            override fun success() {
-                toast(TAG, R.string.collect_success)
+            override fun success(position: Int, toCollect: Boolean) {
+
+                this@WebViewAty.collect = toCollect
+                if (toCollect) {
+                    toast(TAG, R.string.collect_success)
+                } else {
+                    toast(TAG, R.string.cancel_collect_success)
+                }
+            }
+
+            override fun failed(string: String, position: Int, toCollect: Boolean) {
+                this@WebViewAty.collect = toCollect
+                if (toCollect) {
+                    toast(TAG, R.string.collect_failed)
+                } else {
+                    toast(TAG, R.string.cancel_collect_failed)
+                }
             }
         }
 
@@ -119,7 +138,7 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
             return
         }
 
-        collectPresenter.collect(this, artId)
+        collectPresenter.collect(this, 0, artId, collect)
     }
 
     override fun initPresenter(): List<BasicPresenter>? = listOf(collectPresenter)
@@ -135,10 +154,13 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
         when (v.id) {
 
             R.id.tvMore -> {
-                val shareDialog = ShareDialog()
-                shareDialog.shareDialogListener = this
-                if (!shareDialog.isAdded) {
-                    shareDialog.show(supportFragmentManager, ShareDialog::class.java.simpleName, link)
+                shareDialog = ShareDialog()
+                shareDialog?.let {
+                    it.shareDialogListener = this
+                    it.collectFlag = collect
+                    if (!it.isAdded) {
+                        it.show(supportFragmentManager, ShareDialog::class.java.simpleName, link)
+                    }
                 }
             }
         }

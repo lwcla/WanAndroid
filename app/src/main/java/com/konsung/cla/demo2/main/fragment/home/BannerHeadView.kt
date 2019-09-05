@@ -46,7 +46,7 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
 
                 val data = dataList[position]
 
-                App.productUtils.startWebAty(context, data.title, data.url, data.id)
+                App.productUtils.startWebAty(context, data.title, data.url, data.id, false)
             }
         })
 

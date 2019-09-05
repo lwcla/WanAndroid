@@ -1,17 +1,17 @@
 package com.konsung.cla.demo2.main.fragment.home
 
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.RefreshRecyclerView
-import com.konsung.basic.ui.SpaceDecoration
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.web.CollectPresenter
+import com.konsung.cla.demo2.web.CollectView
+import com.konsung.cla.demo2.web.WebViewAty
 
 /**
  * 首页
@@ -24,13 +24,15 @@ class HomeFragment : BasicFragment() {
 
     private val loadBanner = initLoadBanner()
     private val loadHomeData = initLoadHomeData()
-    private var page = 0
-    private var isOver = false
-    private var needRefresh = false
+    private val collectPresenter = initCollectPresenter()
 
     override fun getLayoutId(): Int = R.layout.fragment_home
 
     override fun getMultiplyId(): Int = R.id.multiplyStatusView
+
+    override fun initPresenters(): List<BasicPresenter>? {
+        return listOf(loadBanner, loadHomeData, collectPresenter)
+    }
 
     override fun initView() {
         headView = BannerHeadView(context!!)
@@ -38,27 +40,50 @@ class HomeFragment : BasicFragment() {
         homeAdapter?.apply {
             addHeaderView(headView)
 
-            setOnItemClickListener { adapter, view, position ->
+            setOnItemClickListener { _, _, position ->
                 context?.let {
-                    val d = homeAdapter?.findDataByPosition(position)
+                    val d = findDataByPosition(position)
                     val cxt = it
                     d?.apply {
-                        App.productUtils.startWebAty(cxt, title, link, chapterId)
+                        App.productUtils.startWebAty(cxt, title, link, id, d.collect)
                     }
                 }
             }
 
-            setOnItemChildClickListener { adapter, view, position ->
+            setOnItemChildClickListener { _, view, position ->
                 when (view.id) {
+
+                    //点击图片
                     R.id.imvEnvelopePic -> {
 
-                        val url = homeAdapter?.findImageByPosition(position)
+                        val url = findImageByPosition(position)
                         url?.let {
                             toast(TAG, "图片地址：$url")
                         }
                     }
 
-                    R.id.imvStart -> toast(TAG, "点击收藏 $position")
+                    //收藏
+                    R.id.imvStart -> {
+
+                        val id = findIdByPosition(position)
+                        if (id < 0) {
+                            toast(TAG, R.string.data_error)
+                            return@setOnItemChildClickListener
+                        }
+
+                        //先把状态设置为收藏成功，如果收藏失败的话，再改回来
+                        val data = homeAdapter?.findDataByPosition(position)
+                        var collectFlag = true
+                        data?.let {
+                            collectFlag = it.collect
+                            it.collect = !collectFlag
+                            homeAdapter?.notifyItemChanged(position)
+                        }
+
+                        collectPresenter.collect(context, position, id, collectFlag)
+                    }
+
+                    //点赞
                     R.id.llNice -> toast(TAG, "点击赞 $position")
                 }
             }
@@ -69,7 +94,7 @@ class HomeFragment : BasicFragment() {
 
     override fun firstShow() {
         fetchBannerData()
-        fetchHomeData()
+        loadHomeData.loadWithTopData(context)
     }
 
     override fun show() {
@@ -85,102 +110,85 @@ class HomeFragment : BasicFragment() {
         loadBanner.load(context)
     }
 
-    private fun fetchHomeData() {
-        loadHomeData.load(context, page)
-    }
-
-    override fun initPresenters(): List<BasicPresenter>? {
-        return listOf(loadBanner, loadHomeData)
-    }
-
     private fun initRefreshView() {
 
         refreshRv?.apply {
 
-            rv.apply {
-                val manager = LinearLayoutManager(context)
-                val space = context.resources.getDimension(R.dimen.dp_8)
-                addItemDecoration(SpaceDecoration(space.toInt(), true))
-                homeAdapter?.setHasStableIds(true)
-                itemAnimator?.changeDuration = 0
-                adapter = homeAdapter
-                layoutManager = manager
-                addOnScrollListener(object : RecyclerView.OnScrollListener() {
-
-                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-//                        Debug.info(TAG, "HomeFragment onScrollStateChanged newState=$newState")
-
-                        //newState ==0 时表示滚动停止
-                        if (newState != 0) {
-                            return
-                        }
-
-
-                        //recyclerView.canScrollVertically(-1)为false时表示滚动到顶部
-                        if (recyclerView.canScrollVertically(-1)) {
-                            return
-                        }
-
-                        fragmentRefresh?.refresh(false, index)
-
-                        if (needRefresh) {
-                            needRefresh = false
-                            refreshRv?.autoRefresh()
-                            refreshData()
-                        }
-                    }
-
-                    override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-//                        Debug.info(TAG, "HomeFragment onScrolled dy=$dy")
-                        if (dy > 0) {
-                            //向下滚动
-                            fragmentRefresh?.refresh(true, index)
-                        }
-                    }
-                })
+            initRecyclerView(homeAdapter, fragmentRefresh, index) {
+                refreshRv?.autoRefresh()
+                resetHomeData()
             }
 
             setOnRefreshListener {
-                refreshData()
+                resetHomeData()
             }
 
             setOnLoadMoreListener {
-
-                Debug.info(TAG, "HomeFragment initRefreshView isOver?$isOver page?$page")
-
-                if (isOver) {
-                    return@setOnLoadMoreListener
-                }
-
-                ++page
-                fetchHomeData()
+                loadHomeData.loadMore(context)
             }
         }
     }
 
-    override fun refreshData() {
+    /**
+     *刷新数据
+     */
+    override fun resetHomeData() {
 
-        Debug.info(TAG, "HomeFragment refreshData")
+        Debug.info(TAG, "HomeFragment refreshDataAfterScrollTop")
         if (!headView.loadSuccess) {
             loadBanner.load(context)
         }
 
-        page = 0
+        loadHomeData.page = 0
         homeAdapter?.data?.clear()
-        fetchHomeData()
+        homeAdapter?.notifyDataSetChanged()
+        loadHomeData.loadWithTopData(context)
     }
 
+    /**
+     * 刷新数据
+     */
     override fun refreshView() {
 
         val size = homeAdapter?.data?.size ?: 0
         if (size == 0) {
+            //如果之前没有获取到数据，那么这个时候就不滚动recyclerView直接获取数据
             refreshRv?.autoRefresh()
-            refreshData()
+            resetHomeData()
             return
         }
 
-        needRefresh = true
-        refreshRv?.scrollToTop()
+        refreshRv?.refreshDataAfterScrollTop()
+    }
+
+    private fun initCollectPresenter(): CollectPresenter {
+
+        val view = object : CollectView() {
+
+            override fun success(position: Int, toCollect: Boolean) {
+                if (toCollect) {
+                    toast(WebViewAty.TAG, R.string.collect_success)
+                } else {
+                    toast(WebViewAty.TAG, R.string.cancel_collect_success)
+                }
+            }
+
+            override fun failed(string: String, position: Int, toCollect: Boolean) {
+                if (toCollect) {
+                    toast(WebViewAty.TAG, R.string.collect_failed)
+                } else {
+                    toast(WebViewAty.TAG, R.string.cancel_collect_failed)
+                }
+
+                val data = homeAdapter?.findDataByPosition(position)
+                data?.let {
+                    it.collect = !toCollect
+                    homeAdapter?.notifyItemChanged(position)
+                }
+            }
+        }
+
+        return CollectPresenter(view)
     }
 
     private fun initLoadBanner(): BannerPresenter {
@@ -210,8 +218,8 @@ class HomeFragment : BasicFragment() {
                 }
 
                 t.datas?.let {
-                    page = t.curPage
-                    isOver = t.isOver
+                    loadHomeData.page = t.curPage
+                    loadHomeData.over = t.over
 
                     myHandler.post {
                         homeAdapter?.addData(it)
@@ -219,11 +227,11 @@ class HomeFragment : BasicFragment() {
 
                     refreshRv?.apply {
                         finishRefresh()
-                        finishLoadMore(200, true, isOver)
+                        finishLoadMore(200, true, t.over)
                     }
                 }
 
-                myHandler.sendEmptyMessage(SHOW_CONTENT)
+                showContentView()
             }
 
             override fun failed(string: String) {
@@ -239,13 +247,13 @@ class HomeFragment : BasicFragment() {
                 }
 
                 if (homeAdapter?.data?.isEmpty() == null) {
-                    myHandler.sendEmptyMessage(SHOW_ERROR)
+                    showErrorView()
                 }
             }
 
             override fun noNetwork() {
                 if (homeAdapter?.data?.isEmpty() == null) {
-                    myHandler.sendEmptyMessageDelayed(SHOW_NO_NETWORK, 1000)
+                    showNoNetworkView()
                 }
             }
         })

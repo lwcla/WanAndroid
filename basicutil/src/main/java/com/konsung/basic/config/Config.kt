@@ -6,6 +6,8 @@ class Config {
         const val DATABASE_NAME = "claDemo.db"
 
         const val USER_NAME = "userName"
+
+        const val BASE_URL = "https://www.wanandroid.com/"
     }
 
 }

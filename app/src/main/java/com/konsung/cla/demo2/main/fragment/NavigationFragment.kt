@@ -14,7 +14,7 @@ class NavigationFragment : BasicFragment() {
 
     }
 
-    override fun refreshData() {
+    override fun resetHomeData() {
     }
 
     override fun initPresenters(): List<BasicPresenter>? = null
