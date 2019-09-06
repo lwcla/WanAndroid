@@ -31,6 +31,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+
         <activity android:name=".start.StartAty">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -47,9 +48,11 @@
         <activity
             android:name=".web.WebViewAty"
             android:configChanges="orientation|screenSize"
-            android:hardwareAccelerated="true"/>
-        <activity android:name=".login.LoginAty">
-        </activity>
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTask"/>
+
+        <activity android:name=".login.LoginAty"/>
+
     </application>
 
 </manifest>
