@@ -33,6 +33,7 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
     private var link: String? = null
     var shareDialogListener: ShareDialogListener? = null
     var collectFlag = false
+    var needCollect = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -89,7 +90,12 @@ class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
         val collect = ThreeBean(collectIcon, collectText, collectColor)
         val link = ThreeBean(R.string.icon_link, R.string.copy_link, R.color.normal_color1)
         val browser = ThreeBean(R.string.icon_browser, R.string.open_in_browser, R.color.normal_color1)
-        val list2 = listOf(collect, link, browser)
+
+        val list2 = mutableListOf(link, browser)
+
+        if (needCollect) {
+            list2.add(0, collect)
+        }
 
         val adapter2 = ShareAdapter(list2)
         adapter2.listener = this

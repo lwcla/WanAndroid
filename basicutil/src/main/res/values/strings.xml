@@ -10,12 +10,13 @@
     <string name="authentication_failed">认证失败</string>
     <string name="no_network_view_hint">网络异常</string>
     <string name="error_view_hint">加载失败</string>
-    <string name="agree">赞同</string>
+    <string name="agree">个赞</string>
     <string name="data_error">数据出错，请重试</string>
     <string name="unknown">未知</string>
     <string name="collect">收藏</string>
     <string name="cancel_collect">取消收藏</string>
     <string name="collect_success">收藏成功</string>
+    <string name="collect_after_login">请先登录后再收藏</string>
     <string name="cancel_collect_success">已经取消收藏</string>
     <string name="cancel_collect_failed">取消收藏失败</string>
     <string name="collect_failed" tools:ignore="ExtraTranslation">收藏失败</string>
@@ -27,7 +28,7 @@
     <string name="qq_space">qq空间</string>
     <string name="other">其他</string>
     <string name="cancel" tools:ignore="ExtraTranslation">取消</string>
-    <string name="link_copy_success">链接复制成功</string>
+    <string name="link_copy_success">链接已复制到系统粘贴板</string>
     <string name="share_to_other">分享到</string>
     <string name="please_input_ser_name">请输入账号</string>
     <string name="please_input_pass_word">请输入密码</string>

@@ -60,6 +60,11 @@ abstract class BasicDialog : DialogFragment() {
 
 interface DismissListener {
 
-    fun dismiss(dialog: BasicDialog, artificial: Boolean)
+    /**
+     * 取消弹窗
+     * @param dialog dialog
+     * @param clickCancel 点击取消按钮
+     */
+    fun dismiss(dialog: BasicDialog, clickCancel: Boolean)
 
 }

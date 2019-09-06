@@ -11,6 +11,17 @@ abstract class RequestResult<T>(private val view: BasicView<T>?) {
 
     var stop = false
 
+    var position = -1
+
+    /**
+     * 这次的操作是去收藏还是去取消收藏
+     */
+    var toCollect = false
+    /**
+     * 收藏文章的id
+     */
+    var collectId = -1
+
     open fun success(t: T) {
         view?.success(t)
     }

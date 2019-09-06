@@ -14,7 +14,7 @@ class ProjectFragment : BasicFragment() {
 
     }
 
-    override fun resetHomeData() {
+    override fun resetData() {
     }
 
     override fun initPresenters(): List<BasicPresenter>? = null

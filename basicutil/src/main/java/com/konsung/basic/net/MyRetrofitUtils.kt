@@ -3,7 +3,7 @@ package com.konsung.basic.net
 import android.content.Context
 import androidx.annotation.StringRes
 import com.konsung.basic.bean.*
-import com.konsung.basic.config.Config
+import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.config.NoNetworkException
 import com.konsung.basic.config.RequestResult
 import com.konsung.basic.net.cookie.PersistentCookieJar
@@ -68,7 +68,7 @@ class MyRetrofitUtils private constructor() {
 
         retrofit = Retrofit.Builder()
                 .client(okHttpClient)
-                .baseUrl(Config.BASE_URL)
+                .baseUrl(BaseConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
     }
@@ -154,7 +154,6 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
         if (t is NoNetworkException) {
             failed(R.string.network_is_not_connected)
             if (!result.stop) {
-                result.complete()
                 result.noNetwork()
             }
             return
@@ -207,23 +206,24 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
             return
         }
 
+        if (result.stop) {
+            return
+        }
+
+        result.complete()
+
+        if (dataWillNull) {
+            result.success()
+            return
+        }
+
         val resultData = data.data
-        if (!dataWillNull && resultData == null) {
+        if (resultData == null) {
             failed(R.string.data_request_error)
             return
         }
 
-        if (!result.stop) {
-            result.complete()
-            result.success()
-
-            if (!dataWillNull) {
-                try {
-                    result.success(resultData!!)
-                } catch (e: Exception) {
-                }
-            }
-        }
+        result.success(resultData)
     }
 
     private fun failed(@StringRes textRes: Int) {

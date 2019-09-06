@@ -9,7 +9,6 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import com.konsung.basic.bean.BannerData
-import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.youth.banner.listener.OnBannerListener
 
@@ -27,6 +26,7 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
     private var pathList: MutableList<String> = mutableListOf()
     private var titleList: MutableList<String> = mutableListOf()
     private var dataList: MutableList<BannerData> = mutableListOf()
+    var onBannerItemClickListener: OnBannerItemClickListener? = null
 
     init {
         val inflater = LayoutInflater.from(context)
@@ -45,8 +45,7 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
                 }
 
                 val data = dataList[position]
-
-                App.productUtils.startWebAty(context, data.title, data.url, data.id, false)
+                onBannerItemClickListener?.click(data)
             }
         })
 
@@ -116,5 +115,9 @@ class BannerHeadView(context: Context) : RelativeLayout(context) {
         }
 
         banner.stopAutoPlay()
+    }
+
+    interface OnBannerItemClickListener {
+        fun click(data: BannerData)
     }
 }

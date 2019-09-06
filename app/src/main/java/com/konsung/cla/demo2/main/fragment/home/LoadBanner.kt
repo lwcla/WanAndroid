@@ -5,10 +5,10 @@ import com.konsung.basic.bean.BannerData
 import com.konsung.basic.ui.BasePresenter
 import com.konsung.basic.ui.BasicView
 
-class BannerPresenter(view: LoadBannerView?) : BasePresenter<List<BannerData>, LoadBannerView>(view) {
+open class BannerPresenter(context: Context?, view: LoadBannerView?) : BasePresenter<List<BannerData>, LoadBannerView>(context, view) {
 
-    fun load(context: Context?) {
-        request(context) { ctx, result ->
+    fun load() {
+        request { ctx, result ->
             httpHelper.loadBanner(ctx, result)
         }
     }

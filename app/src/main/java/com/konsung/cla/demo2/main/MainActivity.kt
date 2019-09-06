@@ -11,7 +11,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.material.snackbar.Snackbar
 import com.konsung.basic.bean.ThreeBean
-import com.konsung.basic.config.Config
+import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
@@ -155,7 +155,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
     }
 
     private fun initUserName() {
-        val userName = SpUtils.getString(context, Config.USER_NAME, "")
+        val userName = SpUtils.getString(context, BaseConfig.USER_NAME, "")
         if (userName.isNullOrEmpty()) {
             tvHeadName?.text = getString(R.string.not_log_in)
             tvTitle.text = getString(R.string.not_log_in)

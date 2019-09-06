@@ -6,11 +6,10 @@ import com.konsung.basic.ui.BasePresenter
 import com.konsung.basic.ui.BasicView
 
 
-class LoginPresenter(view: LoginView?) : BasePresenter<UserDto, LoginView>(view) {
+class LoginPresenter(context: Context?, view: LoginView?) : BasePresenter<UserDto, LoginView>(context, view) {
 
-
-    fun login(context: Context?, userName: String, pass: String) {
-        request(context) { ctx, result ->
+    fun login(userName: String, pass: String) {
+        request { ctx, result ->
             httpHelper.login(ctx, userName, pass, result)
         }
     }

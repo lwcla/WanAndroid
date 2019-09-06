@@ -1,5 +1,9 @@
 package com.konsung.basic.ui
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -9,7 +13,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.classic.common.MultipleStatusView
+import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.net.NetStateChangeObserver
 import com.konsung.basic.net.NetworkType
@@ -37,10 +43,39 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     var fragmentRefresh: FragmentRefresh? = null
     var index: Int = 0
 
+    private val localReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+
+            if (context == null || intent == null) {
+                return
+            }
+
+            if (intent.action == BaseConfig.COLLECT_RESULT_ACTION) {
+                //收藏结果
+
+                val collectResult = intent.getBooleanExtra(BaseConfig.COLLECT_RESULT, false)
+                val collectDataPosition = intent.getIntExtra(BaseConfig.COLLECT_DATA_POSITION, -1)
+                val toCollect = intent.getBooleanExtra(BaseConfig.TO_COLLECT, false)
+                val collectId = intent.getIntExtra(BaseConfig.COLLECT_ID, -1)
+
+                if (collectDataPosition < 0 || collectId < 0) {
+                    return
+                }
+
+                collectResult(collectResult, collectId, collectDataPosition, toCollect)
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Debug.info(TAG, "BasicFragment onCreate $this")
         presenter = initPresenters()
+
+        val intentFilter = IntentFilter(BaseConfig.COLLECT_RESULT_ACTION)
+        context?.let {
+            LocalBroadcastManager.getInstance(it).registerReceiver(localReceiver, intentFilter)
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,7 +88,7 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
                 showLoading()
                 setOnRetryClickListener {
                     showLoadView()
-                    resetHomeData()
+                    resetData()
                 }
             }
         }
@@ -83,8 +118,8 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     }
 
     override fun onPause() {
-        Debug.info(TAG, "BasicFragment onPause $this")
         super.onPause()
+        Debug.info(TAG, "BasicFragment onPause $this")
         NetChangeReceiver.unRegisterObserver(this)
         resume = false
         pause()
@@ -93,11 +128,15 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     override fun onStop() {
         super.onStop()
         Debug.info(TAG, "BasicFragment onStop $this")
+
     }
 
     override fun onDestroy() {
         super.onDestroy()
         Debug.info(TAG, "BasicFragment onDestroy $this")
+        context?.let {
+            LocalBroadcastManager.getInstance(it).unregisterReceiver(localReceiver)
+        }
 
         if (loadHandler) {
             myHandler.removeCallbacksAndMessages(null)
@@ -108,6 +147,13 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
                 p.destroy()
             }
         }
+    }
+
+    /**
+     * 收藏结果
+     */
+    open fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
+
     }
 
     override fun setMenuVisibility(menuVisible: Boolean) {
@@ -190,13 +236,16 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
      */
     abstract fun initView()
 
+    /**
+     * 切换当前ui状态的布局id,不过可以强制设置为同一个
+     */
     abstract fun getMultiplyId(): Int
 
     /**
      * 数据获取失败之后刷新数据
      * @param
      */
-    abstract fun resetHomeData()
+    abstract fun resetData()
 
     protected class MyHandler(fragment: BasicFragment) : Handler(Looper.getMainLooper()) {
 

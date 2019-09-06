@@ -1,5 +1,6 @@
 package com.konsung.cla.demo2.web
 
+import android.content.Context
 import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
@@ -7,16 +8,18 @@ import android.widget.RelativeLayout
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.DefaultWebClient
 import com.just.agentweb.WebChromeClient
+import com.konsung.basic.config.BaseConfig.Companion.IS_COLLECT
+import com.konsung.basic.config.BaseConfig.Companion.NEED_COLLECT
+import com.konsung.basic.config.BaseConfig.Companion.WEB_ARTICLE_ID
+import com.konsung.basic.config.BaseConfig.Companion.WEB_DATA_POSITION
+import com.konsung.basic.config.BaseConfig.Companion.WEB_TITLE
+import com.konsung.basic.config.BaseConfig.Companion.WEB_URL
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.ToastUtils
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.config.Config.Companion.IS_COLLECT
-import com.konsung.cla.demo2.config.Config.Companion.WEB_ARTICLE_ID
-import com.konsung.cla.demo2.config.Config.Companion.WEB_TITLE
-import com.konsung.cla.demo2.config.Config.Companion.WEB_URL
 import com.konsung.cla.demo2.view.ShareDialog
 import com.konsung.cla.demo2.view.ShareDialogListener
 import kotlinx.android.synthetic.main.activity_web.*
@@ -28,11 +31,13 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
         val TAG: String = WebViewAty::class.java.simpleName
     }
 
-    private lateinit var mAgentWeb: AgentWeb
+    private var mAgentWeb: AgentWeb? = null
     private val collectPresenter by lazy { initCollectPresenter() }
     private lateinit var link: String
     private var artId: Int = -1
+    private var dataPosition: Int = -1
     private var collect = false
+    private var needCollect = false
     private var shareDialog: ShareDialog? = null
 
     override fun getLayoutId(): Int = R.layout.activity_web
@@ -41,7 +46,9 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
 
         val url = intent.getStringExtra(WEB_URL)
         val articleId = intent.getIntExtra(WEB_ARTICLE_ID, -1)
+        dataPosition = intent.getIntExtra(WEB_DATA_POSITION, -1)
         collect = intent.getBooleanExtra(IS_COLLECT, false)
+        needCollect = intent.getBooleanExtra(NEED_COLLECT, false)
 
         if (url.isNullOrEmpty() || articleId == -1) {
             ToastUtils.instance.toast(context, TAG, R.string.data_error)
@@ -87,17 +94,17 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
     }
 
     override fun onResume() {
-        mAgentWeb.webLifeCycle.onResume()
+        mAgentWeb?.webLifeCycle?.onResume()
         super.onResume()
     }
 
     override fun onPause() {
-        mAgentWeb.webLifeCycle.onPause()
+        mAgentWeb?.webLifeCycle?.onPause()
         super.onPause()
     }
 
     override fun onDestroy() {
-        mAgentWeb.webLifeCycle.onDestroy()
+        mAgentWeb?.webLifeCycle?.onDestroy()
         super.onDestroy()
     }
 
@@ -105,27 +112,19 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
 
         val view = object : CollectView() {
 
-            override fun success(position: Int, toCollect: Boolean) {
-
+            override fun success(context: Context, position: Int, toCollect: Boolean) {
                 this@WebViewAty.collect = toCollect
-                if (toCollect) {
-                    toast(TAG, R.string.collect_success)
-                } else {
-                    toast(TAG, R.string.cancel_collect_success)
-                }
             }
 
-            override fun failed(string: String, position: Int, toCollect: Boolean) {
+            override fun failed(context: Context, string: String, position: Int, toCollect: Boolean) {
                 this@WebViewAty.collect = toCollect
-                if (toCollect) {
-                    toast(TAG, R.string.collect_failed)
-                } else {
-                    toast(TAG, R.string.cancel_collect_failed)
-                }
             }
         }
 
-        return CollectPresenter(view)
+        val presenter = CollectPresenter(context, view)
+        presenter.sendMessage = true
+
+        return presenter
     }
 
     /**
@@ -138,16 +137,21 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
             return
         }
 
-        collectPresenter.collect(this, 0, artId, collect)
+        val b = collectPresenter.collect(dataPosition, artId, collect)
+        if (b) {
+            collect = !collect
+        }
     }
 
     override fun initPresenter(): List<BasicPresenter>? = listOf(collectPresenter)
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
 
-        return if (mAgentWeb.handleKeyEvent(keyCode, event)) {
-            true
-        } else super.onKeyDown(keyCode, event)
+        if (mAgentWeb != null && mAgentWeb!!.handleKeyEvent(keyCode, event)) {
+            return true
+        }
+
+        return super.onKeyDown(keyCode, event)
     }
 
     override fun onClick(v: View) {
@@ -158,6 +162,7 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
                 shareDialog?.let {
                     it.shareDialogListener = this
                     it.collectFlag = collect
+                    it.needCollect = needCollect
                     if (!it.isAdded) {
                         it.show(supportFragmentManager, ShareDialog::class.java.simpleName, link)
                     }

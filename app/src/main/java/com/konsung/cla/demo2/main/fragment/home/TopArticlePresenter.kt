@@ -6,10 +6,14 @@ import com.konsung.basic.ui.BasePresenter
 import com.konsung.basic.ui.BasicView
 
 
-open class TopArticlePresenter(view: TopArticleView) : BasePresenter<List<HomeData.DatasBean>, TopArticleView>(view) {
+open class TopArticlePresenter(context: Context?, view: TopArticleView) : BasePresenter<List<HomeData.DatasBean>, TopArticleView>(context, view) {
 
-    fun load(context: Context?) {
-        request(context) { ctx, result ->
+    companion object {
+        val TAG: String = TopArticlePresenter::class.java.simpleName
+    }
+
+    fun load() {
+        request { ctx, result ->
             httpHelper.loadTopArticle(ctx, result)
         }
     }

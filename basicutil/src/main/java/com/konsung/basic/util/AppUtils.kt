@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import com.konsung.basic.config.BasicConfig
+import com.konsung.basic.config.BaseConfig
 
 
 class AppUtils {
@@ -58,22 +59,12 @@ class AppUtils {
     }
 
     /**
-     * 以浏览器打开
+     * 是否已经登录
+     *
+     * @return true 已经登录  false 还没有登录
      */
-    fun openByBrowser(context: Context?, link: String?, toast: Boolean = true) {
-
-        context?.let {
-            if (link.isNullOrEmpty()) {
-                if (toast) {
-                    it.toast(StringUtils.TAG, R.string.data_error)
-                }
-                return
-            }
-
-            val uri = Uri.parse(link)
-            val intent = Intent(Intent.ACTION_VIEW, uri)
-            it.startActivity(intent)
-        }
+    fun hasLogined(context: Context): Boolean {
+        return !SpUtils.getString(context, BaseConfig.USER_NAME, "").isNullOrEmpty()
     }
 
     /**
@@ -96,6 +87,25 @@ class AppUtils {
             //切记需要使用Intent.createChooser，否则会出现别样的应用选择框，您可以试试
             shareIntent = Intent.createChooser(shareIntent, it.getString(R.string.share_to_other))
             it.startActivity(shareIntent)
+        }
+    }
+
+    /**
+     * 以浏览器打开
+     */
+    fun openByBrowser(context: Context?, link: String?, toast: Boolean = true) {
+
+        context?.let {
+            if (link.isNullOrEmpty()) {
+                if (toast) {
+                    it.toast(StringUtils.TAG, R.string.data_error)
+                }
+                return
+            }
+
+            val uri = Uri.parse(link)
+            val intent = Intent(Intent.ACTION_VIEW, uri)
+            it.startActivity(intent)
         }
     }
 }

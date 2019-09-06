@@ -17,7 +17,7 @@
 package com.konsung.basic.net.cookie
 
 import android.content.Context
-import com.konsung.basic.config.Config
+import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.cookie.cache.CookieCache
 import com.konsung.basic.net.cookie.persistence.CookiePersistor
 import com.konsung.basic.util.Debug
@@ -68,7 +68,7 @@ class PersistentCookieJar(private val context: Context, private val cache: Cooki
             if (isCookieExpired(currentCookie)) {
                 cookiesToRemove.add(currentCookie)
                 it.remove()
-                SpUtils.delete(context, Config.USER_NAME)
+                SpUtils.delete(context, BaseConfig.USER_NAME)
             } else if (currentCookie.matches(url)) {
                 Debug.info(TAG, "PersistentCookieJar loadForRequest cookid=$currentCookie")
                 validCookies.add(currentCookie)
@@ -92,7 +92,7 @@ class PersistentCookieJar(private val context: Context, private val cache: Cooki
         Debug.info(TAG, "PersistentCookieJar clearSession")
         cache.clear()
         cache.addAll(persistor.loadAll())
-        SpUtils.delete(context, Config.USER_NAME)
+        SpUtils.delete(context, BaseConfig.USER_NAME)
     }
 
     @Synchronized
@@ -100,6 +100,6 @@ class PersistentCookieJar(private val context: Context, private val cache: Cooki
         Debug.info(TAG, "PersistentCookieJar clear")
         cache.clear()
         persistor.clear()
-        SpUtils.delete(context, Config.USER_NAME)
+        SpUtils.delete(context, BaseConfig.USER_NAME)
     }
 }

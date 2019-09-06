@@ -4,7 +4,7 @@ import android.content.Context
 
 import com.greendao.dao.DaoMaster
 import com.greendao.dao.DaoSession
-import com.konsung.basic.config.Config
+import com.konsung.basic.config.BaseConfig
 
 /**
  * 类功能：数据库管理类
@@ -26,7 +26,7 @@ private constructor(context: Context) {
     init {
         if (instance == null) {
             // 此处openhelper为自动生成开发所使用，发布版本需自定义
-            val devOpenHelper = DbHelper2(context, Config.DATABASE_NAME)
+            val devOpenHelper = DbHelper2(context, BaseConfig.DATABASE_NAME)
             //GreenDaoContext为创建数据库路径使用
             daoMaster = DaoMaster(devOpenHelper.writableDatabase)
             daoSession = daoMaster!!.newSession()

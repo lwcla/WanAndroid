@@ -11,7 +11,7 @@ import androidx.annotation.StringRes
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.konsung.basic.bean.UserDto
-import com.konsung.basic.config.Config
+import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.dialog.BasicDialog
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
@@ -98,7 +98,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
         }
 
         showLoadingDialog(R.string.login_please_wait, false)
-        loginPresenter.login(context, userName, pass)
+        loginPresenter.login(userName, pass)
     }
 
     private fun resetEditStatus() {
@@ -142,7 +142,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
             return
         }
 
-        registerPresenter.register(this, userName, pass1, pass2)
+        registerPresenter.register(userName, pass1, pass2)
     }
 
     /**
@@ -254,7 +254,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
             }
         }
 
-        return RegisterPresenter(view)
+        return RegisterPresenter(context,view)
     }
 
     private fun initLoginPresenter(): LoginPresenter {
@@ -263,7 +263,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
 
             override fun success(t: UserDto) {
                 toast(TAG, R.string.login_success)
-                SpUtils.putString(context, Config.USER_NAME, t.username)
+                SpUtils.putString(context, BaseConfig.USER_NAME, t.username)
                 App.productUtils.startMainAty(context)
                 finish()
             }
@@ -282,7 +282,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
 
         }
 
-        return LoginPresenter(view)
+        return LoginPresenter(context, view)
     }
 
     override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
