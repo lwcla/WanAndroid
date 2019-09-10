@@ -48,5 +48,6 @@
     <string name="press_again_to_exit_the_application">再按一次退出应用</string>
     <string name="tag_placed_at_the_top">置顶</string>
     <string name="tag_new">新</string>
+    <string name="save">保存</string>
 
 </resources>

@@ -23,5 +23,6 @@
     <color name="tool_bar_center" tools:ignore="MissingDefaultResource">#54a7fb</color>
     <color name="tool_bar_right">#3597fa</color>
     <color name="tool_bar_left">#3396fa</color>
+    <color name="title_not_select">#f2c4c4</color>
 
 </resources>

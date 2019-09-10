@@ -5,6 +5,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.webkit.WebView
 import android.widget.RelativeLayout
+import androidx.core.content.ContextCompat
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.DefaultWebClient
 import com.just.agentweb.WebChromeClient
@@ -67,6 +68,7 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
         val webChromeClient: WebChromeClient? = object : WebChromeClient() {
             override fun onReceivedTitle(view: WebView, title: String) {
                 super.onReceivedTitle(view, title)
+                tvTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
                 tvTitle.text = StringUtils.instance.formHtml(title)
             }
         }

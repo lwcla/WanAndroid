@@ -1,6 +1,7 @@
 package com.konsung.cla.demo2.main.fragment.home
 
 import android.content.Context
+import android.widget.TextView
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.ui.BasicFragment
@@ -43,23 +44,28 @@ class HomeFragment : BasicFragment() {
         homeAdapter?.apply {
             addHeaderView(headView)
 
-            setOnItemClickListener { _, _, position ->
+            setOnItemClickListener { _, view, position ->
+                val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
                 val d = findDataByPosition(position)
                 d?.apply {
-                    App.productUtils.startWebAty(context, title, link, artId = id, dataPosition = position, collect = d.collect)
+                    App.productUtils.startWebAty(activity,context,tvTitle, title, link, artId = id, dataPosition = position, collect = d.collect)
                 }
             }
 
             setOnItemChildClickListener { _, view, position ->
+
+                if (context == null) {
+                    return@setOnItemChildClickListener
+                }
+
                 when (view.id) {
 
                     //点击图片
                     R.id.imvEnvelopePic -> {
-
                         val url = findImageByPosition(position)
                         url?.let {
-                            toast(TAG, "图片地址：$url")
-                        }
+                            App.productUtils.startScreenImageAty(context!!, it)
+                        } ?: toast(TAG, R.string.data_error)
                     }
 
                     //收藏

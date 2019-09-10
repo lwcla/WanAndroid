@@ -34,8 +34,9 @@
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
                 android:singleLine="true"
-                android:textColor="@android:color/white"
+                android:textColor="@android:color/black"
                 android:textSize="@dimen/sp_15"
+                android:transitionName="tvTitle"
                 tools:ignore="RtlSymmetry"
                 tools:text="每日一问 Parcelable 为什么效率高于 Serializable ？为什么效果比Serializable高？"
                 />

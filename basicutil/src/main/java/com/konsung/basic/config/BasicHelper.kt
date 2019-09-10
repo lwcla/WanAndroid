@@ -2,7 +2,7 @@ package com.konsung.basic.config
 
 import android.content.Context
 
-interface BasicConfig {
+interface BasicHelper {
 
     fun debug(): Boolean
 

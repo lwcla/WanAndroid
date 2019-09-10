@@ -5,7 +5,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.konsung.basic.config.BasicConfig
+import com.konsung.basic.config.BasicHelper
 import com.konsung.basic.config.BaseConfig
 
 
@@ -14,9 +14,9 @@ class AppUtils {
     companion object {
         val instance = AppUtils()
 
-        private var basicConfig: BasicConfig? = null
+        private var basicConfig: BasicHelper? = null
 
-        fun init(basicConfig: BasicConfig) {
+        fun init(basicConfig: BasicHelper) {
             this.basicConfig = basicConfig
         }
 

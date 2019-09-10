@@ -11,16 +11,15 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.google.android.material.snackbar.Snackbar
 import com.konsung.basic.bean.ThreeBean
+import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.NetChangeReceiver
-import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.ui.BasicFragment
-import com.konsung.basic.ui.BasicPresenter
-import com.konsung.basic.ui.FragmentRefresh
+import com.konsung.basic.ui.*
 import com.konsung.basic.util.*
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
+import com.konsung.cla.demo2.main.fragment.CommonWebFragment
 import com.konsung.cla.demo2.main.fragment.NavigationFragment
 import com.konsung.cla.demo2.main.fragment.ProjectFragment
 import com.konsung.cla.demo2.main.fragment.SystemFragment
@@ -194,11 +193,22 @@ open class MainActivity : BasicAty(), View.OnClickListener {
             }
         }
 
+        val firstFragment = VpBasicFragment()
+
         val homeFragment = HomeFragment()
         homeFragment.fragmentRefresh = fragmentRefresh
-        val fragment1 = ThreeBean<String, Int, BasicFragment>(getString(R.string.home), R.string.icon_home, homeFragment)
-        val fragment2 = ThreeBean<String, Int, BasicFragment>(getString(R.string.project), R.string.icon_project, ProjectFragment())
+        val commonFragment = CommonWebFragment()
+
+        val f1 = TwoBean<String, BasicFragment>("主页", homeFragment)
+        val f2 = TwoBean<String, BasicFragment>("常用网站", commonFragment)
+        firstFragment.titleList = listOf(f1, f2)
+
+//        val homeFragment = HomeFragment()
+//        homeFragment.fragmentRefresh = fragmentRefresh
+
+        val fragment1 = ThreeBean<String, Int, BasicFragment>(getString(R.string.home), R.string.icon_home, firstFragment)
         val fragment3 = ThreeBean<String, Int, BasicFragment>(getString(R.string.system), R.string.icon_system, SystemFragment())
+        val fragment2 = ThreeBean<String, Int, BasicFragment>(getString(R.string.project), R.string.icon_project, ProjectFragment())
         val fragment4 = ThreeBean<String, Int, BasicFragment>(getString(R.string.navigation), R.string.icon_navigation, NavigationFragment())
         val fragmentList = listOf(fragment1, fragment2, fragment3, fragment4)
 

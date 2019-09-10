@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.konsung.basic.util">
 
@@ -7,5 +8,11 @@
 
     <application>
         <receiver android:name="com.konsung.basic.net.NetChangeReceiver"/>
+
+        <activity
+            android:name="com.konsung.basic.ui.ScreenImageAty"
+            android:launchMode="singleTop"
+            />
     </application>
+
 </manifest>
