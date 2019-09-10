@@ -8,8 +8,6 @@ class NavigationFragment : BasicFragment() {
 
     override fun getLayoutId(): Int = R.layout.fragment_navigation
 
-    override fun getMultiplyId(): Int = R.id.multiplyStatusView
-
     override fun initView() {
 
     }

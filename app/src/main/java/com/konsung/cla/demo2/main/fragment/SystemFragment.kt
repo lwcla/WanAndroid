@@ -11,8 +11,6 @@ class SystemFragment : BasicFragment() {
 
     override fun getLayoutId(): Int = R.layout.fragment_system
 
-    override fun getMultiplyId(): Int = R.id.multiplyStatusView
-
     override fun initView() {
 
     }

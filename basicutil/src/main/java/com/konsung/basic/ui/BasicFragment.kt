@@ -11,6 +11,7 @@ import android.os.Message
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
@@ -20,6 +21,7 @@ import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.net.NetStateChangeObserver
 import com.konsung.basic.net.NetworkType
 import com.konsung.basic.util.Debug
+import com.konsung.basic.util.R
 import java.lang.ref.WeakReference
 
 abstract class BasicFragment : Fragment(), NetStateChangeObserver {
@@ -33,11 +35,12 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
         const val SHOW_CONTENT = 0x004
     }
 
-    protected val multiplyStatusView by lazy { rootView?.findViewById<MultipleStatusView>(getMultiplyId()) }
+    protected var multiplyStatusView: MultipleStatusView? = null
     private var presenter: List<BasicPresenter>? = null
     private var loadHandler = false
     protected val myHandler: MyHandler by lazy { MyHandler(this) }
-    protected var rootView: View? = null
+    private var rootView: View? = null
+    protected var showView: View? = null
     protected var resume = false
     private var firstShow = true
     var fragmentRefresh: FragmentRefresh? = null
@@ -82,7 +85,9 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
         Debug.info(TAG, "BasicFragment onCreateView $this")
 
         if (rootView == null) {
-            rootView = layoutInflater.inflate(getLayoutId(), container, false)
+            rootView = layoutInflater.inflate(R.layout.view_multiplee_status_container, container, false)
+            showView = layoutInflater.inflate(getLayoutId(), null)
+            multiplyStatusView = rootView?.findViewById(R.id.multiplyStatusView)
             initView()
             multiplyStatusView?.apply {
                 showLoading()
@@ -237,11 +242,6 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     abstract fun initView()
 
     /**
-     * 切换当前ui状态的布局id,不过可以强制设置为同一个
-     */
-    abstract fun getMultiplyId(): Int
-
-    /**
      * 数据获取失败之后刷新数据
      * @param
      */
@@ -277,7 +277,17 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
                         SHOW_NO_NETWORK -> basicFragment.multiplyStatusView?.showNoNetwork()
                         SHOW_LOADING -> basicFragment.multiplyStatusView?.showLoading()
                         SHOW_ERROR -> basicFragment.multiplyStatusView?.showError()
-                        SHOW_CONTENT -> basicFragment.multiplyStatusView?.showContent()
+
+                        SHOW_CONTENT -> {
+
+                            if (basicFragment.showView == null) {
+                                sendEmptyMessage(SHOW_ERROR)
+                                return
+                            }
+
+                            val layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+                            basicFragment.multiplyStatusView?.showContent(basicFragment.showView, layoutParams)
+                        }
                     }
                     return
                 }

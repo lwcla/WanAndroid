@@ -18,7 +18,7 @@ import com.konsung.cla.demo2.web.CollectView
  */
 class HomeFragment : BasicFragment() {
 
-    private val refreshRv by lazy { rootView?.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
+    private val refreshRv by lazy { showView?.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
     private val homeAdapter by lazy { context?.let { HomeAdapter(it, mutableListOf()) } }
     private lateinit var headView: BannerHeadView
 
@@ -27,8 +27,6 @@ class HomeFragment : BasicFragment() {
     private val collectPresenter by lazy { initCollectPresenter() }
 
     override fun getLayoutId(): Int = R.layout.fragment_home
-
-    override fun getMultiplyId(): Int = R.id.multiplyStatusView
 
     override fun initPresenters(): List<BasicPresenter>? {
         return listOf(loadBanner, loadHomeData, collectPresenter)
