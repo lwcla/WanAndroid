@@ -10,6 +10,7 @@ import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import com.konsung.basic.bean.BannerData
 import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.view.MyBanner
 import com.youth.banner.listener.OnBannerListener
 
 

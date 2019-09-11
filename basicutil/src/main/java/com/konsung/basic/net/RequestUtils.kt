@@ -2,16 +2,16 @@ package com.konsung.basic.net
 
 import android.content.Context
 import com.konsung.basic.bean.BannerData
+import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.config.RequestResult
 
 class RequestUtils private constructor() : HttpHelper {
-
     companion object {
+
         val instance = RequestUtils()
     }
-
     private val request = MyRetrofitUtils.instance
 
     override fun collect(context: Context, id: Int, result: RequestResult<String>) {
@@ -20,6 +20,10 @@ class RequestUtils private constructor() : HttpHelper {
 
     override fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
         request.loadBanner(context, result)
+    }
+
+    override fun loadCommonWeb(context: Context, result: RequestResult<List<CommonWebBean>>) {
+        request.loadCommonWeb(context, result)
     }
 
     override fun loadHomeData(context: Context, page: Int, result: RequestResult<HomeData>) {

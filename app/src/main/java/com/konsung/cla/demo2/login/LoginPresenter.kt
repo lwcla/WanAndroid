@@ -2,11 +2,11 @@ package com.konsung.cla.demo2.login
 
 import android.content.Context
 import com.konsung.basic.bean.UserDto
-import com.konsung.basic.ui.BasePresenter
+import com.konsung.basic.ui.BasePresenter2
 import com.konsung.basic.ui.BasicView
 
 
-class LoginPresenter(context: Context?, view: LoginView?) : BasePresenter<UserDto, LoginView>(context, view) {
+class LoginPresenter(context: Context?, view: LoginView?) : BasePresenter2<UserDto, LoginView>(context, view) {
 
     fun login(userName: String, pass: String) {
         request { ctx, result ->

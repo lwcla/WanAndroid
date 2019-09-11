@@ -5,7 +5,7 @@
        android:layout_height="match_parent"
        android:orientation="vertical">
 
-    <com.konsung.cla.demo2.main.fragment.home.MyBanner
+    <com.konsung.cla.demo2.view.MyBanner
         android:id="@+id/banner"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

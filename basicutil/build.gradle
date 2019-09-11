@@ -57,6 +57,7 @@ dependencies {
     implementation config.multiple_status_view
     implementation config.design
     implementation config.magicIndicator
+    implementation config.magicIndicator
 
     //数据库升级
     implementation config.green_dao_upgrade_helper

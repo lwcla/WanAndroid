@@ -10,7 +10,7 @@ import androidx.viewpager.widget.ViewPager
 import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
-import com.konsung.basic.view.ColorFlipPagerTitleView
+import com.konsung.basic.view.ColorTransitionPagerTitleView
 import net.lucode.hackware.magicindicator.MagicIndicator
 import net.lucode.hackware.magicindicator.ViewPagerHelper
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigator
@@ -28,15 +28,19 @@ abstract class VpBasicFragment : BasicFragment() {
 
     var titleList: List<TwoBean<String, BasicFragment>>? = null
 
+
     override fun getLayoutId(): Int = R.layout.fragment_vp_basic
 
     override fun initPresenters(): List<BasicPresenter>? = null
 
-    override fun initView() {
-        if (titleList == null || context == null) {
+    protected fun initViewPager(fragmentList: List<TwoBean<String, BasicFragment>>) {
+
+        if (fragmentList.isEmpty() || context == null) {
             toast(TAG, R.string.data_error)
             return
         }
+
+        this.titleList = fragmentList
 
         val magicIndicator = showView?.findViewById<MagicIndicator>(R.id.magicIndicator) ?: return
         val viewPager = showView?.findViewById<ViewPager>(R.id.viewPager) ?: return
@@ -47,7 +51,7 @@ abstract class VpBasicFragment : BasicFragment() {
         commonNavigator.adapter = object : CommonNavigatorAdapter() {
 
             override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
-                val clipPagerTitleView = ColorFlipPagerTitleView(context)
+                val clipPagerTitleView = ColorTransitionPagerTitleView(context)
                 clipPagerTitleView.text = titleList?.get(index)?.a
                 clipPagerTitleView.normalColor = ContextCompat.getColor(context!!, R.color.normal_color1)
                 clipPagerTitleView.selectedColor = Color.RED
@@ -79,20 +83,16 @@ abstract class VpBasicFragment : BasicFragment() {
         ViewPagerHelper.bind(magicIndicator, viewPager)
     }
 
-    override fun firstShow() {
-        showContentView()
-    }
-
-    override fun resetData() {
-
-    }
-
     override fun refreshView() {
         titleList?.let {
             for (two in it) {
                 two.b.refreshView()
             }
         }
+    }
+
+    override fun resetData() {
+
     }
 }
 

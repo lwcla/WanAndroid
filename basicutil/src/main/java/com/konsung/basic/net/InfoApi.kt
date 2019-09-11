@@ -19,6 +19,15 @@ interface InfoApi {
     fun loadBanner(): Call<BasicData<List<BannerData>>>
 
     /**
+     * 常用网站
+     * https://www.wanandroid.com/friend/json
+     *
+     * @return 常用网站
+     */
+    @GET("friend/json")
+    fun loadCommonWeb(): Call<BasicData<List<CommonWebBean>>>
+
+    /**
      * 获取文章列表
      * https://www.wanandroid.com/article/list/0/json
      *

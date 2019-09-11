@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.main.view
+package com.konsung.cla.demo2.view
 
 import android.annotation.SuppressLint
 import android.content.Context

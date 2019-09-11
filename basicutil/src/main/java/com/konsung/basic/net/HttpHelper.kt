@@ -2,6 +2,7 @@ package com.konsung.basic.net
 
 import android.content.Context
 import com.konsung.basic.bean.BannerData
+import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.config.RequestResult
@@ -17,6 +18,11 @@ interface HttpHelper {
      * 广告
      */
     fun loadBanner(context: Context, result: RequestResult<List<BannerData>>)
+
+    /**
+     * 常用网站
+     */
+    fun loadCommonWeb(context: Context, result: RequestResult<List<CommonWebBean>>)
 
     /**
      * 首页数据

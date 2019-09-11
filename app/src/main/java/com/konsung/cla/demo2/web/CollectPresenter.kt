@@ -5,7 +5,7 @@ import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.config.RequestResult
-import com.konsung.basic.ui.BasePresenter2
+import com.konsung.basic.ui.BasePresenter1
 import com.konsung.basic.ui.BasicView
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.toast
@@ -13,7 +13,7 @@ import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.App.Companion.context
 import com.konsung.cla.demo2.R
 
-class CollectPresenter(context: Context?, view: CollectView?) : BasePresenter2<String, CollectView>(context, view) {
+class CollectPresenter(context: Context?, view: CollectView?) : BasePresenter1<String, CollectView>(context, view) {
 
     companion object {
         val TAG: String = CollectPresenter::class.java.simpleName

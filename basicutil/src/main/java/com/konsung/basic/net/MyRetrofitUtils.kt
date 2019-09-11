@@ -100,6 +100,12 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
+    fun loadCommonWeb(context: Context, result: RequestResult<List<CommonWebBean>>){
+        getRetrofit(context)
+                .loadCommonWeb()
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun loadHome(context: Context, page: Int, result: RequestResult<HomeData>) {
         getRetrofit(context)
                 .loadHomeData(page)

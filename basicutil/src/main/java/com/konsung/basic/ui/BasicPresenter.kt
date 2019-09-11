@@ -17,7 +17,7 @@ abstract class BasicPresenter(context: Context?) {
     abstract fun destroy()
 }
 
-abstract class BasePresenter2<T, V : BasicView<T>>(context: Context?, var view: V?) : BasicPresenter(context) {
+abstract class BasePresenter1<T, V : BasicView<T>>(context: Context?, var view: V?) : BasicPresenter(context) {
 
     /**
      * activity销毁时调用这个方法
@@ -28,7 +28,7 @@ abstract class BasePresenter2<T, V : BasicView<T>>(context: Context?, var view: 
 
 }
 
-abstract class BasePresenter<T, V : BasicView<T>>(context: Context?, view: V?) : BasePresenter2<T, V>(context, view) {
+abstract class BasePresenter2<T, V : BasicView<T>>(context: Context?, view: V?) : BasePresenter1<T, V>(context, view) {
 
     /**
      * result放在这里是为了每次请求之前都要先停止之前的请求

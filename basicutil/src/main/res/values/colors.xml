@@ -24,5 +24,9 @@
     <color name="tool_bar_right">#3597fa</color>
     <color name="tool_bar_left">#3396fa</color>
     <color name="title_not_select">#f2c4c4</color>
+    <color name="grey1">#f4f6f9</color>
+    <color name="grey2">#f1f1f1</color>
+    <color name="grey3">#dfdfdf</color>
+    <color name="transparent">#00000000</color>
 
 </resources>

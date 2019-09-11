@@ -5,10 +5,10 @@ import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.UserInfo
 import com.konsung.basic.db.DbFactory
 import com.konsung.basic.db.DbType
-import com.konsung.basic.ui.BasePresenter
+import com.konsung.basic.ui.BasePresenter2
 import com.konsung.basic.ui.BasicView
 
-class RegisterPresenter(context: Context?, view: RegisterView?) : BasePresenter<UserDto, RegisterView>(context, view) {
+class RegisterPresenter(context: Context?, view: RegisterView?) : BasePresenter2<UserDto, RegisterView>(context, view) {
 
     private var userName: String? = null
     private var pass1: String? = null

@@ -2,6 +2,7 @@ package com.konsung.basic.ui
 
 import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -16,6 +17,7 @@ import com.konsung.basic.dialog.LoadingDialog
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.StatusBarUtil
+import okio.`-DeprecatedUtf8`
 
 
 abstract class BasicAty : AppCompatActivity(), DismissListener {
@@ -39,6 +41,11 @@ abstract class BasicAty : AppCompatActivity(), DismissListener {
         initView()
         initEvent()
         initData()
+    }
+
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Debug.info(TAG,"BasicAty onNewIntent $this")
     }
 
     override fun onStart() {

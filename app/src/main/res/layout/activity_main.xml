@@ -20,14 +20,14 @@
             android:id="@+id/appBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/red"
             android:theme="@style/ThemeOverlay.AppCompat"
             >
 
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_50"
-                android:background="@color/red"
+                android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 app:layout_scrollFlags="scroll"
                 >
@@ -43,6 +43,7 @@
                         android:layout_height="@dimen/dp_35"
                         android:layout_centerVertical="true"
                         android:src="@mipmap/ic_launcher_round"
+                        android:visibility="gone"
                         app:riv_oval="true"
                         />
 
@@ -55,7 +56,7 @@
                         android:layout_toEndOf="@id/rivHead"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/sp_15"
-                        android:visibility="gone"
+                        android:visibility="visible"
                         tools:text="测试"
                         />
 

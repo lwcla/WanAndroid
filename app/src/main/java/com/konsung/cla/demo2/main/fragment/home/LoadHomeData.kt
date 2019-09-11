@@ -2,11 +2,11 @@ package com.konsung.cla.demo2.main.fragment.home
 
 import android.content.Context
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.ui.BasePresenter
+import com.konsung.basic.ui.BasePresenter2
 import com.konsung.basic.ui.BasicView
 import com.konsung.basic.util.Debug
 
-class HomeDataPresenter(context: Context?, view: LoadHomeView?) : BasePresenter<HomeData, LoadHomeView>(context, view) {
+class HomeDataPresenter(context: Context?, view: LoadHomeView?) : BasePresenter2<HomeData, LoadHomeView>(context, view) {
 
     companion object {
         val TAG: String = HomeDataPresenter::class.java.simpleName

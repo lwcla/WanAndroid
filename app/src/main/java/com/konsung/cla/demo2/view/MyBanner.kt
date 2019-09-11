@@ -1,7 +1,8 @@
-package com.konsung.cla.demo2.main.fragment.home
+package com.konsung.cla.demo2.view
 
 import android.content.Context
 import android.util.AttributeSet
+import com.konsung.cla.demo2.main.fragment.home.BannerImageLoader
 import com.youth.banner.Banner
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
