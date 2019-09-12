@@ -62,11 +62,11 @@ class RefreshRecyclerView : SmartRefreshLayout {
      * @param index 当前fragment的位置
      * @param refreshData 在点击刷新按钮滚动到顶部之后，可能需要刷新页面的操作
      */
-    inline fun <T> initRecyclerView(myAdapter: BaseQuickAdapter<T, BaseViewHolder>?, fragmentRefresh: FragmentRefresh?, index: Int, crossinline refreshData: () -> Unit = {}) {
+    inline fun <T> initRecyclerView(myAdapter: BaseQuickAdapter<T, BaseViewHolder>?, fragmentRefresh: FragmentRefresh?, index: Int, hasHead: Boolean = false, crossinline refreshData: () -> Unit = {}) {
         rv.apply {
             val manager = LinearLayoutManager(context)
             val space = context.resources.getDimension(R.dimen.dp_8)
-            addItemDecoration(SpaceDecoration(space.toInt(), true))
+            addItemDecoration(SpaceDecoration(space.toInt(), hasHead))
             myAdapter?.setHasStableIds(true)
             itemAnimator?.changeDuration = 0
             adapter = myAdapter

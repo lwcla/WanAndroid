@@ -42,7 +42,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation project(':basicutil')
-
     implementation config.appcompat
     implementation config.constraintlayout
     testImplementation 'junit:junit:4.12'
@@ -51,17 +50,15 @@ dependencies {
     implementation config.material
     implementation config.roundedimageview
     implementation config.magicIndicator
-    implementation config.banner  //无限轮播
+    implementation config.banner
+    //无限轮播
     implementation config.base_recycler_view_adapter_helper
     implementation config.smart_refresh_layout
     implementation config.smart_refresh_header
     implementation config.recycler_view
     implementation config.multiple_status_view
     implementation config.av_loading_indicator_view
-    implementation config.agentweb
-    implementation config.agent_web_file_chooser
-    implementation config.agent_web_downloader
     implementation config.blurry
     implementation config.chipsLayoutManager
-
+    implementation project(':projectTree')
 }

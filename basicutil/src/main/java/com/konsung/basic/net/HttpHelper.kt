@@ -5,6 +5,8 @@ import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
+import com.konsung.basic.bean.project.ProjectBean
+import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.config.RequestResult
 
 interface HttpHelper {
@@ -13,6 +15,16 @@ interface HttpHelper {
      * 收藏
      */
     fun collect(context: Context, id: Int, result: RequestResult<String>)
+
+    /**
+     * 最新项目
+     */
+    fun fetchNewestProject(context: Context, page: Int, result: RequestResult<ProjectBean>)
+
+    /**
+     * 项目列表数据
+     */
+    fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>)
 
     /**
      * 广告
@@ -28,6 +40,11 @@ interface HttpHelper {
      * 首页数据
      */
     fun loadHomeData(context: Context, page: Int, result: RequestResult<HomeData>)
+
+    /**
+     * 项目分类标题
+     */
+    fun loadProjectTitle(context: Context, result: RequestResult<List<ProjectTitleBean>>)
 
     /**
      * 置顶文章

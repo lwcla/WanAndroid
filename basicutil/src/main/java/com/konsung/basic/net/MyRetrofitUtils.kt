@@ -3,6 +3,8 @@ package com.konsung.basic.net
 import android.content.Context
 import androidx.annotation.StringRes
 import com.konsung.basic.bean.*
+import com.konsung.basic.bean.project.ProjectBean
+import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.config.NoNetworkException
 import com.konsung.basic.config.RequestResult
@@ -73,13 +75,13 @@ class MyRetrofitUtils private constructor() {
                 .build()
     }
 
-    private fun getRetrofit(context: Context): InfoApi {
+    private fun getRetrofit(): InfoApi {
         return retrofit.create(InfoApi::class.java)
     }
 
-    fun getWeChatOfficial(context: Context) {
+    fun getWeChatOfficial() {
 
-        val call = getRetrofit(context).getWeChatOfficial()
+        val call = getRetrofit().getWeChatOfficial()
 
         call.enqueue(object : Callback<WeChatOfficial> {
 
@@ -95,49 +97,67 @@ class MyRetrofitUtils private constructor() {
     }
 
     fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
-        getRetrofit(context)
+        getRetrofit()
                 .loadBanner()
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun loadCommonWeb(context: Context, result: RequestResult<List<CommonWebBean>>){
-        getRetrofit(context)
+    fun fetchNewestProject(context: Context, page: Int, result: RequestResult<ProjectBean>) {
+        getRetrofit()
+                .fetchNewestProject(page)
+                .enqueue(CallInterceptor(context, result))
+    }
+
+    fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>) {
+        getRetrofit()
+                .fetchProjectTree(page, cId)
+                .enqueue(CallInterceptor(context, result))
+    }
+
+    fun loadCommonWeb(context: Context, result: RequestResult<List<CommonWebBean>>) {
+        getRetrofit()
                 .loadCommonWeb()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun loadHome(context: Context, page: Int, result: RequestResult<HomeData>) {
-        getRetrofit(context)
+        getRetrofit()
                 .loadHomeData(page)
                 .enqueue(CallInterceptor(context, result))
     }
 
+    fun loadProjectTitle(context: Context, result: RequestResult<List<ProjectTitleBean>>) {
+        getRetrofit()
+                .loadProjectTitle()
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun loadTopArticle(context: Context, result: RequestResult<List<HomeData.DatasBean>>) {
-        getRetrofit(context)
+        getRetrofit()
                 .loadTopArticle()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>) {
-        getRetrofit(context)
+        getRetrofit()
                 .register(userName, password1, password2)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>) {
-        getRetrofit(context)
+        getRetrofit()
                 .login(userName, passWord)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun collect(context: Context, id: Int, result: RequestResult<String>) {
-        getRetrofit(context)
+        getRetrofit()
                 .collect(id)
                 .enqueue(CallInterceptor(context, result, true))
     }
 
     fun unCollect(context: Context, id: Int, result: RequestResult<String>) {
-        getRetrofit(context)
+        getRetrofit()
                 .unCollect(id)
                 .enqueue(CallInterceptor(context, result, true))
     }

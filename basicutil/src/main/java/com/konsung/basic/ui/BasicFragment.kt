@@ -24,15 +24,19 @@ import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import java.lang.ref.WeakReference
 
-abstract class BasicFragment : Fragment(), NetStateChangeObserver {
+abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
 
     companion object {
         val TAG: String = BasicFragment::class.java.simpleName
+
+        const val INIT_VIEW_DELAY_TIME = 0L
 
         const val SHOW_NO_NETWORK = 0x001
         const val SHOW_LOADING = 0x002
         const val SHOW_ERROR = 0x003
         const val SHOW_CONTENT = 0x004
+
+        const val INIT_VIEW = 0X005
     }
 
     protected var multiplyStatusView: MultipleStatusView? = null
@@ -45,6 +49,8 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     private var firstShow = true
     var fragmentRefresh: FragmentRefresh? = null
     var index: Int = 0
+    //是否已经加载过contentView
+    private var showedContent = false
 
     private val localReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -73,7 +79,6 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Debug.info(TAG, "BasicFragment onCreate $this")
-        presenter = initPresenters()
 
         val intentFilter = IntentFilter(BaseConfig.COLLECT_RESULT_ACTION)
         context?.let {
@@ -86,16 +91,6 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
 
         if (rootView == null) {
             rootView = layoutInflater.inflate(R.layout.view_multiplee_status_container, container, false)
-            showView = layoutInflater.inflate(getLayoutId(), null)
-            multiplyStatusView = rootView?.findViewById(R.id.multiplyStatusView)
-            initView()
-            multiplyStatusView?.apply {
-                showLoading()
-                setOnRetryClickListener {
-                    showLoadView()
-                    resetData()
-                }
-            }
         }
 
         return rootView
@@ -112,11 +107,20 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
         NetChangeReceiver.registerObserver(this)
 
         resume = true
-        resume()
 
         if (firstShow) {
-            firstShow = false
-            firstShow()
+            presenter = initPresenters()
+            showView = layoutInflater.inflate(getLayoutId(), null)
+            multiplyStatusView = rootView?.findViewById(R.id.multiplyStatusView)
+            multiplyStatusView?.apply {
+                showLoading()
+                setOnRetryClickListener {
+                    showLoadView()
+                    resetData()
+                }
+            }
+
+            myHandler.sendEmptyMessageDelayed(INIT_VIEW, INIT_VIEW_DELAY_TIME)
         } else {
             show()
         }
@@ -125,15 +129,15 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     override fun onPause() {
         super.onPause()
         Debug.info(TAG, "BasicFragment onPause $this")
+        myHandler.removeMessages(INIT_VIEW)
         NetChangeReceiver.unRegisterObserver(this)
         resume = false
-        pause()
+        leave()
     }
 
     override fun onStop() {
         super.onStop()
         Debug.info(TAG, "BasicFragment onStop $this")
-
     }
 
     override fun onDestroy() {
@@ -173,23 +177,9 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     }
 
     /**
-     * fragment第一次显示
-     */
-    open fun firstShow() {
-
-    }
-
-    /**
      * 除了第一次显示时，其他都会调用这个方法
      */
     open fun show() {
-
-    }
-
-    /**
-     * fragment显示
-     */
-    open fun resume() {
 
     }
 
@@ -203,7 +193,7 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
     /**
      * fragment隐藏
      */
-    open fun pause() {
+    open fun leave() {
 
     }
 
@@ -215,19 +205,21 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
 
     }
 
-    protected fun showContentView() {
+    override fun getUiContext(): Context? = context
+
+    override fun showContentView() {
         myHandler.sendEmptyMessage(SHOW_CONTENT)
     }
 
-    protected fun showErrorView() {
+    override fun showErrorView() {
         myHandler.sendEmptyMessage(SHOW_ERROR)
     }
 
-    protected fun showLoadView() {
+    override fun showLoadView() {
         myHandler.sendEmptyMessage(SHOW_LOADING)
     }
 
-    protected fun showNoNetworkView() {
+    override fun showNoNetworkView() {
         myHandler.sendEmptyMessageDelayed(SHOW_NO_NETWORK, 1000)
     }
 
@@ -240,6 +232,10 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
      * 初始化界面元素，整个生命周期中只会执行一次
      */
     abstract fun initView()
+
+    abstract fun initEvent()
+
+    abstract fun initData()
 
     /**
      * 数据获取失败之后刷新数据
@@ -262,7 +258,7 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
                 return
             }
 
-            val basicFragment = reference.get() ?: return
+            val fragment = reference.get() ?: return
 
             when (msg.what) {
 
@@ -274,26 +270,39 @@ abstract class BasicFragment : Fragment(), NetStateChangeObserver {
                     removeMessages(SHOW_CONTENT)
 
                     when (msg.what) {
-                        SHOW_NO_NETWORK -> basicFragment.multiplyStatusView?.showNoNetwork()
-                        SHOW_LOADING -> basicFragment.multiplyStatusView?.showLoading()
-                        SHOW_ERROR -> basicFragment.multiplyStatusView?.showError()
+                        SHOW_NO_NETWORK -> fragment.multiplyStatusView?.showNoNetwork()
+                        SHOW_LOADING -> fragment.multiplyStatusView?.showLoading()
+                        SHOW_ERROR -> fragment.multiplyStatusView?.showError()
 
                         SHOW_CONTENT -> {
 
-                            if (basicFragment.showView == null) {
+                            if (fragment.showView == null) {
                                 sendEmptyMessage(SHOW_ERROR)
                                 return
                             }
 
-                            val layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
-                            basicFragment.multiplyStatusView?.showContent(basicFragment.showView, layoutParams)
+                            if (fragment.showedContent) {
+                                fragment.multiplyStatusView?.showContent()
+                            } else {
+                                fragment.showedContent = true
+                                val layoutParams = RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT)
+                                fragment.multiplyStatusView?.showContent(fragment.showView, layoutParams)
+                            }
+
                         }
                     }
                     return
                 }
+
+                INIT_VIEW -> {
+                    fragment.firstShow = false
+                    fragment.initView()
+                    fragment.initEvent()
+                    fragment.initData()
+                }
             }
 
-            basicFragment.handleMessage(msg)
+            fragment.handleMessage(msg)
         }
     }
 }

@@ -7,8 +7,9 @@ import com.konsung.basic.db.DbFactory
 import com.konsung.basic.db.DbType
 import com.konsung.basic.ui.BasePresenter2
 import com.konsung.basic.ui.BasicView
+import com.konsung.basic.ui.UiView
 
-class RegisterPresenter(context: Context?, view: RegisterView?) : BasePresenter2<UserDto, RegisterView>(context, view) {
+class RegisterPresenter(uiView: UiView?, view: RegisterView?) : BasePresenter2<UserDto, RegisterView>(uiView, view) {
 
     private var userName: String? = null
     private var pass1: String? = null

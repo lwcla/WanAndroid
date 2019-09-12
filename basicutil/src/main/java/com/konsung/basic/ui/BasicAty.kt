@@ -17,10 +17,9 @@ import com.konsung.basic.dialog.LoadingDialog
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.StatusBarUtil
-import okio.`-DeprecatedUtf8`
 
 
-abstract class BasicAty : AppCompatActivity(), DismissListener {
+abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
 
     companion object {
         val TAG: String = BasicAty::class.java.simpleName
@@ -45,7 +44,7 @@ abstract class BasicAty : AppCompatActivity(), DismissListener {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        Debug.info(TAG,"BasicAty onNewIntent $this")
+        Debug.info(TAG, "BasicAty onNewIntent $this")
     }
 
     override fun onStart() {
@@ -151,6 +150,24 @@ abstract class BasicAty : AppCompatActivity(), DismissListener {
     }
 
     override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
+
+    }
+
+    override fun getUiContext(): Context? = context
+
+    override fun showContentView() {
+
+    }
+
+    override fun showErrorView() {
+
+    }
+
+    override fun showLoadView() {
+
+    }
+
+    override fun showNoNetworkView() {
 
     }
 

@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.web
+package com.konsung.basic.presenter
 
 import android.content.Context
 import android.content.Intent
@@ -7,13 +7,12 @@ import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.config.RequestResult
 import com.konsung.basic.ui.BasePresenter1
 import com.konsung.basic.ui.BasicView
+import com.konsung.basic.ui.UiView
 import com.konsung.basic.util.AppUtils
+import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
-import com.konsung.cla.demo2.App
-import com.konsung.cla.demo2.App.Companion.context
-import com.konsung.cla.demo2.R
 
-class CollectPresenter(context: Context?, view: CollectView?) : BasePresenter1<String, CollectView>(context, view) {
+class CollectPresenter(uiView: UiView?, view: CollectView?) : BasePresenter1<String, CollectView>(uiView, view) {
 
     companion object {
         val TAG: String = CollectPresenter::class.java.simpleName
@@ -35,7 +34,7 @@ class CollectPresenter(context: Context?, view: CollectView?) : BasePresenter1<S
         if (!AppUtils.instance.hasLogined(ctx)) {
             //还没有登录，打开登录界面
             ctx.toast(BaseConfig.TAG, R.string.collect_after_login)
-            App.productUtils.startLoginAty(ctx)
+            AppUtils.startLoginAty(ctx)
             return false
         }
 
@@ -52,7 +51,9 @@ class CollectPresenter(context: Context?, view: CollectView?) : BasePresenter1<S
                 }
 
                 sendMessage(c, true, collectId, position, toCollect)
-                view?.success(context, position, toCollect)
+
+                getUiView()?.showContentView()
+                view?.success(c, position, toCollect)
             }
 
             override fun failed(message: String) {
@@ -66,7 +67,9 @@ class CollectPresenter(context: Context?, view: CollectView?) : BasePresenter1<S
                 }
 
                 sendMessage(c, true, collectId, position, toCollect)
-                view?.failed(context, message, position, toCollect)
+
+                getUiView()?.showErrorView()
+                view?.failed(c, message, position, toCollect)
             }
         }
 
@@ -117,7 +120,7 @@ open class CollectView : BasicView<String>() {
      * @param toCollect 这次的操作是去收藏还是去取消收藏
      */
     open fun success(context: Context, position: Int, toCollect: Boolean) {
-        super.success()
+        super.success(true)
     }
 
     /**

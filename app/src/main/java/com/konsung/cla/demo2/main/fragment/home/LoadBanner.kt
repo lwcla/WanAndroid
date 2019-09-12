@@ -1,11 +1,11 @@
 package com.konsung.cla.demo2.main.fragment.home
 
-import android.content.Context
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.ui.BasePresenter2
 import com.konsung.basic.ui.BasicView
+import com.konsung.basic.ui.UiView
 
-open class BannerPresenter(context: Context?, view: LoadBannerView?) : BasePresenter2<List<BannerData>, LoadBannerView>(context, view) {
+class BannerPresenter(uiView: UiView?, view: LoadBannerView?) : BasePresenter2<List<BannerData>, LoadBannerView>(uiView, view) {
 
     fun load() {
         request { ctx, result ->

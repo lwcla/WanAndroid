@@ -5,17 +5,28 @@ import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
+import com.konsung.basic.bean.project.ProjectBean
+import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.config.RequestResult
 
 class RequestUtils private constructor() : HttpHelper {
     companion object {
 
         val instance = RequestUtils()
-    }
-    private val request = MyRetrofitUtils.instance
 
+    }
+
+    private val request = MyRetrofitUtils.instance
     override fun collect(context: Context, id: Int, result: RequestResult<String>) {
         request.collect(context, id, result)
+    }
+
+    override fun fetchNewestProject(context: Context, page: Int, result: RequestResult<ProjectBean>) {
+        request.fetchNewestProject(context, page, result)
+    }
+
+    override fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>) {
+        request.fetchProjectTree(context, page, cId, result)
     }
 
     override fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
@@ -28,6 +39,10 @@ class RequestUtils private constructor() : HttpHelper {
 
     override fun loadHomeData(context: Context, page: Int, result: RequestResult<HomeData>) {
         request.loadHome(context, page, result)
+    }
+
+    override fun loadProjectTitle(context: Context, result: RequestResult<List<ProjectTitleBean>>) {
+        request.loadProjectTitle(context, result)
     }
 
     override fun loadTopArticle(context: Context, result: RequestResult<List<HomeData.DatasBean>>) {

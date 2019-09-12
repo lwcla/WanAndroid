@@ -4,6 +4,8 @@ import android.content.Context
 import android.widget.TextView
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.HomeData
+import com.konsung.basic.presenter.CollectPresenter
+import com.konsung.basic.presenter.CollectView
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.RefreshRecyclerView
@@ -11,13 +13,12 @@ import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.web.CollectPresenter
-import com.konsung.cla.demo2.web.CollectView
 
 /**
  * 首页
  */
 class HomeFragment : BasicFragment() {
+
 
     private val refreshRv by lazy { showView?.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
     private val homeAdapter by lazy { context?.let { HomeAdapter(it, mutableListOf()) } }
@@ -35,6 +36,15 @@ class HomeFragment : BasicFragment() {
 
     override fun initView() {
         headView = BannerHeadView(context!!)
+        homeAdapter?.addHeaderView(headView)
+        refreshRv?.initRecyclerView(homeAdapter, fragmentRefresh, index, true) {
+            refreshRv?.autoRefresh()
+            resetData()
+        }
+    }
+
+    override fun initEvent() {
+
         headView.onBannerItemClickListener = object : BannerHeadView.OnBannerItemClickListener {
             override fun click(data: BannerData) {
                 App.productUtils.startWebAty(context, title = data.title, link = data.url, artId = data.id, dataPosition = 0, collect = false, needCollect = false)
@@ -42,13 +52,11 @@ class HomeFragment : BasicFragment() {
         }
 
         homeAdapter?.apply {
-            addHeaderView(headView)
-
             setOnItemClickListener { _, view, position ->
                 val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
                 val d = findDataByPosition(position)
                 d?.apply {
-                    App.productUtils.startWebAty(activity,context,tvTitle, title, link, artId = id, dataPosition = position, collect = d.collect)
+                    App.productUtils.startWebAty(activity, context, tvTitle, title, link, artId = id, dataPosition = position, collect = d.collect)
                 }
             }
 
@@ -63,9 +71,12 @@ class HomeFragment : BasicFragment() {
                     //点击图片
                     R.id.imvEnvelopePic -> {
                         val url = findImageByPosition(position)
-                        url?.let {
-                            App.productUtils.startScreenImageAty(context!!, it)
-                        } ?: toast(TAG, R.string.data_error)
+                        if (url.isNullOrEmpty()) {
+                            toast(TAG, R.string.image_url_is_null)
+                            return@setOnItemChildClickListener
+                        }
+
+                        App.productUtils.startScreenImageAty(context!!, url)
                     }
 
                     //收藏
@@ -95,35 +106,7 @@ class HomeFragment : BasicFragment() {
             }
         }
 
-        initRefreshView()
-    }
-
-    override fun firstShow() {
-        fetchBannerData()
-        loadHomeData.loadWithTopData()
-    }
-
-    override fun show() {
-        headView.startPlay()
-    }
-
-    override fun pause() {
-        //停止轮播
-        headView.stopAutoPlay()
-    }
-
-    private fun fetchBannerData() {
-        loadBanner.load()
-    }
-
-    private fun initRefreshView() {
-
         refreshRv?.apply {
-
-            initRecyclerView(homeAdapter, fragmentRefresh, index) {
-                refreshRv?.autoRefresh()
-                resetData()
-            }
 
             setOnRefreshListener {
                 resetData()
@@ -135,6 +118,20 @@ class HomeFragment : BasicFragment() {
         }
     }
 
+    override fun initData() {
+        loadBanner.load()
+        loadHomeData.loadWithTopData()
+    }
+
+    override fun show() {
+        headView.startPlay()
+    }
+
+    override fun leave() {
+        //停止轮播
+        headView.stopAutoPlay()
+    }
+
     private fun initCollectPresenter(): CollectPresenter {
 
         val view = object : CollectView() {
@@ -144,34 +141,37 @@ class HomeFragment : BasicFragment() {
             }
         }
 
-        return CollectPresenter(context, view)
+        return CollectPresenter(this, view)
     }
 
     private fun initLoadBanner(): BannerPresenter {
 
-        return object : BannerPresenter(context, LoadBannerView()) {
-            override fun failed(context: Context, message: String) {
-                headView.error()
-            }
+        val view = object : LoadBannerView() {
 
-            override fun success(context: Context, t: List<BannerData>) {
+            override fun success(t: List<BannerData>, refreshData: Boolean) {
                 headView.setData(t, resume)
             }
+
+            override fun failed(string: String) {
+                headView.error()
+            }
         }
+
+        return BannerPresenter(this, view)
     }
 
     private fun initLoadHomeData(): HomeDataPresenter {
 
         val view = object : LoadHomeView() {
 
-            override fun success(context: Context, t: HomeData, refreshAll: Boolean) {
+            override fun success(context: Context, t: HomeData, refreshData: Boolean) {
 
                 t.datas?.let {
                     loadHomeData.page = t.curPage
                     loadHomeData.over = t.over
 
                     myHandler.post {
-                        if (refreshAll) {
+                        if (refreshData) {
                             homeAdapter?.setNewData(it)
                         } else {
                             homeAdapter?.addData(it)
@@ -179,7 +179,7 @@ class HomeFragment : BasicFragment() {
                     }
 
                     refreshRv?.apply {
-                        finishRefresh()
+                        finishRefresh(300)
                         finishLoadMore(200, true, t.over)
                     }
                 }
@@ -211,7 +211,7 @@ class HomeFragment : BasicFragment() {
             }
         }
 
-        return HomeDataPresenter(context, view)
+        return HomeDataPresenter(this, view)
     }
 
     override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {

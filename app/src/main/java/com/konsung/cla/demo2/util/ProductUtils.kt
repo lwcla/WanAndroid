@@ -10,7 +10,7 @@ import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.ui.ScreenImageAty
 import com.konsung.cla.demo2.login.LoginAty
 import com.konsung.cla.demo2.main.MainActivity
-import com.konsung.cla.demo2.web.WebViewAty
+import com.konsung.basic.ui.WebViewAty
 
 open class ProductUtils {
 

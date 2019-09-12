@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:background="@color/red"
             android:theme="@style/ThemeOverlay.AppCompat"
+            app:elevation="0dp"
             >
 
             <androidx.appcompat.widget.Toolbar
@@ -34,7 +35,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     >
 
                     <com.makeramen.roundedimageview.RoundedImageView

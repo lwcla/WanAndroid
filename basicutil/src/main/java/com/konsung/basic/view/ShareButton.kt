@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.view
+package com.konsung.basic.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -7,8 +7,8 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.widget.LinearLayout
 import android.widget.TextView
+import com.konsung.basic.util.R
 import com.konsung.basic.util.StringUtils
-import com.konsung.cla.demo2.R
 import kotlinx.android.synthetic.main.button_share.view.*
 
 class ShareButton(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {

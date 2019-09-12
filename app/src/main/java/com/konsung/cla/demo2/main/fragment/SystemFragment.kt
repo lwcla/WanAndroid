@@ -15,6 +15,13 @@ class SystemFragment : BasicFragment() {
 
     }
 
+    override fun initEvent() {
+    }
+
+    override fun initData() {
+    }
+
+
     override fun resetData() {
     }
 

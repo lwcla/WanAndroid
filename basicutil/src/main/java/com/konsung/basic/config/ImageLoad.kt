@@ -30,10 +30,7 @@ class ImageLoadFactory {
 
         fun getImageLoad(type: ImageLoadType): ImageLoad {
             return when (type) {
-
                 ImageLoadType.GLIDE -> ImageLoadGlideImpl.instance
-
-                else -> ImageLoadGlideImpl.instance
             }
         }
     }

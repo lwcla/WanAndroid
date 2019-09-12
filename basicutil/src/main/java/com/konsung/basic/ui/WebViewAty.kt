@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.web
+package com.konsung.basic.ui
 
 import android.content.Context
 import android.view.KeyEvent
@@ -15,14 +15,11 @@ import com.konsung.basic.config.BaseConfig.Companion.WEB_ARTICLE_ID
 import com.konsung.basic.config.BaseConfig.Companion.WEB_DATA_POSITION
 import com.konsung.basic.config.BaseConfig.Companion.WEB_TITLE
 import com.konsung.basic.config.BaseConfig.Companion.WEB_URL
-import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.ui.BasicPresenter
-import com.konsung.basic.util.StringUtils
-import com.konsung.basic.util.ToastUtils
-import com.konsung.basic.util.toast
-import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.view.ShareDialog
-import com.konsung.cla.demo2.view.ShareDialogListener
+import com.konsung.basic.dialog.ShareDialog
+import com.konsung.basic.dialog.ShareDialogListener
+import com.konsung.basic.presenter.CollectPresenter
+import com.konsung.basic.presenter.CollectView
+import com.konsung.basic.util.*
 import kotlinx.android.synthetic.main.activity_web.*
 
 
@@ -59,6 +56,8 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
 
         link = url
         artId = articleId
+
+        Debug.info(TAG, "WebViewAty initView artId=$artId collect?$collect url=$url")
 
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -123,7 +122,7 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
             }
         }
 
-        val presenter = CollectPresenter(context, view)
+        val presenter = CollectPresenter(this, view)
         presenter.sendMessage = true
 
         return presenter

@@ -22,12 +22,17 @@ abstract class RequestResult<T>(private val view: BasicView<T>?) {
      */
     var collectId = -1
 
+    /**
+     * 刷新数据
+     */
+    var refreshData = true
+
     open fun success(t: T) {
-        view?.success(t)
+        view?.success(t, refreshData)
     }
 
     open fun success() {
-        view?.success()
+        view?.success(refreshData)
     }
 
     open fun failed(message: String) {

@@ -58,6 +58,9 @@ dependencies {
     implementation config.design
     implementation config.magicIndicator
     implementation config.magicIndicator
+    implementation config.agentweb
+    implementation config.agent_web_file_chooser
+    implementation config.agent_web_downloader
 
     //数据库升级
     implementation config.green_dao_upgrade_helper

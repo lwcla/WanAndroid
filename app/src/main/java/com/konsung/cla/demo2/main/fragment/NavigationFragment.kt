@@ -12,6 +12,12 @@ class NavigationFragment : BasicFragment() {
 
     }
 
+    override fun initEvent() {
+    }
+
+    override fun initData() {
+    }
+
     override fun resetData() {
     }
 

@@ -1,12 +1,14 @@
 package com.konsung.basic.util
 
+import android.app.Activity
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import com.konsung.basic.config.BasicHelper
+import android.view.View
 import com.konsung.basic.config.BaseConfig
+import com.konsung.basic.config.BasicHelper
 
 
 class AppUtils {
@@ -28,6 +30,19 @@ class AppUtils {
 
         fun getContext(): Context {
             return basicConfig?.getContext() ?: throw NullPointerException()
+        }
+
+        fun startLoginAty(context: Context?) {
+            return basicConfig?.startLoginAty(context) ?: throw NullPointerException()
+        }
+
+        fun startScreenImageAty(context: Context, url: String) {
+            return basicConfig?.startScreenImageAty(context, url) ?: throw NullPointerException()
+        }
+
+        fun startWebAty(activity: Activity?, context: Context?, view: View, title: String?, link: String?, artId: Int, collect: Boolean, dataPosition: Int = -1, needCollect: Boolean = true) {
+            return basicConfig?.startWebAty(activity, context, view, title, link, artId, collect, dataPosition, needCollect)
+                    ?: throw NullPointerException()
         }
     }
 

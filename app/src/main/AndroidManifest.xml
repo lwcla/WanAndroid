@@ -46,7 +46,7 @@
             />
 
         <activity
-            android:name=".web.WebViewAty"
+            android:name="com.konsung.basic.ui.WebViewAty"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"/>

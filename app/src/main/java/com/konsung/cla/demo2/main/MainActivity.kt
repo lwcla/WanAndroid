@@ -9,6 +9,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import com.cla.project.tree.fragment.ProjectParentFragment
 import com.google.android.material.snackbar.Snackbar
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.config.BaseConfig
@@ -23,7 +24,6 @@ import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
 import com.konsung.cla.demo2.main.fragment.HomeParentFragment
 import com.konsung.cla.demo2.main.fragment.NavigationFragment
-import com.konsung.cla.demo2.main.fragment.ProjectFragment
 import com.konsung.cla.demo2.main.fragment.SystemFragment
 import com.konsung.cla.demo2.view.ViewPagerTitle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -194,12 +194,12 @@ open class MainActivity : BasicAty(), View.OnClickListener {
             }
         }
 
-        val firstFragment = HomeParentFragment()
-        firstFragment.fragmentRefresh = fragmentRefresh
+        val homePage = HomeParentFragment()
+        homePage.fragmentRefresh = fragmentRefresh
 
-        val fragment1 = ThreeBean<String, Int, BasicFragment>(getString(R.string.home), R.string.icon_home, firstFragment)
+        val fragment1 = ThreeBean<String, Int, BasicFragment>(getString(R.string.home), R.string.icon_home, homePage)
+        val fragment2 = ThreeBean<String, Int, BasicFragment>(getString(R.string.project), R.string.icon_project, ProjectParentFragment())
         val fragment3 = ThreeBean<String, Int, BasicFragment>(getString(R.string.system), R.string.icon_system, SystemFragment())
-        val fragment2 = ThreeBean<String, Int, BasicFragment>(getString(R.string.project), R.string.icon_project, ProjectFragment())
         val fragment4 = ThreeBean<String, Int, BasicFragment>(getString(R.string.navigation), R.string.icon_navigation, NavigationFragment())
         val fragmentList = listOf(fragment1, fragment2, fragment3, fragment4)
 

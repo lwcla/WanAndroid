@@ -248,20 +248,20 @@ class LoginAty : BasicAty(), View.OnClickListener {
 
         val view = object : RegisterView() {
 
-            override fun success(t: UserDto) {
+            override fun success(t: UserDto, refreshData: Boolean) {
                 toast(TAG, R.string.registered_success)
                 showRegister(true)
             }
         }
 
-        return RegisterPresenter(context,view)
+        return RegisterPresenter(this, view)
     }
 
     private fun initLoginPresenter(): LoginPresenter {
 
         val view = object : LoginView() {
 
-            override fun success(t: UserDto) {
+            override fun success(t: UserDto, refreshData: Boolean) {
                 toast(TAG, R.string.login_success)
                 SpUtils.putString(context, BaseConfig.USER_NAME, t.username)
                 App.productUtils.startMainAty(context)
@@ -282,7 +282,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
 
         }
 
-        return LoginPresenter(context, view)
+        return LoginPresenter(this, view)
     }
 
     override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {

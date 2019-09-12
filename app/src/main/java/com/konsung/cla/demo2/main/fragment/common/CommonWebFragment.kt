@@ -15,6 +15,7 @@ import com.konsung.cla.demo2.R
  */
 class CommonWebFragment : BasicFragment() {
 
+
     private var rvCommon: RecyclerView? = null
     private var commonWebAdapter: CommonWebAdapter? = null
 
@@ -28,11 +29,15 @@ class CommonWebFragment : BasicFragment() {
         rvCommon = showView?.findViewById(R.id.rvCommon)
     }
 
-    override fun resetData() {
+    override fun initEvent() {
+
+    }
+
+    override fun initData() {
         commonPresenter.load()
     }
 
-    override fun firstShow() {
+    override fun resetData() {
         commonPresenter.load()
     }
 
@@ -89,7 +94,7 @@ class CommonWebFragment : BasicFragment() {
 
         val view = object : CommonWebView() {
 
-            override fun success(t: List<CommonWebBean>) {
+            override fun success(t: List<CommonWebBean>, refreshData: Boolean) {
                 showContentView()
                 setAdapter(t)
             }
@@ -103,6 +108,6 @@ class CommonWebFragment : BasicFragment() {
             }
         }
 
-        return CommonWebPresenter(context, view)
+        return CommonWebPresenter(this, view)
     }
 }

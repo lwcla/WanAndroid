@@ -2,6 +2,7 @@ package com.konsung.basic.ui
 
 import android.content.Context
 import android.graphics.Color
+import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -28,10 +29,7 @@ abstract class VpBasicFragment : BasicFragment() {
 
     var titleList: List<TwoBean<String, BasicFragment>>? = null
 
-
     override fun getLayoutId(): Int = R.layout.fragment_vp_basic
-
-    override fun initPresenters(): List<BasicPresenter>? = null
 
     protected fun initViewPager(fragmentList: List<TwoBean<String, BasicFragment>>) {
 
@@ -40,7 +38,17 @@ abstract class VpBasicFragment : BasicFragment() {
             return
         }
 
+        if (fragmentList.isEmpty()) {
+            showErrorView()
+            return
+        }
+
         this.titleList = fragmentList
+
+        for (i in 0 until fragmentList.size) {
+            val threeBean = fragmentList[i]
+            threeBean.b.index = i
+        }
 
         val magicIndicator = showView?.findViewById<MagicIndicator>(R.id.magicIndicator) ?: return
         val viewPager = showView?.findViewById<ViewPager>(R.id.viewPager) ?: return
@@ -53,8 +61,8 @@ abstract class VpBasicFragment : BasicFragment() {
             override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
                 val clipPagerTitleView = ColorTransitionPagerTitleView(context)
                 clipPagerTitleView.text = titleList?.get(index)?.a
-                clipPagerTitleView.normalColor = ContextCompat.getColor(context!!, R.color.normal_color1)
-                clipPagerTitleView.selectedColor = Color.RED
+                clipPagerTitleView.normalColor = ContextCompat.getColor(context!!, R.color.normal_color2)
+                clipPagerTitleView.selectedColor = Color.WHITE
 
                 clipPagerTitleView.setOnClickListener {
 
@@ -74,13 +82,19 @@ abstract class VpBasicFragment : BasicFragment() {
 
             override fun getIndicator(context: Context): IPagerIndicator? {
                 val indicator = LinePagerIndicator(context)
-                indicator.setColors(Color.RED)
+                indicator.setColors(Color.WHITE)
                 return indicator
             }
         }
 
         magicIndicator.navigator = commonNavigator
         ViewPagerHelper.bind(magicIndicator, viewPager)
+
+        if (fragmentList.size == 1) {
+            magicIndicator.visibility = View.GONE
+        } else {
+            magicIndicator.visibility = View.VISIBLE
+        }
     }
 
     override fun refreshView() {
@@ -89,10 +103,6 @@ abstract class VpBasicFragment : BasicFragment() {
                 two.b.refreshView()
             }
         }
-    }
-
-    override fun resetData() {
-
     }
 }
 

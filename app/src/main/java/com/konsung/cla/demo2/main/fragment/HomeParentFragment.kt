@@ -2,11 +2,14 @@ package com.konsung.cla.demo2.main.fragment
 
 import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.ui.BasicFragment
+import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.VpBasicFragment
 import com.konsung.cla.demo2.main.fragment.common.CommonWebFragment
 import com.konsung.cla.demo2.main.fragment.home.HomeFragment
 
 class HomeParentFragment : VpBasicFragment() {
+
+    override fun initPresenters(): List<BasicPresenter>? = null
 
     override fun initView() {
         val homeFragment = HomeFragment()
@@ -18,7 +21,15 @@ class HomeParentFragment : VpBasicFragment() {
         initViewPager(listOf(f1, f2))
     }
 
-    override fun firstShow() {
+    override fun initEvent() {
+
+    }
+
+    override fun initData() {
         showContentView()
+    }
+
+    override fun resetData() {
+
     }
 }

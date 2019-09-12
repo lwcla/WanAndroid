@@ -152,7 +152,7 @@ class HomeData {
     var total: Int = 0
     var datas: List<DatasBean>? = null
 
-    class DatasBean {
+    public class DatasBean {
         /**
          * apkLink :
          * author : gdutxiaoxu
@@ -207,7 +207,7 @@ class HomeData {
         var zan: Int = 0
         var tags: List<TagsBean>? = null
 
-        class TagsBean {
+        public class TagsBean {
             /**
              * name : 项目
              * url : /project/list/1?cid=358

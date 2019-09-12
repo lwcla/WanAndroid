@@ -6,18 +6,35 @@ import com.konsung.basic.net.HttpHelper
 import com.konsung.basic.net.HttpHelperImpl
 import java.lang.ref.WeakReference
 
-abstract class BasicPresenter(context: Context?) {
+interface UiView {
 
-    private val ctxReference: WeakReference<Context?> = WeakReference(context)
+    fun getUiContext(): Context?
+
+    fun showContentView()
+
+    fun showErrorView()
+
+    fun showNoNetworkView()
+
+    fun showLoadView()
+}
+
+abstract class BasicPresenter(uiView: UiView?) {
+
+    private val ctxReference: WeakReference<UiView?> = WeakReference(uiView)
 
     protected val httpHelper: HttpHelper by lazy { HttpHelperImpl.create() }
 
-    fun getContext(): Context? = ctxReference.get()
+    var refreshData = true
+
+    fun getContext(): Context? = ctxReference.get()?.getUiContext()
+
+    fun getUiView(): UiView? = ctxReference.get()
 
     abstract fun destroy()
 }
 
-abstract class BasePresenter1<T, V : BasicView<T>>(context: Context?, var view: V?) : BasicPresenter(context) {
+abstract class BasePresenter1<T, V : BasicView<T>>(uiView: UiView?, var view: V?) : BasicPresenter(uiView) {
 
     /**
      * activity销毁时调用这个方法
@@ -28,7 +45,7 @@ abstract class BasePresenter1<T, V : BasicView<T>>(context: Context?, var view: 
 
 }
 
-abstract class BasePresenter2<T, V : BasicView<T>>(context: Context?, view: V?) : BasePresenter1<T, V>(context, view) {
+abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : BasePresenter1<T, V>(uiView, view) {
 
     /**
      * result放在这里是为了每次请求之前都要先停止之前的请求
@@ -39,20 +56,23 @@ abstract class BasePresenter2<T, V : BasicView<T>>(context: Context?, view: V?) 
      * 接口调用成功，可重写此方法处理返回的数据
      */
     open fun success(context: Context, t: T) {
-        view?.success(t)
+        getUiView()?.showContentView()
+        view?.success(t, refreshData)
     }
 
     /**
      * 接口调用成功
      */
     open fun success(context: Context) {
-        view?.success()
+        getUiView()?.showContentView()
+        view?.success(refreshData)
     }
 
     /**
      * 接口调用失败
      */
     open fun failed(context: Context, message: String) {
+        getUiView()?.showErrorView()
         view?.failed(message)
     }
 
@@ -60,6 +80,7 @@ abstract class BasePresenter2<T, V : BasicView<T>>(context: Context?, view: V?) 
      * 当前没有网络
      */
     open fun noNetwork(context: Context) {
+        getUiView()?.showNoNetworkView()
         view?.noNetwork()
     }
 
@@ -76,6 +97,7 @@ abstract class BasePresenter2<T, V : BasicView<T>>(context: Context?, view: V?) 
 
         stop()
         result = setRequestResult()
+        result?.refreshData = refreshData
         request.invoke(ctx, result!!)
     }
 
@@ -146,13 +168,32 @@ abstract class BasePresenter2<T, V : BasicView<T>>(context: Context?, view: V?) 
     }
 }
 
+abstract class BasePresenter3<T, V : BasicView<T>>(uiView: UiView?, view: V?) : BasePresenter2<T, V>(uiView, view) {
+
+    var pageStart = 0
+    var page = pageStart
+
+    override fun failed(context: Context, message: String) {
+
+        if (page > pageStart) {
+            --page
+        }
+
+        super.failed(context, message)
+    }
+
+    abstract fun refresh()
+
+    abstract fun loadMore()
+}
+
 abstract class BasicView<T> {
 
-    open fun success(t: T) {
+    open fun success(t: T, refreshData: Boolean) {
 
     }
 
-    open fun success() {
+    open fun success(refreshData: Boolean) {
 
     }
 

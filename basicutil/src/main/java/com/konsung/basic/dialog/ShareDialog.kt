@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.view
+package com.konsung.basic.dialog
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -16,10 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.util.AppUtils
+import com.konsung.basic.util.R
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
-import com.konsung.cla.demo2.App.Companion.context
-import com.konsung.cla.demo2.R
 
 
 class ShareDialog : BottomSheetDialogFragment(), View.OnClickListener {
@@ -167,7 +166,7 @@ class ShareAdapter(private val list: List<ThreeBean<Int, Int, Int>>) : RecyclerV
     }
 
 
-    class ShareViewHolder @SuppressLint("ClickableViewAccessibility") constructor(context: Context, view: View, listener: View.OnClickListener?) : RecyclerView.ViewHolder(view) {
+    class ShareViewHolder @SuppressLint("ClickableViewAccessibility") constructor(val context: Context, view: View, listener: View.OnClickListener?) : RecyclerView.ViewHolder(view) {
 
         companion object {
             val TAG: String = ShareViewHolder::class.java.simpleName
