@@ -35,4 +35,8 @@
     <string name="icon_qq_space">&#xe633;</string>
     <!--其他-->
     <string name="icon_other">&#xe62b;</string>
+    <!--展开详情-->
+    <string name="icon_on_the_details">&#xe613;</string>
+    <!--隐藏详情-->
+    <string name="icon_hide_the_details">&#xe612;</string>
 </resources>

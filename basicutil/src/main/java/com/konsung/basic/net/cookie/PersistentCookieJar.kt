@@ -38,7 +38,7 @@ class PersistentCookieJar(private val context: Context, private val cache: Cooki
 
     @Synchronized
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-        Debug.info(TAG, "PersistentCookieJar saveFromResponse url=$url")
+//        Debug.info(TAG, "PersistentCookieJar saveFromResponse url=$url")
         cache.addAll(cookies)
         persistor.saveAll(filterPersistentCookies(cookies))
     }
@@ -48,7 +48,7 @@ class PersistentCookieJar(private val context: Context, private val cache: Cooki
 
         for (cookie in cookies) {
             if (cookie.persistent) {
-                Debug.info(TAG, "PersistentCookieJar filterPersistentCookies cookie=$cookie")
+//                Debug.info(TAG, "PersistentCookieJar filterPersistentCookies cookie=$cookie")
                 persistentCookies.add(cookie)
             }
         }
@@ -57,7 +57,7 @@ class PersistentCookieJar(private val context: Context, private val cache: Cooki
 
     @Synchronized
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
-        Debug.info(TAG, "PersistentCookieJar loadForRequest url=$url")
+//        Debug.info(TAG, "PersistentCookieJar loadForRequest url=$url")
         val cookiesToRemove = ArrayList<Cookie>()
         val validCookies = ArrayList<Cookie>()
 
@@ -70,7 +70,7 @@ class PersistentCookieJar(private val context: Context, private val cache: Cooki
                 it.remove()
                 SpUtils.delete(context, BaseConfig.USER_NAME)
             } else if (currentCookie.matches(url)) {
-                Debug.info(TAG, "PersistentCookieJar loadForRequest cookid=$currentCookie")
+//                Debug.info(TAG, "PersistentCookieJar loadForRequest cookid=$currentCookie")
                 validCookies.add(currentCookie)
             }
         }
@@ -89,7 +89,7 @@ class PersistentCookieJar(private val context: Context, private val cache: Cooki
 
     @Synchronized
     override fun clearSession() {
-        Debug.info(TAG, "PersistentCookieJar clearSession")
+//        Debug.info(TAG, "PersistentCookieJar clearSession")
         cache.clear()
         cache.addAll(persistor.loadAll())
         SpUtils.delete(context, BaseConfig.USER_NAME)
@@ -97,7 +97,7 @@ class PersistentCookieJar(private val context: Context, private val cache: Cooki
 
     @Synchronized
     override fun clear() {
-        Debug.info(TAG, "PersistentCookieJar clear")
+//        Debug.info(TAG, "PersistentCookieJar clear")
         cache.clear()
         persistor.clear()
         SpUtils.delete(context, BaseConfig.USER_NAME)

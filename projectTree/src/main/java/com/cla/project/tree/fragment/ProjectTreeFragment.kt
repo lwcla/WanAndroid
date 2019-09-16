@@ -27,6 +27,7 @@ class ProjectTreePresenter(uiView: UiView?, view: ProjectView?, private val cId:
     }
 
     override fun loadMore() {
-        request { ctx, result -> httpHelper.fetchProjectTree(ctx, page, cId, result) }
+        refreshData = false
+        request { ctx, result -> httpHelper.fetchProjectTree(ctx, page++, cId, result) }
     }
 }

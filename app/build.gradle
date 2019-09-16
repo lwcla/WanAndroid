@@ -61,4 +61,5 @@ dependencies {
     implementation config.blurry
     implementation config.chipsLayoutManager
     implementation project(':projectTree')
+    implementation project(':systemTree')
 }

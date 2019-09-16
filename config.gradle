@@ -32,4 +32,5 @@ ext {
     green_dao_upgrade_helper = "com.github.yuweiguocn:GreenDaoUpgradeHelper:v2.1.0"//数据库升级
     green_dao = "org.greenrobot:greendao:3.2.2"//数据库
     chipsLayoutManager = 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar' //recyclerView自动换行
+    wraplayout = "am.widget:wraplayout:1.2.1"//自动换行控件
 }

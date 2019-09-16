@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentPagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.util.R
+import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
 import com.konsung.basic.view.ColorTransitionPagerTitleView
 import net.lucode.hackware.magicindicator.MagicIndicator
@@ -25,6 +26,10 @@ abstract class VpBasicFragment : BasicFragment() {
 
     companion object {
         val TAG: String = VpBasicFragment::class.java.simpleName
+    }
+
+    init {
+        needDelayInitView = false
     }
 
     var titleList: List<TwoBean<String, BasicFragment>>? = null
@@ -60,7 +65,7 @@ abstract class VpBasicFragment : BasicFragment() {
 
             override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
                 val clipPagerTitleView = ColorTransitionPagerTitleView(context)
-                clipPagerTitleView.text = titleList?.get(index)?.a
+                clipPagerTitleView.text = StringUtils.instance.formHtml(titleList?.get(index)?.a)
                 clipPagerTitleView.normalColor = ContextCompat.getColor(context!!, R.color.normal_color2)
                 clipPagerTitleView.selectedColor = Color.WHITE
 

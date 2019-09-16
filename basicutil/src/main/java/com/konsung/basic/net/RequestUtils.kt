@@ -7,6 +7,7 @@ import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
+import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.config.RequestResult
 
 class RequestUtils private constructor() : HttpHelper {
@@ -17,6 +18,7 @@ class RequestUtils private constructor() : HttpHelper {
     }
 
     private val request = MyRetrofitUtils.instance
+
     override fun collect(context: Context, id: Int, result: RequestResult<String>) {
         request.collect(context, id, result)
     }
@@ -27,6 +29,10 @@ class RequestUtils private constructor() : HttpHelper {
 
     override fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>) {
         request.fetchProjectTree(context, page, cId, result)
+    }
+
+    override fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>) {
+        request.fetchTreeList(context, result)
     }
 
     override fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {

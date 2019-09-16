@@ -29,6 +29,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
     companion object {
         val TAG: String = BasicFragment::class.java.simpleName
 
+        //这个时间不确定设置多少比较合适，设置为1秒以下起的作用不大，设置1秒以上会影响加载速度
         const val INIT_VIEW_DELAY_TIME = 0L
 
         const val SHOW_NO_NETWORK = 0x001
@@ -51,6 +52,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
     var index: Int = 0
     //是否已经加载过contentView
     private var showedContent = false
+    var needDelayInitView = true
 
     private val localReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context?, intent: Intent?) {
@@ -80,6 +82,8 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
         super.onCreate(savedInstanceState)
         Debug.info(TAG, "BasicFragment onCreate $this")
 
+        presenter = initPresenters()
+
         val intentFilter = IntentFilter(BaseConfig.COLLECT_RESULT_ACTION)
         context?.let {
             LocalBroadcastManager.getInstance(it).registerReceiver(localReceiver, intentFilter)
@@ -91,6 +95,11 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
 
         if (rootView == null) {
             rootView = layoutInflater.inflate(R.layout.view_multiplee_status_container, container, false)
+            multiplyStatusView = rootView?.findViewById(R.id.multiplyStatusView)
+            multiplyStatusView?.setOnRetryClickListener {
+                showLoadView()
+                resetData()
+            }
         }
 
         return rootView
@@ -103,24 +112,19 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
 
     override fun onResume() {
         super.onResume()
-        Debug.info(TAG, "BasicFragment onResume $this")
+        Debug.info(TAG, "BasicFragment onResume $this firstShow?$firstShow ")
         NetChangeReceiver.registerObserver(this)
 
         resume = true
 
         if (firstShow) {
-            presenter = initPresenters()
-            showView = layoutInflater.inflate(getLayoutId(), null)
-            multiplyStatusView = rootView?.findViewById(R.id.multiplyStatusView)
-            multiplyStatusView?.apply {
-                showLoading()
-                setOnRetryClickListener {
-                    showLoadView()
-                    resetData()
-                }
+            multiplyStatusView?.showLoading()
+//            Debug.info(TAG, "BasicFragment onResume showLoading needDelayInitView?$needDelayInitView")
+            if (needDelayInitView) {
+                myHandler.sendEmptyMessageDelayed(INIT_VIEW, INIT_VIEW_DELAY_TIME)
+            } else {
+                myHandler.sendEmptyMessage(INIT_VIEW)
             }
-
-            myHandler.sendEmptyMessageDelayed(INIT_VIEW, INIT_VIEW_DELAY_TIME)
         } else {
             show()
         }
@@ -295,7 +299,10 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
                 }
 
                 INIT_VIEW -> {
+                    Debug.info(TAG, "MyHandler handleMessage initView")
                     fragment.firstShow = false
+                    fragment.showView = fragment.layoutInflater.inflate(fragment.getLayoutId(), null)
+
                     fragment.initView()
                     fragment.initEvent()
                     fragment.initData()

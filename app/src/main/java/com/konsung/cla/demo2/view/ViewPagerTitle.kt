@@ -28,7 +28,7 @@ class ViewPagerTitle(context: Context, @StringRes private val stringRes: Int, te
         tvIcon = customLayout.findViewById(R.id.tvIcon) as TextView
         StringUtils.instance.loadTextIcon(context, tvIcon)
         initIcon()
-        tvName.text = text
+        tvName.text = StringUtils.instance.formHtml(text)
         setContentView(customLayout)
 
         onPagerTitleChangeListener = object : OnPagerTitleChangeListener {

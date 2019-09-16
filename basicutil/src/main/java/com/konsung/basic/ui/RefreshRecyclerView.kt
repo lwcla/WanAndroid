@@ -71,38 +71,49 @@ class RefreshRecyclerView : SmartRefreshLayout {
             itemAnimator?.changeDuration = 0
             adapter = myAdapter
             layoutManager = manager
-            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+        }
 
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+        setRefreshListener(fragmentRefresh, index, refreshData)
+    }
+
+    /**
+     * 滚动到顶部之后刷新数据
+     * @param fragmentRefresh 根据recyclerView的滚动位置，通知当前是否为刷新状态
+     * @param refreshData 在点击刷新按钮滚动到顶部之后，可能需要刷新页面的操作
+     */
+    inline fun setRefreshListener(fragmentRefresh: FragmentRefresh?, index: Int, crossinline refreshData: () -> Unit = {}) {
+
+        rv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
 //                        Debug.info(TAG, "HomeFragment onScrollStateChanged newState=$newState")
 
-                    //newState ==0 时表示滚动停止
-                    if (newState != 0) {
-                        return
-                    }
-
-                    //recyclerView.canScrollVertically(-1)为false时表示滚动到顶部
-                    if (recyclerView.canScrollVertically(-1)) {
-                        return
-                    }
-
-                    //已经滚动到顶部，修改当前状态
-                    fragmentRefresh?.refresh(false, index)
-
-                    if (needRefresh) {
-                        needRefresh = false
-                        refreshData.invoke()
-                    }
+                //newState ==0 时表示滚动停止
+                if (newState != 0) {
+                    return
                 }
 
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                //recyclerView.canScrollVertically(-1)为false时表示滚动到顶部
+                if (recyclerView.canScrollVertically(-1)) {
+                    return
+                }
+
+                //已经滚动到顶部，修改当前状态
+                fragmentRefresh?.refresh(false, index)
+
+                if (needRefresh) {
+                    needRefresh = false
+                    refreshData.invoke()
+                }
+            }
+
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
 //                        Debug.info(TAG, "HomeFragment onScrolled dy=$dy")
-                    if (dy > 0) {
-                        //向下滚动
-                        fragmentRefresh?.refresh(true, index)
-                    }
+                if (dy > 0) {
+                    //向下滚动
+                    fragmentRefresh?.refresh(true, index)
                 }
-            })
-        }
+            }
+        })
     }
 }

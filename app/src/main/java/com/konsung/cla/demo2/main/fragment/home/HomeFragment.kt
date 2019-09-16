@@ -19,6 +19,9 @@ import com.konsung.cla.demo2.R
  */
 class HomeFragment : BasicFragment() {
 
+    init {
+        needDelayInitView = false
+    }
 
     private val refreshRv by lazy { showView?.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
     private val homeAdapter by lazy { context?.let { HomeAdapter(it, mutableListOf()) } }

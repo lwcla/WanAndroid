@@ -3,6 +3,7 @@ package com.konsung.basic.net
 import com.konsung.basic.bean.*
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
+import com.konsung.basic.bean.tree.SystemTreeListBean
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -41,6 +42,13 @@ interface InfoApi {
      */
     @GET("project/list/{page}/json")
     fun fetchProjectTree(@Path("page") page: Int, @Query("cid") cId: Int): Call<BasicData<ProjectBean>>
+
+    /**
+     * 体系数据
+     * https://www.wanandroid.com/tree/json
+     */
+    @GET("tree/json")
+    fun fetchTreeList(): Call<BasicData<List<SystemTreeListBean>>>
 
     /**
      * 广告栏

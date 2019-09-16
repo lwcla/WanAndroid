@@ -7,6 +7,7 @@ import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
+import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.config.RequestResult
 
 interface HttpHelper {
@@ -25,6 +26,11 @@ interface HttpHelper {
      * 项目列表数据
      */
     fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>)
+
+    /**
+     * 体系分类列表
+     */
+    fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>)
 
     /**
      * 广告
