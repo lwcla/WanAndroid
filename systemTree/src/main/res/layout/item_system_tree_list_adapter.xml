@@ -4,13 +4,14 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="@dimen/dp_10"
     app:cardElevation="@dimen/dp_3"
     >
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/llContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -24,6 +25,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_17"
+            android:transitionName="tvTitle"
             tools:text="开发环境"
             />
 
@@ -31,32 +33,34 @@
             android:id="@+id/llTreeContent"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
             android:layout_marginStart="@dimen/dp_10"
-            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_15"
             android:layout_marginEnd="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
             />
 
         <RelativeLayout
             android:id="@+id/rlDetail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_10"
-            android:background="@color/light_grey"
-            android:paddingTop="@dimen/dp_8"
-            android:paddingBottom="@dimen/dp_8"
+            android:layout_alignBottom="@id/llTreeContent"
+            android:background="@drawable/bg_detail"
             >
 
             <TextView
                 android:id="@+id/tvDetail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:paddingTop="@dimen/dp_4"
+                android:paddingBottom="@dimen/dp_4"
                 android:textColor="@color/black"
-                android:textSize="@dimen/sp_14"
+                android:textSize="@dimen/sp_11"
                 tools:ignore="ContentDescription"
                 />
-
         </RelativeLayout>
-    </LinearLayout>
+    </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

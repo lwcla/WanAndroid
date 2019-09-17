@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?android:attr/selectableItemBackground"
+    app:cardElevation="@dimen/dp_4"
+    tools:targetApi="lollipop"
+    >
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/dp_13"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingEnd="@dimen/dp_13"
+        >
+
+        <LinearLayout
+            android:id="@+id/llTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_5"
+            android:layout_marginBottom="@dimen/dp_8"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dp_5"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.008"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            >
+
+            <TextView
+                android:id="@+id/tvTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:background="@drawable/bg_top"
+                android:padding="@dimen/dp_3"
+                android:text="@string/tag_placed_at_the_top"
+                android:textColor="@color/red"
+                android:textSize="@dimen/sp_11"
+                android:visibility="visible"
+                />
+
+            <TextView
+                android:id="@+id/tvFresh"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:background="@drawable/bg_top"
+                android:padding="@dimen/dp_3"
+                android:text="@string/tag_new"
+                android:textColor="@color/red"
+                android:textSize="@dimen/sp_11"
+                android:visibility="visible"
+                />
+
+            <TextView
+                android:id="@+id/tvTag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:background="@drawable/bg_tag"
+                android:padding="@dimen/dp_3"
+                android:text="@string/tag_new"
+                android:textColor="@color/btn_search_color"
+                android:textSize="@dimen/sp_11"
+                android:visibility="visible"
+                />
+
+            <TextView
+                android:id="@+id/tvAuthor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textSize="@dimen/sp_15"
+                tools:text="wdnmd"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:focusable="false"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/llTitle"
+            app:layout_constraintVertical_bias="0"
+            >
+
+            <ImageView
+                android:id="@+id/imvEnvelopePic"
+                android:layout_width="@dimen/dp_70"
+                android:layout_height="@dimen/dp_115"
+                android:layout_gravity="center"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:background="@color/bg_menu"
+                android:scaleType="fitXY"
+                android:visibility="visible"
+                app:layout_constraintVertical_bias="0.148"
+                tools:ignore="ContentDescription"
+                />
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:transitionName="tvTitle"
+                    android:focusable="false"
+                    android:maxLines="2"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_16"
+                    tools:ignore="RtlSymmetry"
+                    tools:text="可定制化阴影的万能阴影布局ShadowLayout 2.0 震撼上线，效果赶超CardView。（需要阴影地方，被它嵌套即可享受阴影，阴影可定制化）"
+                    />
+
+                <TextView
+                    android:id="@+id/tvDesc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:ellipsize="end"
+                    android:focusable="false"
+                    android:maxLines="4"
+                    android:textColor="@android:color/darker_gray"
+                    android:textSize="@dimen/sp_12"
+                    tools:text="可定制化阴影的万能阴影布局ShadowLayout 2.0 震撼上线。效果赶超CardView。阴影支持x,y轴偏移，支持阴影扩散程度，支持阴影圆角，支持单边或多边不显示阴影；支持随意更改颜色值，支持随意更改颜色值，支持随意更改颜色值。重要的事情说三遍"
+                    />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvChapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_8"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@id/llTitle"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/llNice"
+            app:layout_constraintTop_toTopOf="@id/llTitle"
+            app:layout_constraintVertical_bias="0.6"
+            tools:text="基础知识"
+            />
+
+        <ImageView
+            android:id="@+id/imvStart"
+            android:layout_width="@dimen/dp_41"
+            android:layout_height="@dimen/dp_35"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_13"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_13"
+            android:paddingBottom="@dimen/dp_10"
+            app:layout_constraintBottom_toBottomOf="@id/llNice"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/llNice"
+            app:layout_constraintTop_toTopOf="@id/llNice"
+            app:layout_constraintVertical_bias="0.5"
+            app:srcCompat="@mipmap/start_off"
+            tools:ignore="ContentDescription"
+            />
+
+        <LinearLayout
+            android:id="@+id/llNice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_15"
+            android:paddingBottom="@dimen/dp_8"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@id/llTitle"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+            app:layout_constraintVertical_bias="0"
+            tools:ignore="RtlSymmetry"
+            >
+
+            <ImageView
+                android:id="@+id/imvNice"
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_25"
+                android:clickable="true"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:padding="@dimen/dp_5"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                app:srcCompat="@mipmap/nice_off"
+                tools:ignore="ContentDescription"
+                />
+
+            <TextView
+                android:id="@+id/tvNiceNum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:gravity="bottom"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintBottom_toBottomOf="@id/imvNice"
+                app:layout_constraintStart_toEndOf="@id/imvNice"
+                app:layout_constraintTop_toTopOf="@id/imvNice"
+                app:layout_constraintVertical_bias="0.7"
+                tools:text="100"
+                />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/sp_10"
+            app:layout_constraintBottom_toBottomOf="@id/imvStart"
+            app:layout_constraintEnd_toEndOf="@id/tvChapter"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toEndOf="@id/llNice"
+            app:layout_constraintTop_toTopOf="@id/imvStart"
+            app:layout_constraintVertical_bias="0.5"
+            tools:text="2019-08-15 11:30"
+            />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager
 import android.util.DisplayMetrics
 import android.view.View
 import android.view.WindowManager
+import com.konsung.basic.bean.TwoBean
 
 class Utils {
 
@@ -12,7 +13,10 @@ class Utils {
 
         private val TAG: String = Utils::class.java.simpleName
 
-        fun getAndroiodScreenProperty(context: Context) {
+        /**
+         * 获取屏幕宽高
+         */
+        fun getAndroiodScreenProperty(context: Context): TwoBean<Int, Int> {
             val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val dm = DisplayMetrics()
             wm.defaultDisplay.getMetrics(dm)
@@ -24,6 +28,20 @@ class Utils {
             val screenWidth = (width / density).toInt()//屏幕宽度(dp)
             val screenHeight = (height / density).toInt()//屏幕高度(dp)
             println("lwl $TAG Utils getAndroiodScreenProperty screenWidth=$screenWidth screenHeight=$screenHeight")
+            return TwoBean(screenWidth, screenHeight)
+        }
+
+        /**
+         * 获取屏幕宽高
+         */
+        fun getScreenProperty(context: Context): TwoBean<Int, Int> {
+            val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val dm = DisplayMetrics()
+            wm.defaultDisplay.getMetrics(dm)
+            val width = dm.widthPixels// 屏幕宽度（像素）
+            val height = dm.heightPixels // 屏幕高度（像素）
+            Debug.info(TAG, "Utils getScreenProperty width=$width height=$height")
+            return TwoBean(width, height)
         }
 
 

@@ -37,6 +37,9 @@ class BaseConfig {
         //标题集合
         const val VP_FRAGMENT_TITLE_BUNDLE = "vpFragmentTitleBundle"
         const val VP_FRAGMENT_TITLE = "vpFragmentTitle"
+
+        const val ACTIVITY_TITLE = "activityTitle"
+        const val SYSTEM_TREE_TITLE_LIST = "systemTreeTitleList"
     }
 
 }

@@ -35,6 +35,10 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchTreeList(context, result)
     }
 
+    override fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>) {
+        request.fetchSystemTreeDetail(context, page, cid, result)
+    }
+
     override fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
         request.loadBanner(context, result)
     }

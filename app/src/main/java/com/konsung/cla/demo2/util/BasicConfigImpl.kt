@@ -3,6 +3,7 @@ package com.konsung.cla.demo2.util
 import android.app.Activity
 import android.content.Context
 import android.view.View
+import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.config.BasicHelper
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.BuildConfig
@@ -25,6 +26,10 @@ class BasicConfigImpl private constructor() : BasicHelper {
 
     override fun startScreenImageAty(context: Context, url: String) {
         App.productUtils.startScreenImageAty(context, url)
+    }
+
+    override fun startSystemTreeDetailAty(activity: Activity?, view: View, title: SystemTreeTitle) {
+        App.productUtils.startSystemTreeDetailAty(activity, view, title)
     }
 
     override fun startWebAty(activity: Activity?, context: Context?, view: View, title: String?, link: String?, artId: Int, collect: Boolean, dataPosition: Int, needCollect: Boolean) {

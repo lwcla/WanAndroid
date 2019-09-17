@@ -121,6 +121,12 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
+    fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>) {
+        getRetrofit()
+                .fetchSystemTreeDetail(page, cid)
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun loadCommonWeb(context: Context, result: RequestResult<List<CommonWebBean>>) {
         getRetrofit()
                 .loadCommonWeb()

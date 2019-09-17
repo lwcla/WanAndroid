@@ -51,6 +51,13 @@ interface InfoApi {
     fun fetchTreeList(): Call<BasicData<List<SystemTreeListBean>>>
 
     /**
+     * 知识体系下的文章
+     * https://www.wanandroid.com/article/list/0/json?cid=60
+     */
+    @GET("article/list/{page}/json")
+    fun fetchSystemTreeDetail(@Path("page") page: Int, @Query("cid") cId: Int): Call<BasicData<ProjectBean>>
+
+    /**
      * 广告栏
      * https://www.wanandroid.com/banner/json
      *

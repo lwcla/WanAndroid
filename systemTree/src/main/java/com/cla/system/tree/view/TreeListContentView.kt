@@ -3,15 +3,16 @@ package com.cla.system.tree.view
 import am.widget.wraplayout.WrapLayout
 import android.content.Context
 import android.util.AttributeSet
-import android.view.LayoutInflater
 import android.view.View
-import android.widget.LinearLayout
+import android.view.View.MeasureSpec.UNSPECIFIED
+import android.view.ViewGroup
+import android.widget.FrameLayout
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.cla.system.tree.R
+import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
-import com.konsung.basic.util.ConvertUtils
 import com.konsung.basic.util.Debug
-import com.konsung.basic.util.Utils
 
 class TreeListContentView(context: Context, attrs: AttributeSet) : WrapLayout(context, attrs) {
 
@@ -19,8 +20,13 @@ class TreeListContentView(context: Context, attrs: AttributeSet) : WrapLayout(co
         val TAG: String = TreeListContentView::class.java.simpleName
     }
 
+    var itemClickListener: OnClickListener? = null
+
+    private val space: Int = context.resources.getDimension(R.dimen.dp_7).toInt()
+
+    var contentWidth: Int = 0
+
     init {
-        val space = ConvertUtils.dp2px(context, 15.toFloat())
         horizontalSpacing = space
         verticalSpacing = space
         gravity = GRAVITY_CENTER
@@ -45,60 +51,132 @@ class TreeListContentView(context: Context, attrs: AttributeSet) : WrapLayout(co
             }
         } else {
             for (i in childCount until dataSize) {
-                val child = getChildView()
+                val child = TreeListTextView(context)
+                child.listener = itemClickListener
                 child.visibility = View.VISIBLE
                 addView(child)
             }
         }
 
         for (i in 0 until dataSize) {
-            val child = getChildAt(i) as TextView
+            val child = getChildAt(i) as TreeListTextView
             child.visibility = View.VISIBLE
-            child.text = bean.children[i].name
+            child.bind(bean.children[i], i)
         }
     }
 
-    private fun getChildView(): TextView {
-        val inflater = LayoutInflater.from(context)
-        return inflater.inflate(R.layout.item_system_tree_list_adapter2, this, false) as TextView
-    }
+    /**
+     * 计算view的高度
+     *
+     * @return TwoBean(view的高度,总共几行)
+     */
+    fun getViewHeight(): TwoBean<Int, Int> {
 
-    fun getViewHeight(): Int {
+        var itemWidths = 0
+        val viewWidth = contentWidth - paddingStart - paddingEnd
+        var itemHeight = 0
+        val itemHeightList = mutableListOf<Int>()
+        var columnsNum = 0
 
-        if (childCount == 0) {
-            return 0
-        }
+//        Debug.info(TAG, "TreeListContentView measure paddingStart=$paddingStart itemWidths=$itemWidths viewWidth=$viewWidth")
 
-        Debug.info(TAG, "TreeListContentView getViewHeight numRows=$numRows")
+        var i = 0
+        while (i in 0 until childCount) {
 
-        var num = 1
-        var viewNum = 0
-        for (row in 0 until numRows) {
-            val columns = getNumColumns(row)
-            Debug.info(TAG, "TreeListContentView getViewHeight row=$row columns=$columns")
+//            Debug.info(TAG, "TreeListContentView measure i=$i childCount=$childCount")
 
-            viewNum += columns
-
-            if (viewNum + 1 >= childCount) {
-                break
+            val child = getChildAt(i) as TextView
+            if (child.visibility == View.GONE) {
+                i++
+                continue
             }
 
-            val childView = getChildAt(viewNum + 1)
-            if (childView.visibility == View.GONE) {
-                break
+            measureChild(child, UNSPECIFIED, UNSPECIFIED)
+
+            val h = child.measuredHeight
+            itemHeight = if (h > itemHeight) {
+                h
+            } else {
+                itemHeight
             }
 
-            num++
+//            Debug.info(TAG, "TreeListContentView measure text=${child.text} child.width=${child.measuredWidth}")
+
+            itemWidths += if (columnsNum == 0) {
+                child.measuredWidth
+            } else {
+                space + child.measuredWidth
+            }
+
+//            Debug.info(TAG, "TreeListContentView measure itemWidths=$itemWidths viewWidth=$viewWidth ")
+
+            if (itemWidths > viewWidth) {
+                Debug.info(TAG, "TreeListContentView getViewHeight 计算下一行")
+                itemHeightList.add(itemHeight)
+                itemWidths = 0
+                itemHeight = 0
+                columnsNum = 0
+                continue
+            }
+
+            i++
+            columnsNum++
         }
 
-        Debug.info(TAG, "TreeListContentView getViewHeight num=$num viewNum=$viewNum")
+        //最后一行在这里添加到集合中
+        itemHeightList.add(itemHeight)
 
-        val child = getChildAt(0)
-        val childHeight = Utils.getUnDisplayViewHeight(child)
-        val viewTotalHeight = childHeight * num
+        var viewHeight = paddingTop + paddingBottom
+        val lineNum = itemHeightList.size
 
-        val layoutParams = layoutParams as LinearLayout.LayoutParams
-        Debug.info(TAG, "TreeListContentView getViewHeight paddingBottom=$paddingBottom paddingTop=$paddingTop topMargin=${layoutParams.topMargin} bottomMargin=${layoutParams.bottomMargin} verticalSpacing=${verticalSpacing * (num - 1)}")
-        return viewTotalHeight + paddingBottom + paddingTop + layoutParams.topMargin + layoutParams.bottomMargin + (verticalSpacing * (num - 1))
+        for (n in 0 until lineNum) {
+
+//            Debug.info(TAG, "TreeListContentView getViewHeight 每一行的高度 i=$i height=${itemHeightList[n]}")
+
+            viewHeight += if (n == 0) {
+                itemHeightList[0]
+            } else {
+                space + itemHeightList[n]
+            }
+        }
+
+        Debug.info(TAG, "TreeListContentView measure viewHeight=$viewHeight 总共有$lineNum 行")
+
+        return TwoBean(viewHeight, lineNum)
     }
+}
+
+class TreeListTextView(context: Context) : TextView(context) {
+
+    private var bean: SystemTreeListBean? = null
+    private var position: Int = -1
+
+    var listener: OnClickListener? = null
+
+    init {
+        layoutParams = ViewGroup.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
+        val padding = context.resources.getDimension(R.dimen.dp_5).toInt()
+        setPadding(padding, padding, padding, 0)
+        setTextColor(ContextCompat.getColor(context, R.color.value_default))
+        textSize = 14.toFloat()
+        id = R.id.tvName
+
+        setOnClickListener {
+            if (bean == null) {
+                return@setOnClickListener
+            }
+
+            it.setTag(R.id.text_view_click_data, bean)
+            it.setTag(R.id.text_view_click_position, position)
+            listener?.onClick(it)
+        }
+    }
+
+    fun bind(bean: SystemTreeListBean, position: Int) {
+        this.bean = bean
+        this.position = position
+
+        text = bean.name
+    }
+
 }

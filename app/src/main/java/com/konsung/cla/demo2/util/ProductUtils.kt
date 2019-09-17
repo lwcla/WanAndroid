@@ -5,12 +5,14 @@ import android.app.ActivityOptions
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import com.cla.system.tree.detail.SystemTreeDetailAty
 import com.konsung.basic.bean.ScreenImageData
+import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.ui.ScreenImageAty
+import com.konsung.basic.ui.WebViewAty
 import com.konsung.cla.demo2.login.LoginAty
 import com.konsung.cla.demo2.main.MainActivity
-import com.konsung.basic.ui.WebViewAty
 
 open class ProductUtils {
 
@@ -35,6 +37,15 @@ open class ProductUtils {
     open fun startScreenImageAty(context: Context, urls: List<String>, currentIndex: Int = 0) {
         val data = ScreenImageData(urls, currentIndex)
         startScreenImageAty(context, data)
+    }
+
+    open fun startSystemTreeDetailAty(activity: Activity?, view: View, title: SystemTreeTitle) {
+        activity?.let {
+            val intent = Intent()
+            intent.putExtra(BaseConfig.SYSTEM_TREE_TITLE_LIST, title)
+            intent.setClass(it, SystemTreeDetailAty::class.java)
+            it.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity, view, "tvTitle").toBundle())
+        }
     }
 
     open fun setWebAty(context: Context, intent: Intent) {

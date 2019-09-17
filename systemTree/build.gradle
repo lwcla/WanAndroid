@@ -1,5 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 
 def config = rootProject.ext
 
@@ -40,6 +41,7 @@ dependencies {
     implementation config.smart_refresh_header
     implementation config.material
     implementation config.wraplayout
+    implementation config.magicIndicator
 }
 repositories {
     mavenCentral()

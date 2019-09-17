@@ -33,6 +33,11 @@ interface HttpHelper {
     fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>)
 
     /**
+     * 知识体系下的文章
+     */
+    fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>)
+
+    /**
      * 广告
      */
     fun loadBanner(context: Context, result: RequestResult<List<BannerData>>)

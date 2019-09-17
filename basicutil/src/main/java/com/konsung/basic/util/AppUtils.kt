@@ -7,6 +7,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.view.View
+import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.config.BasicHelper
 
@@ -38,6 +39,11 @@ class AppUtils {
 
         fun startScreenImageAty(context: Context, url: String) {
             return basicConfig?.startScreenImageAty(context, url) ?: throw NullPointerException()
+        }
+
+        fun startSystemTreeDetailAty(activity: Activity?, view: View, title: SystemTreeTitle) {
+            return basicConfig?.startSystemTreeDetailAty(activity, view, title)
+                    ?: throw NullPointerException()
         }
 
         fun startWebAty(activity: Activity?, context: Context?, view: View, title: String?, link: String?, artId: Int, collect: Boolean, dataPosition: Int = -1, needCollect: Boolean = true) {

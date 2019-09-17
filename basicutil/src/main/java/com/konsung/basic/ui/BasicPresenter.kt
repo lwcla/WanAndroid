@@ -182,6 +182,18 @@ abstract class BasePresenter3<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
         super.failed(context, message)
     }
 
+    fun refresh(request3: (Context, RequestResult<T>) -> Unit) {
+        refreshData = true
+        page = pageStart
+        request(request3)
+    }
+
+    fun loadMore(request3: (Context, RequestResult<T>) -> Unit) {
+        refreshData = false
+        page++
+        request(request3)
+    }
+
     abstract fun refresh()
 
     abstract fun loadMore()

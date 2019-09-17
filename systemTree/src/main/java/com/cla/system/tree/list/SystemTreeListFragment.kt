@@ -1,14 +1,16 @@
 package com.cla.system.tree.list
 
 import android.view.View
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cla.system.tree.R
 import com.konsung.basic.bean.tree.SystemTreeListBean
+import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.ui.SpaceDecoration
-import com.konsung.basic.util.toast
+import com.konsung.basic.util.AppUtils
 
 /**
  * 体系分类列表
@@ -52,10 +54,18 @@ class SystemTreeListFragment : BasicFragment() {
 
         systemAdapter.clickListener = View.OnClickListener {
 
+            val tvTitle = it.findViewById<TextView>(R.id.tvName)
+
             val bean = it.getTag(R.id.recycler_view_adapter_item_click) as? SystemTreeListBean
                     ?: return@OnClickListener
 
-            toast(TAG, "点击 ${bean.name}")
+            val map = mutableMapOf<String, Int>()
+            for (b in bean.children) {
+                map[b.name] = b.id
+            }
+
+            val systemTreeTitle = SystemTreeTitle(bean.name, map, 0)
+            AppUtils.startSystemTreeDetailAty(activity, tvTitle, systemTreeTitle)
         }
     }
 

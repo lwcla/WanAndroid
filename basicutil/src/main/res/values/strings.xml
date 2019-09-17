@@ -50,6 +50,7 @@
     <string name="tag_new">新</string>
     <string name="save">保存</string>
     <string name="fragment_list_is_null">页面数据集合为空</string>
+    <string name="click_position_is_error">点击位置出错</string>
     <string name="data_list_is_null">获取的数据集合为空</string>
     <string name="image_url_is_null">图片地址为空</string>
 
