@@ -15,17 +15,10 @@ class NewestProjectFragment : ProjectFragment() {
 class NewestPresenter(uiView: UiView?, view: ProjectView?) : ProjectPresenter(uiView, view) {
 
     override fun refresh() {
-        refreshData = true
-        page = 0
-        request { ctx, result ->
-            httpHelper.fetchNewestProject(ctx, page++, result)
-        }
+        refresh { ctx, result -> httpHelper.fetchNewestProject(ctx, page, result) }
     }
 
     override fun loadMore() {
-        refreshData = false
-        request { ctx, result ->
-            httpHelper.fetchNewestProject(ctx, page++, result)
-        }
+        loadMore { ctx, result -> httpHelper.fetchNewestProject(ctx, page, result) }
     }
 }

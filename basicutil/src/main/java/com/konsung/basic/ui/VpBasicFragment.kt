@@ -50,7 +50,7 @@ abstract class VpBasicFragment : BasicFragment() {
 
         this.titleList = fragmentList
 
-        for (i in 0 until fragmentList.size) {
+        for (i in fragmentList.indices) {
             val threeBean = fragmentList[i]
             threeBean.b.index = i
         }

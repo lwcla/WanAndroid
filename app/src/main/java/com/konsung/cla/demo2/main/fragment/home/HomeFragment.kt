@@ -8,7 +8,6 @@ import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
-import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
@@ -23,7 +22,6 @@ class HomeFragment : BasicFragment() {
         needDelayInitView = false
     }
 
-    private val refreshRv by lazy { showView?.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
     private val homeAdapter by lazy { context?.let { HomeAdapter(it, mutableListOf()) } }
     private lateinit var headView: BannerHeadView
 
@@ -38,6 +36,7 @@ class HomeFragment : BasicFragment() {
     }
 
     override fun initView() {
+        refreshRv = showView?.findViewById(R.id.refreshRv)
         headView = BannerHeadView(context!!)
         homeAdapter?.addHeaderView(headView)
         refreshRv?.initRecyclerView(homeAdapter, fragmentRefresh, index, true) {
@@ -59,7 +58,7 @@ class HomeFragment : BasicFragment() {
                 val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
                 val d = findDataByPosition(position)
                 d?.apply {
-                    App.productUtils.startWebAty(activity, context, tvTitle, title, link, artId = id, dataPosition = position, collect = d.collect)
+                    App.productUtils.startWebAty(activity, context, tvTitle, title, link, artId = id, dataPosition = position, collect = d.collect, needCollect = true)
                 }
             }
 
@@ -185,31 +184,6 @@ class HomeFragment : BasicFragment() {
                         finishRefresh(300)
                         finishLoadMore(200, true, t.over)
                     }
-                }
-
-                showContentView()
-            }
-
-            override fun failed(string: String) {
-
-                if (context == null) {
-                    return
-                }
-
-                Debug.info(TAG, "HomeFragment failed info=$string")
-                refreshRv?.apply {
-                    finishRefresh()
-                    finishLoadMore(0, false, false)
-                }
-
-                if (homeAdapter?.data?.isEmpty() == null) {
-                    showErrorView()
-                }
-            }
-
-            override fun noNetwork() {
-                if (homeAdapter?.data?.isEmpty() == null) {
-                    showNoNetworkView()
                 }
             }
         }

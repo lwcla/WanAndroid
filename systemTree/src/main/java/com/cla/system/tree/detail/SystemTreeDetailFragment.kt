@@ -10,7 +10,6 @@ import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
-import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
@@ -19,7 +18,6 @@ class SystemTreeDetailFragment : BasicFragment() {
 
     var cid = -1
 
-    private val refreshRv by lazy { showView?.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
     private val systemAdapter by lazy { context?.let { HomeAdapter(it, mutableListOf()) } }
     private val collectPresenter by lazy { initCollectPresenter() }
     private val loadSystemTreeDetail by lazy { initLoadSystemTreeDetail() }
@@ -29,6 +27,7 @@ class SystemTreeDetailFragment : BasicFragment() {
     override fun initPresenters(): List<BasicPresenter>? = listOf(collectPresenter, loadSystemTreeDetail)
 
     override fun initView() {
+        refreshRv = showView?.findViewById(R.id.refreshRv)
         refreshRv?.initRecyclerView(systemAdapter, fragmentRefresh, index, false) {
             refreshRv?.autoRefresh()
             resetData()
@@ -121,6 +120,12 @@ class SystemTreeDetailFragment : BasicFragment() {
         val view = object : LoadSystemTreeDetailView() {
 
             override fun success(t: ProjectBean, refreshData: Boolean) {
+
+                if (t.datas?.size ?: 0 == 0) {
+                    refreshRv?.finishLoadMore(0, true, true)
+                    return
+                }
+
                 loadSystemTreeDetail.page = t.curPage
 
                 refreshRv?.finishRefresh(200)
@@ -133,14 +138,6 @@ class SystemTreeDetailFragment : BasicFragment() {
                     systemAdapter?.setNewData(list)
                 } else {
                     systemAdapter?.addData(list)
-                }
-            }
-
-            override fun failed(string: String) {
-                super.failed(string)
-                refreshRv?.apply {
-                    finishRefresh()
-                    finishLoadMore(0, false, false)
                 }
             }
         }

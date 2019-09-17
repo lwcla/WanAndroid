@@ -95,16 +95,7 @@ class CommonWebFragment : BasicFragment() {
         val view = object : CommonWebView() {
 
             override fun success(t: List<CommonWebBean>, refreshData: Boolean) {
-                showContentView()
                 setAdapter(t)
-            }
-
-            override fun failed(string: String) {
-                showErrorView()
-            }
-
-            override fun noNetwork() {
-                showNoNetworkView()
             }
         }
 

@@ -51,12 +51,14 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
      * result放在这里是为了每次请求之前都要先停止之前的请求
      */
     var result: RequestResult<T>? = null
+    private var success = false
 
     /**
      * 接口调用成功，可重写此方法处理返回的数据
      */
     open fun success(context: Context, t: T) {
         getUiView()?.showContentView()
+        success = true
         view?.success(t, refreshData)
     }
 
@@ -65,6 +67,7 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
      */
     open fun success(context: Context) {
         getUiView()?.showContentView()
+        success = true
         view?.success(refreshData)
     }
 
@@ -72,7 +75,14 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
      * 接口调用失败
      */
     open fun failed(context: Context, message: String) {
-        getUiView()?.showErrorView()
+        success = false
+
+        //如果之前已经成功获取数据，并且这一次是刷新全部数据的话，那么就去显示错误视图
+        //否则只需要提示错误信息就可以了
+        if (refreshData) {
+            getUiView()?.showErrorView()
+        }
+
         view?.failed(message)
     }
 
@@ -80,7 +90,13 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
      * 当前没有网络
      */
     open fun noNetwork(context: Context) {
-        getUiView()?.showNoNetworkView()
+        success = false
+
+        //如果之前已经成功获取数据，并且这一次是刷新全部数据的话，那么就去显示没有网络视图
+        //否则只需要提示错误信息就可以了
+        if (refreshData) {
+            getUiView()?.showNoNetworkView()
+        }
         view?.noNetwork()
     }
 
@@ -96,6 +112,7 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
         val ctx = getContext() ?: return
 
         stop()
+
         result = setRequestResult()
         result?.refreshData = refreshData
         request.invoke(ctx, result!!)

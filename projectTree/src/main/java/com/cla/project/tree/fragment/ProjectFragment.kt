@@ -12,13 +12,11 @@ import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
-import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.toast
 
 abstract class ProjectFragment : BasicFragment() {
 
-    private val refreshRv: RefreshRecyclerView? by lazy { showView?.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
     private var adapter: ProjectAdapter? = null
 
     private var over = false
@@ -40,11 +38,6 @@ abstract class ProjectFragment : BasicFragment() {
                 loadMore(list)
             }
         }
-
-        override fun failed(string: String) {
-            refreshRv?.finishRefresh(false)
-            refreshRv?.finishLoadMore(false)
-        }
     }
     private val presenter: ProjectPresenter by lazy { initProjectPresenter(projectView) }
     private val collectPresenter by lazy { initCollectPresenter() }
@@ -54,6 +47,7 @@ abstract class ProjectFragment : BasicFragment() {
     override fun initPresenters(): List<BasicPresenter>? = listOf(presenter)
 
     override fun initView() {
+        refreshRv = showView?.findViewById(R.id.refreshRv)
         adapter = ProjectAdapter(context!!, listOf())
         refreshRv?.initRecyclerView(adapter, fragmentRefresh, index) {
             refreshRv?.autoRefresh()

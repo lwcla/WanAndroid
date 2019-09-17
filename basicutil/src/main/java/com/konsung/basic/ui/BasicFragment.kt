@@ -41,6 +41,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
     }
 
     protected var multiplyStatusView: MultipleStatusView? = null
+    protected var refreshRv: RefreshRecyclerView? = null
     private var presenter: List<BasicPresenter>? = null
     private var loadHandler = false
     protected val myHandler: MyHandler by lazy { MyHandler(this) }
@@ -267,6 +268,17 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
             when (msg.what) {
 
                 SHOW_NO_NETWORK, SHOW_LOADING, SHOW_ERROR, SHOW_CONTENT -> {
+
+                    if (msg.what != SHOW_CONTENT) {
+                        //加载成功的话，由自己来处理
+                        fragment.refreshRv?.finishRefresh()
+
+                        if (msg.what == SHOW_LOADING) {
+                            fragment.refreshRv?.finishLoadMore()
+                        } else {
+                            fragment.refreshRv?.finishLoadMore(0, false, false)
+                        }
+                    }
 
                     removeMessages(SHOW_NO_NETWORK)
                     removeMessages(SHOW_LOADING)

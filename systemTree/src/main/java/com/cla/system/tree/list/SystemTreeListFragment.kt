@@ -8,7 +8,6 @@ import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
-import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.ui.SpaceDecoration
 import com.konsung.basic.util.AppUtils
 
@@ -16,8 +15,6 @@ import com.konsung.basic.util.AppUtils
  * 体系分类列表
  */
 class SystemTreeListFragment : BasicFragment() {
-
-    private val refreshRv by lazy { showView?.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
 
     private val loadTreeList: LoadSystemTreeList by lazy { initLoadSystemTreeList() }
     private val systemAdapter = SystemTreeListAdapter(mutableListOf())
@@ -27,6 +24,7 @@ class SystemTreeListFragment : BasicFragment() {
     override fun initPresenters(): List<BasicPresenter>? = listOf(loadTreeList)
 
     override fun initView() {
+        refreshRv = showView?.findViewById(R.id.refreshRv)
         refreshRv?.setEnableLoadMore(false)
 
         refreshRv?.rv?.apply {
@@ -79,6 +77,7 @@ class SystemTreeListFragment : BasicFragment() {
 
             override fun success(t: List<SystemTreeListBean>, refreshData: Boolean) {
                 systemAdapter.update(t)
+
                 refreshRv?.finishRefresh()
             }
         }
@@ -88,6 +87,10 @@ class SystemTreeListFragment : BasicFragment() {
 
     override fun resetData() {
         loadTreeList.refresh()
+    }
+
+    override fun refreshView() {
+        refreshRv?.refreshDataAfterScrollTop()
     }
 
 }
