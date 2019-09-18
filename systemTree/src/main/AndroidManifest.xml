@@ -3,8 +3,9 @@
           package="com.cla.system.tree">
 
     <application>
-        <activity android:name=".detail.SystemTreeDetailAty">
-        </activity>
+        <activity
+            android:name=".detail.SystemTreeDetailAty"
+            />
     </application>
 
 </manifest>

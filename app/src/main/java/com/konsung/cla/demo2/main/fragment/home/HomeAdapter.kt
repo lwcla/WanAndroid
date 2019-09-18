@@ -13,7 +13,7 @@ import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 
-class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) : BaseQuickAdapter<HomeData.DatasBean, BaseViewHolder>(R.layout.view_home_adapter, data) {
+class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) : BaseQuickAdapter<HomeData.DatasBean, BaseViewHolder>(R.layout.adapter_view_home, data) {
 
     companion object {
         val TAG: String = HomeAdapter::class.java.simpleName

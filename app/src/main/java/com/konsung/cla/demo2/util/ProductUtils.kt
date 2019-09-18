@@ -14,6 +14,7 @@ import com.konsung.basic.ui.WebViewAty
 import com.konsung.cla.demo2.login.LoginAty
 import com.konsung.cla.demo2.main.MainActivity
 
+
 open class ProductUtils {
 
     open fun startMainAty(context: Context) {
@@ -44,7 +45,9 @@ open class ProductUtils {
             val intent = Intent()
             intent.putExtra(BaseConfig.SYSTEM_TREE_TITLE_LIST, title)
             intent.setClass(it, SystemTreeDetailAty::class.java)
-            it.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity, view, "tvTitle").toBundle())
+//            it.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity, view, "tvTitle").toBundle())
+
+            it.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(it).toBundle())
         }
     }
 

@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="windowNoTitle">true</item>
+        <!-- 修改toolbar图标的颜色-->
+        <item name="android:textColorSecondary">#ffffff</item>
+        <!--修改toolbar文字颜色-->
+        <item name="android:textColorPrimary">#ffffff</item>
+
+        <!--  <item name="android:windowFullscreen">true</item>-->
+    </style>
+
+    <style name="ShareActivity" parent="AppTheme">
+        <item name="android:windowContentTransitions">true</item>
+    </style>
+
     <style name="MultipleStatusView"/>
 
     <style name="MultipleStatusView.Content">

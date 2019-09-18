@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Message
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
@@ -17,6 +19,7 @@ import com.konsung.basic.dialog.LoadingDialog
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.StatusBarUtil
+import java.lang.ref.WeakReference
 
 
 abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
@@ -25,9 +28,16 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
         val TAG: String = BasicAty::class.java.simpleName
     }
 
+    protected var initDelay = 0L //用来延迟初始化界面，如果延迟了初始化，那么在onStart,onResume中处理界面相关的数据时，就需要特殊处理
     private var presenters: List<BasicPresenter>? = null
     protected lateinit var context: Context
     private var loadingDialog: LoadingDialog? = null
+    protected val myHandler = MyHandler(this)
+    private val initRunnable = Runnable {
+        initView()
+        initEvent()
+        initData()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,10 +46,13 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
         initStatusBar()
         context = this
 
+        Debug.info(TAG, "BasicAty onCreate initDelay=$initDelay")
         presenters = initPresenter()
-        initView()
-        initEvent()
-        initData()
+        if (initDelay > 0) {
+            myHandler.postDelayed(initRunnable, initDelay)
+        } else {
+            runOnUiThread(initRunnable)
+        }
     }
 
     override fun onNewIntent(intent: Intent?) {
@@ -104,6 +117,10 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
      */
     protected fun settStatusBarColor(@ColorRes colorRes: Int) {
         StatusBarUtil.setStatusBarColor(this, ContextCompat.getColor(this, colorRes))
+    }
+
+    fun handleMessage(msg: Message) {
+
     }
 
     /**
@@ -181,4 +198,20 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
     abstract fun initEvent()
 
     abstract fun initData()
+
+    class MyHandler(activity: BasicAty) : Handler() {
+
+        private val reference: WeakReference<BasicAty> = WeakReference(activity)
+
+        override fun handleMessage(msg: Message?) {
+
+            if (msg == null) {
+                return
+            }
+
+            val aty = reference.get() ?: return
+
+            aty.handleMessage(msg)
+        }
+    }
 }

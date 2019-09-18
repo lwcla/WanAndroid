@@ -49,6 +49,7 @@
             android:name="com.konsung.basic.ui.WebViewAty"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
+            android:theme="@style/ShareActivity"
             android:launchMode="singleTask"/>
 
         <activity android:name=".login.LoginAty"/>

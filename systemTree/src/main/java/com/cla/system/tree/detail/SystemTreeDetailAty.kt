@@ -2,6 +2,8 @@ package com.cla.system.tree.detail
 
 import android.content.Context
 import android.graphics.Color
+import android.os.Bundle
+import android.transition.Explode
 import android.view.View
 import androidx.core.content.ContextCompat
 import com.cla.system.tree.R
@@ -27,6 +29,17 @@ class SystemTreeDetailAty : BasicAty() {
 
     companion object {
         val TAG: String = SystemTreeDetailAty::class.java.simpleName
+        const val INIT_DETAIL = 300L
+    }
+
+    init {
+        initDelay = INIT_DETAIL
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        window.enterTransition = Explode().setDuration(INIT_DETAIL)
+        window.exitTransition = Explode().setDuration(INIT_DETAIL)
     }
 
     override fun getLayoutId(): Int = R.layout.activity_system_tree_detail

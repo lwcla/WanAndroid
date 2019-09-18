@@ -3,7 +3,7 @@ package com.cla.system.tree.detail
 import android.content.Context
 import android.widget.TextView
 import com.cla.system.tree.R
-import com.konsung.basic.adapter.HomeAdapter
+import com.cla.system.tree.detail.adapter.SystemTreeDetailAdapter
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.presenter.CollectPresenter
@@ -18,7 +18,7 @@ class SystemTreeDetailFragment : BasicFragment() {
 
     var cid = -1
 
-    private val systemAdapter by lazy { context?.let { HomeAdapter(it, mutableListOf()) } }
+    private val systemAdapter by lazy { context?.let { SystemTreeDetailAdapter(it, mutableListOf()) } }
     private val collectPresenter by lazy { initCollectPresenter() }
     private val loadSystemTreeDetail by lazy { initLoadSystemTreeDetail() }
 
@@ -51,17 +51,6 @@ class SystemTreeDetailFragment : BasicFragment() {
                 }
 
                 when (view.id) {
-
-                    //点击图片
-                    R.id.imvEnvelopePic -> {
-                        val url = findImageByPosition(position)
-                        if (url.isNullOrEmpty()) {
-                            toast(TAG, R.string.image_url_is_null)
-                            return@setOnItemChildClickListener
-                        }
-
-                        AppUtils.startScreenImageAty(context!!, url)
-                    }
 
                     //收藏
                     R.id.imvStart -> {

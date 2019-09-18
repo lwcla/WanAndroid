@@ -59,7 +59,7 @@ class SystemTreeListAdapter(private val dataList: MutableList<SystemTreeListBean
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SystemTreeListViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
-        val view = inflater.inflate(R.layout.item_system_tree_list_adapter, parent, false)
+        val view = inflater.inflate(R.layout.adapter_system_tree_list, parent, false)
         return SystemTreeListViewHolder(context, view, clickListener)
     }
 

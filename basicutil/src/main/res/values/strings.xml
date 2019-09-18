@@ -53,5 +53,7 @@
     <string name="click_position_is_error">点击位置出错</string>
     <string name="data_list_is_null">获取的数据集合为空</string>
     <string name="image_url_is_null">图片地址为空</string>
+    <string name="author">作者：</string>
+    <string name="date">时间：</string>
 
 </resources>

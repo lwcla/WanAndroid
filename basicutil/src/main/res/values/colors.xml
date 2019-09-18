@@ -13,6 +13,7 @@
     <color name="btn_search_color">#0D72D9</color>
     <color name="normal_color1">#22000000</color>
     <color name="normal_color2">#A6ffffff</color>
+    <color name="normal_color3">#A6000000</color>
     <color name="value_default">#808080</color>
     <color name="light_grey">#FCFCFC</color>
     <color name="light_grey1">#F4F4F4</color>
