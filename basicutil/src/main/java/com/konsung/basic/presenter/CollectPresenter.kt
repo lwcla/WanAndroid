@@ -66,7 +66,7 @@ class CollectPresenter(uiView: UiView?, view: CollectView?) : BasePresenter1<Str
                     c.toast(BaseConfig.TAG, R.string.cancel_collect_failed)
                 }
 
-                sendMessage(c, true, collectId, position, toCollect)
+                sendMessage(c, false, collectId, position, toCollect)
 
                 getUiView()?.showErrorView()
                 view?.failed(c, message, position, toCollect)

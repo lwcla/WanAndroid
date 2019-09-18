@@ -118,7 +118,7 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
             }
 
             override fun failed(context: Context, string: String, position: Int, toCollect: Boolean) {
-                this@WebViewAty.collect = toCollect
+                this@WebViewAty.collect = !toCollect
             }
         }
 
