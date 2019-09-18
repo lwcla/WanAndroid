@@ -201,8 +201,9 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         val project = ThreeBean<String, Int, BasicFragment>(getString(R.string.project), R.string.icon_project, ProjectParentFragment())
         val system = ThreeBean<String, Int, BasicFragment>(getString(R.string.system), R.string.icon_system, SystemTreeListFragment())
         val navigation = ThreeBean<String, Int, BasicFragment>(getString(R.string.navigation), R.string.icon_navigation, NavigationFragment())
+        val officialAccount = ThreeBean<String, Int, BasicFragment>(getString(R.string.official_accounts), R.string.icon_official_accounts, NavigationFragment())
 
-        val fragmentList = listOf(home, system, navigation, project)
+        val fragmentList = listOf(home, system, officialAccount, navigation, project)
 
         for (i in 0 until fragmentList.size) {
             val threeBean = fragmentList[i]

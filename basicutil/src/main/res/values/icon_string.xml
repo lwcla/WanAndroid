@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">BasicUtil</string>
     <!--搜索-->
     <string name="icon_search">&#xe60b;</string>
@@ -39,4 +39,6 @@
     <string name="icon_on_the_details">&#xe613;</string>
     <!--隐藏详情-->
     <string name="icon_hide_the_details">&#xe612;</string>
+    <!--公众号-->
+    <string name="icon_official_accounts" tools:ignore="ExtraTranslation">&#xe615;</string>
 </resources>
