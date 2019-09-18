@@ -50,8 +50,6 @@ dependencies {
     implementation config.material
     implementation config.roundedimageview
     implementation config.magicIndicator
-    implementation config.banner
-    //无限轮播
     implementation config.base_recycler_view_adapter_helper
     implementation config.smart_refresh_layout
     implementation config.smart_refresh_header
@@ -59,7 +57,7 @@ dependencies {
     implementation config.multiple_status_view
     implementation config.av_loading_indicator_view
     implementation config.blurry
-    implementation config.chipsLayoutManager
     implementation project(':projectTree')
     implementation project(':systemTree')
+    implementation project(':home')
 }

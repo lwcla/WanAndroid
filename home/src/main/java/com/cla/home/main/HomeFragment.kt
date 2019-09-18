@@ -1,17 +1,17 @@
-package com.konsung.cla.demo2.main.fragment.home
+package com.cla.home.main
 
 import android.content.Context
 import android.widget.TextView
+import com.cla.home.R
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
-import com.konsung.cla.demo2.App
-import com.konsung.cla.demo2.R
 
 /**
  * 首页
@@ -49,7 +49,9 @@ class HomeFragment : BasicFragment() {
 
         headView.onBannerItemClickListener = object : BannerHeadView.OnBannerItemClickListener {
             override fun click(data: BannerData) {
-                App.productUtils.startWebAty(context, title = data.title, link = data.url, artId = data.id, dataPosition = 0, collect = false, needCollect = false)
+                context?.let {
+                    AppUtils.startWebAty(it, title = data.title, link = data.url, artId = data.id, dataPosition = 0, collect = false, needCollect = false)
+                }
             }
         }
 
@@ -58,7 +60,7 @@ class HomeFragment : BasicFragment() {
                 val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
                 val d = findDataByPosition(position)
                 d?.apply {
-                    App.productUtils.startWebAty(activity, context, tvTitle, title, link, artId = id, dataPosition = position, collect = d.collect, needCollect = true)
+                    AppUtils.startWebAty(activity, context, tvTitle, title, link, artId = id, dataPosition = position, collect = d.collect, needCollect = true)
                 }
             }
 
@@ -78,7 +80,7 @@ class HomeFragment : BasicFragment() {
                             return@setOnItemChildClickListener
                         }
 
-                        App.productUtils.startScreenImageAty(context!!, url)
+                        AppUtils.startScreenImageAty(context!!, url)
                     }
 
                     //收藏
@@ -226,6 +228,10 @@ class HomeFragment : BasicFragment() {
      * 刷新数据
      */
     override fun refreshView() {
+
+        if (!resume) {
+            return
+        }
 
         val size = homeAdapter?.data?.size ?: 0
         if (size == 0) {

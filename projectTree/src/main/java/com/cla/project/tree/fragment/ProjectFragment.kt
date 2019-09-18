@@ -152,6 +152,10 @@ abstract class ProjectFragment : BasicFragment() {
     }
 
     override fun refreshView() {
+        if (!resume) {
+            return
+        }
+
         refreshRv?.refreshDataAfterScrollTop()
     }
 

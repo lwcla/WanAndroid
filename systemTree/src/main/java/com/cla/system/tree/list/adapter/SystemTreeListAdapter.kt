@@ -1,4 +1,4 @@
-package com.cla.system.tree.list
+package com.cla.system.tree.list.adapter
 
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator

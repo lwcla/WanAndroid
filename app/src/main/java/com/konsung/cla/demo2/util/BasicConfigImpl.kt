@@ -32,6 +32,10 @@ class BasicConfigImpl private constructor() : BasicHelper {
         App.productUtils.startSystemTreeDetailAty(activity, view, title)
     }
 
+    override fun startWebAty(context: Context?, title: String?, link: String?, artId: Int, collect: Boolean, dataPosition: Int, needCollect: Boolean) {
+        App.productUtils.startWebAty(context, title, link, artId, collect, dataPosition, needCollect)
+    }
+
     override fun startWebAty(activity: Activity?, context: Context?, view: View, title: String?, link: String?, artId: Int, collect: Boolean, dataPosition: Int, needCollect: Boolean) {
         App.productUtils.startWebAty(activity, context, view, title, link, artId, collect, dataPosition, needCollect)
     }

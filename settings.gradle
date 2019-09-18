@@ -1,1 +1,1 @@
-include ':app', ':basicutil', ':projectTree', ':systemTree'
+include ':app', ':basicutil', ':projectTree', ':systemTree', ':home'

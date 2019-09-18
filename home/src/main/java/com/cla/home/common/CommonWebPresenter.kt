@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.main.fragment.common
+package com.cla.home.common
 
 import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.ui.BasePresenter2

@@ -46,6 +46,11 @@ class AppUtils {
                     ?: throw NullPointerException()
         }
 
+        fun startWebAty(context: Context?, title: String?, link: String?, artId: Int, collect: Boolean, dataPosition: Int = -1, needCollect: Boolean = true) {
+            return basicConfig?.startWebAty(context, title, link, artId, collect, dataPosition, needCollect)
+                    ?: throw NullPointerException()
+        }
+
         fun startWebAty(activity: Activity?, context: Context?, view: View, title: String?, link: String?, artId: Int, collect: Boolean, dataPosition: Int = -1, needCollect: Boolean = true) {
             return basicConfig?.startWebAty(activity, context, view, title, link, artId, collect, dataPosition, needCollect)
                     ?: throw NullPointerException()

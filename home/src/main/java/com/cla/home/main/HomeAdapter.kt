@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.main.fragment.home
+package com.cla.home.main
 
 import android.content.Context
 import android.view.View
@@ -6,12 +6,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.cla.home.R
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.config.ImageLoadUtil
 import com.konsung.basic.util.DateUtils
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
-import com.konsung.cla.demo2.R
 
 class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) : BaseQuickAdapter<HomeData.DatasBean, BaseViewHolder>(R.layout.adapter_view_home, data) {
 

@@ -17,5 +17,7 @@ interface BasicHelper {
 
     fun startSystemTreeDetailAty(activity: Activity?, view: View, title: SystemTreeTitle)
 
+    fun startWebAty(context: Context?, title: String?, link: String?, artId: Int, collect: Boolean, dataPosition: Int = -1, needCollect: Boolean = true)
+
     fun startWebAty(activity: Activity?, context: Context?, view: View, title: String?, link: String?, artId: Int, collect: Boolean, dataPosition: Int = -1, needCollect: Boolean = true)
 }

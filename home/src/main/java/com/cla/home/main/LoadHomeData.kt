@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.main.fragment.home
+package com.cla.home.main
 
 import android.content.Context
 import com.konsung.basic.bean.HomeData

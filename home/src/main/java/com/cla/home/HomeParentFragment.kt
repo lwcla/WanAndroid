@@ -1,12 +1,15 @@
-package com.konsung.cla.demo2.main.fragment
+package com.cla.home
 
+import com.cla.home.common.CommonWebFragment
+import com.cla.home.main.HomeFragment
 import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.VpBasicFragment
-import com.konsung.cla.demo2.main.fragment.common.CommonWebFragment
-import com.konsung.cla.demo2.main.fragment.home.HomeFragment
 
+/**
+ * 首页
+ */
 class HomeParentFragment : VpBasicFragment() {
 
     override fun initPresenters(): List<BasicPresenter>? = null

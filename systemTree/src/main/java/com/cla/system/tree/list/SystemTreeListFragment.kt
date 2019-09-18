@@ -4,6 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.cla.system.tree.R
+import com.cla.system.tree.list.adapter.SystemTreeListAdapter
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.ui.BasicFragment

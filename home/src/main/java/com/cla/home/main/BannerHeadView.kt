@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.main.fragment.home
+package com.cla.home.main
 
 import android.content.Context
 import android.os.Handler
@@ -8,9 +8,9 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
+import com.cla.home.R
+import com.cla.home.view.MyBanner
 import com.konsung.basic.bean.BannerData
-import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.view.MyBanner
 import com.youth.banner.listener.OnBannerListener
 
 

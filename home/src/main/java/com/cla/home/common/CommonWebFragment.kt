@@ -1,14 +1,14 @@
-package com.konsung.cla.demo2.main.fragment.common
+package com.cla.home.common
 
 import android.annotation.SuppressLint
 import android.view.Gravity
 import androidx.recyclerview.widget.RecyclerView
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
+import com.cla.home.R
 import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
-import com.konsung.cla.demo2.App
-import com.konsung.cla.demo2.R
+import com.konsung.basic.util.AppUtils
 
 /**
  * 常用网站
@@ -60,7 +60,7 @@ class CommonWebFragment : BasicFragment() {
 
                 when (view.id) {
                     R.id.tvText -> {
-                        App.productUtils.startWebAty(activity, context, view, bean.name, bean.link, bean.id, false, needCollect = false)
+                        AppUtils.startWebAty(activity, context, view, bean.name, bean.link, bean.id, false, needCollect = false)
                     }
                 }
             }
@@ -100,5 +100,14 @@ class CommonWebFragment : BasicFragment() {
         }
 
         return CommonWebPresenter(this, view)
+    }
+
+    override fun refreshView() {
+
+        if (!resume) {
+            return
+        }
+
+        rvCommon?.scrollToPosition(0)
     }
 }

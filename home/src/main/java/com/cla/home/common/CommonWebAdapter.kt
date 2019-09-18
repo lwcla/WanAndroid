@@ -1,13 +1,13 @@
-package com.konsung.cla.demo2.main.fragment.common
+package com.cla.home.common
 
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.cla.home.R
 import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.util.StringUtils
-import com.konsung.cla.demo2.R
 
-class CommonWebAdapter(dataList: List<CommonWebBean>) : BaseQuickAdapter<CommonWebBean, BaseViewHolder>(R.layout.item_common_web_adapter, dataList) {
+class CommonWebAdapter(dataList: List<CommonWebBean>) : BaseQuickAdapter<CommonWebBean, BaseViewHolder>(R.layout.adapter_item_common_web, dataList) {
 
     override fun convert(helper: BaseViewHolder, item: CommonWebBean?) {
 

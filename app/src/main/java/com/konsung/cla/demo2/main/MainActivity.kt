@@ -23,7 +23,7 @@ import com.konsung.basic.util.*
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
-import com.konsung.cla.demo2.main.fragment.HomeParentFragment
+import com.cla.home.HomeParentFragment
 import com.konsung.cla.demo2.main.fragment.NavigationFragment
 import com.konsung.cla.demo2.view.ViewPagerTitle
 import kotlinx.android.synthetic.main.activity_main.*
