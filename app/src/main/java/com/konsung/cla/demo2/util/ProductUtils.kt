@@ -23,21 +23,23 @@ open class ProductUtils {
         context.startActivity(intent)
     }
 
-    open fun startScreenImageAty(context: Context, data: ScreenImageData) {
-        val intent = Intent()
-        intent.putExtra(BaseConfig.SCREEN_IAMGE_DATA, data)
-        intent.setClass(context, ScreenImageAty::class.java)
-        context.startActivity(intent)
+    open fun startScreenImageAty(activity: Activity?, data: ScreenImageData) {
+        activity?.let {
+            val intent = Intent()
+            intent.putExtra(BaseConfig.SCREEN_IAMGE_DATA, data)
+            intent.setClass(activity, ScreenImageAty::class.java)
+            activity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
+        }
     }
 
-    open fun startScreenImageAty(context: Context, url: String) {
+    open fun startScreenImageAty(activity: Activity?, url: String) {
         val data = ScreenImageData(listOf(url), 0)
-        startScreenImageAty(context, data)
+        startScreenImageAty(activity, data)
     }
 
-    open fun startScreenImageAty(context: Context, urls: List<String>, currentIndex: Int = 0) {
+    open fun startScreenImageAty(activity: Activity?, urls: List<String>, currentIndex: Int = 0) {
         val data = ScreenImageData(urls, currentIndex)
-        startScreenImageAty(context, data)
+        startScreenImageAty(activity, data)
     }
 
     open fun startSystemTreeDetailAty(activity: Activity?, view: View, title: SystemTreeTitle) {

@@ -2,6 +2,7 @@ package com.konsung.basic.ui
 
 import android.content.Context
 import android.os.Bundle
+import android.transition.Fade
 import android.view.View
 import android.view.ViewGroup
 import android.view.Window
@@ -19,11 +20,18 @@ import kotlinx.android.synthetic.main.activity_screen_image.*
 
 class ScreenImageAty : BasicAty() {
 
+    companion object {
+        const val INIT_DELAY = 500L
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //设置全屏
         requestWindowFeature(Window.FEATURE_NO_TITLE)
         window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         super.onCreate(savedInstanceState)
+
+        window.enterTransition = Fade().setDuration(INIT_DELAY)
+        window.exitTransition = Fade().setDuration(INIT_DELAY)
     }
 
     override fun getLayoutId(): Int = R.layout.activity_screen_image
@@ -45,12 +53,7 @@ class ScreenImageAty : BasicAty() {
         }
 
         val adapter = ScreenImageAdapter(this, data.urls, View.OnClickListener { finish() })
-        adapter.longClickListener = object : View.OnLongClickListener {
-            override fun onLongClick(v: View?): Boolean {
-
-                return true
-            }
-        }
+        adapter.longClickListener = View.OnLongClickListener { true }
 
         viewPager.adapter = adapter
 

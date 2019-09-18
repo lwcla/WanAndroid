@@ -37,8 +37,8 @@ class AppUtils {
             return basicConfig?.startLoginAty(context) ?: throw NullPointerException()
         }
 
-        fun startScreenImageAty(context: Context, url: String) {
-            return basicConfig?.startScreenImageAty(context, url) ?: throw NullPointerException()
+        fun startScreenImageAty(activity: Activity?, url: String) {
+            return basicConfig?.startScreenImageAty(activity, url) ?: throw NullPointerException()
         }
 
         fun startSystemTreeDetailAty(activity: Activity?, view: View, title: SystemTreeTitle) {

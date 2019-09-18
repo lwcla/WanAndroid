@@ -93,7 +93,7 @@ abstract class ProjectFragment : BasicFragment() {
                             return@setOnItemChildClickListener
                         }
 
-                        AppUtils.startScreenImageAty(context!!, url)
+                        AppUtils.startScreenImageAty(activity, url)
                     }
 
                     //收藏

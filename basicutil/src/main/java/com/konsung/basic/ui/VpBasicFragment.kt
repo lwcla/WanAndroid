@@ -103,6 +103,11 @@ abstract class VpBasicFragment : BasicFragment() {
     }
 
     override fun refreshView() {
+
+        if (!resume) {
+            return
+        }
+
         titleList?.let {
             for (two in it) {
                 two.b.refreshView()

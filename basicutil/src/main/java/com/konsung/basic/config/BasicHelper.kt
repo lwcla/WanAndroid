@@ -13,7 +13,7 @@ interface BasicHelper {
 
     fun startLoginAty(context: Context?)
 
-    fun startScreenImageAty(context: Context, url: String)
+    fun startScreenImageAty(activity: Activity?, url: String)
 
     fun startSystemTreeDetailAty(activity: Activity?, view: View, title: SystemTreeTitle)
 

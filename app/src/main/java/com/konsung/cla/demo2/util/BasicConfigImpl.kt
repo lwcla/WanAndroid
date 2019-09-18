@@ -24,8 +24,8 @@ class BasicConfigImpl private constructor() : BasicHelper {
         App.productUtils.startLoginAty(context)
     }
 
-    override fun startScreenImageAty(context: Context, url: String) {
-        App.productUtils.startScreenImageAty(context, url)
+    override fun startScreenImageAty(activity: Activity?, url: String) {
+        App.productUtils.startScreenImageAty(activity, url)
     }
 
     override fun startSystemTreeDetailAty(activity: Activity?, view: View, title: SystemTreeTitle) {
