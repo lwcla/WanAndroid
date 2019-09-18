@@ -54,7 +54,7 @@ class SystemTreeDetailAty : BasicAty() {
             return
         }
 
-        tvTitle.text = systemTreeTitle.activityTitle
+        supportActionBar?.title = systemTreeTitle.activityTitle
 
         val fragmentList = mutableListOf<TwoBean<String, BasicFragment>>()
         for ((fragmentTitle, id) in systemTreeTitle.map) {
