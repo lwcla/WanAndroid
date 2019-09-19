@@ -130,7 +130,7 @@ class NavigationFragment : BasicFragment() {
                 val data = it.getTag(R.id.recycler_view_adapter_item_click) as? HomeData.DatasBean
                         ?: return@OnClickListener
 
-                AppUtils.startWebAty(activity, context, it, data.title, data.link, data.id, data.collect)
+                AppUtils.startWebAty(activity, context, it, data.title, data.link, data.id, data.collect, needCollect = false)
             }
 
             refreshRv?.rv?.apply {
