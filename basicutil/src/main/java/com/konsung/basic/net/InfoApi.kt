@@ -1,6 +1,7 @@
 package com.konsung.basic.net
 
 import com.konsung.basic.bean.*
+import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
@@ -21,6 +22,15 @@ interface InfoApi {
      */
     @POST("lg/collect/{id}/json")
     fun collect(@Path("id") id: Int): Call<BasicData<String>>
+
+    /**
+     * 导航数据
+     * https://www.wanandroid.com/navi/json
+     *
+     * @return 常用网站
+     */
+    @GET("navi/json")
+    fun fetNavigationList(): Call<BasicData<List<NavigationBean>>>
 
     /**
      * 最新项目tab

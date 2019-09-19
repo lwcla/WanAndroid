@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
 import com.cla.home.HomeParentFragment
+import com.cla.navigation.NavigationFragment
 import com.cla.project.tree.parent.ProjectParentFragment
 import com.cla.system.tree.list.SystemTreeListFragment
 import com.cla.wx.article.parent.WxParentFragment
@@ -25,7 +26,6 @@ import com.konsung.basic.util.*
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
-import com.konsung.cla.demo2.main.fragment.NavigationFragment
 import com.konsung.cla.demo2.view.ViewPagerTitle
 import kotlinx.android.synthetic.main.activity_main.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -205,6 +205,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         val officialAccount = ThreeBean<String, Int, BasicFragment>(getString(R.string.official_accounts), R.string.icon_official_accounts, WxParentFragment())
 
         val fragmentList = listOf(home, system, officialAccount, navigation, project)
+//        val fragmentList = listOf(navigation, home, system, officialAccount, project)
 
         for (i in 0 until fragmentList.size) {
             val threeBean = fragmentList[i]

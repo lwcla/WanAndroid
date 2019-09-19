@@ -3,6 +3,7 @@ package com.konsung.basic.net
 import android.content.Context
 import androidx.annotation.StringRes
 import com.konsung.basic.bean.*
+import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
@@ -24,6 +25,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
 import javax.net.ssl.SSLHandshakeException
 
@@ -34,6 +36,7 @@ class MyRetrofitUtils private constructor() {
 
     companion object {
         val TAG: String = MyRetrofitUtils::class.java.simpleName
+        const val CONNECT_TIME_OUUT = 15L
         val instance by lazy { MyRetrofitUtils() }
     }
 
@@ -67,6 +70,8 @@ class MyRetrofitUtils private constructor() {
                 .addInterceptor(httpLoggingInterceptor)
                 .addInterceptor(net)
                 .cookieJar(cookieJar)
+                .connectTimeout(CONNECT_TIME_OUUT, TimeUnit.SECONDS)
+                .readTimeout(CONNECT_TIME_OUUT, TimeUnit.SECONDS)
                 .build()
 
         retrofit = Retrofit.Builder()
@@ -100,6 +105,12 @@ class MyRetrofitUtils private constructor() {
     fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
         getRetrofit()
                 .loadBanner()
+                .enqueue(CallInterceptor(context, result))
+    }
+
+    fun fetNavigationList(context: Context, result: RequestResult<List<NavigationBean>>) {
+        getRetrofit()
+                .fetNavigationList()
                 .enqueue(CallInterceptor(context, result))
     }
 

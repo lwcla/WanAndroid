@@ -13,7 +13,7 @@ class CommonWebAdapter(dataList: List<CommonWebBean>) : BaseQuickAdapter<CommonW
 
         item?.apply {
             val textView = helper.getView<TextView>(R.id.tvText)
-            textView.setTextColor(StringUtils.instance.intrandomColor())
+            textView.setTextColor(StringUtils.instance.intRandomColor())
             textView.text = name
 
             helper.addOnClickListener(R.id.tvText)

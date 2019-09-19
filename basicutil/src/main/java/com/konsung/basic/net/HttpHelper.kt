@@ -5,6 +5,7 @@ import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
+import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
@@ -18,6 +19,11 @@ interface HttpHelper {
     fun collect(context: Context, id: Int, result: RequestResult<String>)
 
     /**
+     * 导航
+     */
+    fun fetNavigationList(context: Context,result: RequestResult<List<NavigationBean>>)
+
+    /**
      * 最新项目
      */
     fun fetchNewestProject(context: Context, page: Int, result: RequestResult<ProjectBean>)
@@ -28,14 +34,14 @@ interface HttpHelper {
     fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>)
 
     /**
-     * 体系分类列表
-     */
-    fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>)
-
-    /**
      * 知识体系下的文章
      */
     fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>)
+
+    /**
+     * 体系分类列表
+     */
+    fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>)
 
     /**
      * 获取公众号列表

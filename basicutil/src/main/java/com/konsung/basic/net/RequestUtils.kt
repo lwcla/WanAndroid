@@ -5,6 +5,7 @@ import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
+import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
@@ -21,6 +22,10 @@ class RequestUtils private constructor() : HttpHelper {
 
     override fun collect(context: Context, id: Int, result: RequestResult<String>) {
         request.collect(context, id, result)
+    }
+
+    override fun fetNavigationList(context: Context, result: RequestResult<List<NavigationBean>>) {
+        request.fetNavigationList(context, result)
     }
 
     override fun fetchNewestProject(context: Context, page: Int, result: RequestResult<ProjectBean>) {

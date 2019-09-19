@@ -56,7 +56,7 @@ class StringUtils {
     }
 
     //获取随机rgb颜色值
-    fun intrandomColor(): Int {
+    fun intRandomColor(): Int {
         val random = Random()
         val red = random.nextInt(150);//0-190        ,如果颜色值过大,就越接近白色,就看不清了,所以需要限定范围
         val green = random.nextInt(150);//0-190

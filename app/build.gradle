@@ -41,7 +41,6 @@ android {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation project(':basicutil')
     implementation config.appcompat
     implementation config.constraintlayout
     testImplementation 'junit:junit:4.12'
@@ -57,8 +56,11 @@ dependencies {
     implementation config.multiple_status_view
     implementation config.av_loading_indicator_view
     implementation config.blurry
+    
+    implementation project(':basicutil')
     implementation project(':projectTree')
     implementation project(':systemTree')
     implementation project(':home')
     implementation project(':wxArticle')
+    implementation project(':navigation')
 }

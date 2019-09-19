@@ -13,6 +13,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -21,28 +22,24 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation config.appcompat
-    implementation config.constraintlayout
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.0-alpha3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0-alpha3'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-
-    //无限轮播
-    implementation config.banner
-    implementation config.material
-    implementation config.magicIndicator
-    implementation config.base_recycler_view_adapter_helper
+    
+    implementation config.recycler_view
     implementation config.smart_refresh_layout
     implementation config.smart_refresh_header
-    implementation config.recycler_view
     implementation config.chipsLayoutManager
 
     implementation project(':basicutil')
+    implementation files('libs/pinyin4j-2.5.0.jar')
 }
 repositories {
     mavenCentral()
