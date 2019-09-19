@@ -39,6 +39,14 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchSystemTreeDetail(context, page, cid, result)
     }
 
+    override fun fetchWxArticleTitle(context: Context, result: RequestResult<List<ProjectTitleBean>>) {
+        request.fetchWxArticleTitle(context, result)
+    }
+
+    override fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<ProjectBean>) {
+        request.fetchWxArticleDetail(context, cId, page, result)
+    }
+
     override fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
         request.loadBanner(context, result)
     }

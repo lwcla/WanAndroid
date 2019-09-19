@@ -1,1 +1,1 @@
-include ':app', ':basicutil', ':projectTree', ':systemTree', ':home'
+include ':app', ':basicutil', ':projectTree', ':systemTree', ':home', ':wxArticle'

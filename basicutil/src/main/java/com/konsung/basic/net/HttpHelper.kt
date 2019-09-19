@@ -38,6 +38,16 @@ interface HttpHelper {
     fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>)
 
     /**
+     * 获取公众号列表
+     */
+    fun fetchWxArticleTitle(context: Context, result: RequestResult<List<ProjectTitleBean>>)
+
+    /**
+     * 查看某个公众号历史数据
+     */
+    fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<ProjectBean>)
+
+    /**
      * 广告
      */
     fun loadBanner(context: Context, result: RequestResult<List<BannerData>>)

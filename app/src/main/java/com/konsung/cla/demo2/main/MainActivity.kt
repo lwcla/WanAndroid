@@ -9,8 +9,10 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
-import com.cla.project.tree.fragment.ProjectParentFragment
+import com.cla.home.HomeParentFragment
+import com.cla.project.tree.parent.ProjectParentFragment
 import com.cla.system.tree.list.SystemTreeListFragment
+import com.cla.wx.article.parent.WxParentFragment
 import com.google.android.material.snackbar.Snackbar
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.config.BaseConfig
@@ -23,7 +25,6 @@ import com.konsung.basic.util.*
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
-import com.cla.home.HomeParentFragment
 import com.konsung.cla.demo2.main.fragment.NavigationFragment
 import com.konsung.cla.demo2.view.ViewPagerTitle
 import kotlinx.android.synthetic.main.activity_main.*
@@ -201,7 +202,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         val project = ThreeBean<String, Int, BasicFragment>(getString(R.string.project), R.string.icon_project, ProjectParentFragment())
         val system = ThreeBean<String, Int, BasicFragment>(getString(R.string.system), R.string.icon_system, SystemTreeListFragment())
         val navigation = ThreeBean<String, Int, BasicFragment>(getString(R.string.navigation), R.string.icon_navigation, NavigationFragment())
-        val officialAccount = ThreeBean<String, Int, BasicFragment>(getString(R.string.official_accounts), R.string.icon_official_accounts, NavigationFragment())
+        val officialAccount = ThreeBean<String, Int, BasicFragment>(getString(R.string.official_accounts), R.string.icon_official_accounts, WxParentFragment())
 
         val fragmentList = listOf(home, system, officialAccount, navigation, project)
 

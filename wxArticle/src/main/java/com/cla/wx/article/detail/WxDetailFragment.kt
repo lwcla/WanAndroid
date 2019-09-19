@@ -1,38 +1,51 @@
-package com.cla.system.tree.detail
+package com.cla.wx.article.detail
 
 import android.widget.TextView
-import com.cla.system.tree.R
-import com.cla.system.tree.detail.adapter.SystemTreeDetailAdapter
+import com.cla.wx.article.R
+import com.cla.wx.article.adapter.WxDetailAdapter
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.AppUtils
-import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
 
-class SystemTreeDetailFragment : BasicFragment() {
+class WxDetailFragment : BasicFragment() {
 
-    var cid = -1
+    var cId = -1
+    private var wxAdapter: WxDetailAdapter? = null
+    private val loadWxDetail by lazy { initLoadWxDetail() }
 
-    private val systemAdapter by lazy { context?.let { SystemTreeDetailAdapter(it, mutableListOf()) } }
-    private val loadSystemTreeDetail by lazy { initLoadSystemTreeDetail() }
+    override fun getLayoutId(): Int = R.layout.fragment_wx_detail
 
-    override fun getLayoutId(): Int = R.layout.fragment_system_tree_detail
-
-    override fun initPresenters(): List<BasicPresenter>? = listOf(collectPresenter, loadSystemTreeDetail)
+    override fun initPresenters(): List<BasicPresenter>? = listOf(collectPresenter, loadWxDetail)
 
     override fun initView() {
         refreshRv = showView?.findViewById(R.id.refreshRv)
-        dataListAdapterHelper = systemAdapter
-        refreshRv?.initRecyclerView(systemAdapter, fragmentRefresh, index, false) {
+
+        wxAdapter = WxDetailAdapter(context!!, listOf())
+        dataListAdapterHelper = wxAdapter
+
+        refreshRv?.initRecyclerView(wxAdapter, fragmentRefresh, index) {
             refreshRv?.autoRefresh()
             resetData()
         }
     }
 
     override fun initEvent() {
-        systemAdapter?.apply {
+        refreshRv?.apply {
+
+            setOnRefreshListener {
+                resetData()
+            }
+
+            setOnLoadMoreListener {
+                loadWxDetail.loadMore()
+            }
+        }
+
+        wxAdapter?.apply {
+
             setOnItemClickListener { _, view, position ->
                 val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
                 val d = findDataByPosition(position)
@@ -48,11 +61,10 @@ class SystemTreeDetailFragment : BasicFragment() {
                 }
 
                 when (view.id) {
-
                     //收藏
                     R.id.imvStart -> {
 
-                        val data = systemAdapter?.findDataByPosition(position)
+                        val data = wxAdapter?.findDataByPosition(position)
                         if (data == null) {
                             toast(TAG, R.string.data_error)
                             return@setOnItemChildClickListener
@@ -66,22 +78,10 @@ class SystemTreeDetailFragment : BasicFragment() {
 
                         val b = collectPresenter.collect(position, id, data.collect)
                         if (b) {
-                            systemAdapter?.refreshCollectStatus(position, data)
+                            wxAdapter?.refreshCollectStatus(position, data)
                         }
                     }
-
                 }
-            }
-        }
-
-        refreshRv?.apply {
-
-            setOnRefreshListener {
-                resetData()
-            }
-
-            setOnLoadMoreListener {
-                loadSystemTreeDetail.loadMore()
             }
         }
     }
@@ -90,17 +90,12 @@ class SystemTreeDetailFragment : BasicFragment() {
         resetData()
     }
 
-    private fun initLoadSystemTreeDetail(): LoadSystemTreeDetail {
-        val view = object : LoadSystemTreeDetailView() {
+    private fun initLoadWxDetail(): LoadWxDetail {
+        val view = object : LoadWxDetailView() {
 
             override fun success(t: ProjectBean, refreshData: Boolean) {
 
-                if (t.datas?.size ?: 0 == 0) {
-                    refreshRv?.finishLoadMore(0, true, true)
-                    return
-                }
-
-                loadSystemTreeDetail.page = t.curPage
+                loadWxDetail.page = t.curPage
 
                 refreshRv?.finishRefresh(200)
                 refreshRv?.finishLoadMore(200, true, t.over)
@@ -109,41 +104,22 @@ class SystemTreeDetailFragment : BasicFragment() {
                 list.addAll(t.datas!!.filterNotNull())
 
                 if (refreshData) {
-                    systemAdapter?.setNewData(list)
+                    wxAdapter?.setNewData(list)
                 } else {
-                    systemAdapter?.addData(list)
+                    wxAdapter?.addData(list)
                 }
             }
         }
 
-        return LoadSystemTreeDetail(this, view, cid)
-    }
-
-    override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
-        Debug.info(TAG, "HomeFragment collectResult success?$success collectId=$collectId position=$position toCollect?$toCollect")
-
-        if (context == null) {
-            return
-        }
-
-        if (!success) {
-            return
-        }
-
-        val data = systemAdapter?.findDataByPosition(position) ?: return
-
-        if (data.id != collectId) {
-            return
-        }
-
-        systemAdapter?.refreshCollectStatus(position, toCollect)
+        return LoadWxDetail(this, view, cId)
     }
 
     override fun resetData() {
-        loadSystemTreeDetail.refresh()
+        loadWxDetail.refresh()
     }
 
     override fun refreshView() {
         refreshRv?.refreshDataAfterScrollTop()
     }
+
 }

@@ -1,7 +1,5 @@
 package com.cla.project.tree.fragment
 
-import com.cla.project.tree.presenter.ProjectPresenter
-import com.cla.project.tree.presenter.ProjectView
 import com.konsung.basic.ui.UiView
 
 /**

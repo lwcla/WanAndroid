@@ -1,7 +1,8 @@
-package com.cla.project.tree.fragment
+package com.cla.project.tree.parent
 
-import com.cla.project.tree.presenter.LoadProjectTitle
-import com.cla.project.tree.presenter.LoadProjectTitleView
+import com.cla.project.tree.R
+import com.cla.project.tree.fragment.NewestProjectFragment
+import com.cla.project.tree.fragment.ProjectTreeFragment
 import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.ui.BasicFragment
@@ -34,11 +35,11 @@ class ProjectParentFragment : VpBasicFragment() {
         val newestProjectFragment = NewestProjectFragment()
 
         val list = mutableListOf<TwoBean<String, BasicFragment>>()
-        val f1 = TwoBean<String, BasicFragment>(t[0].name, newestProjectFragment)
+        val f1 = TwoBean<String, BasicFragment>(context!!.getString(R.string.newest_project), newestProjectFragment)
         list.add(f1)
 
-        if (t.size > 1) {
-            for (i in 1 until t.size) {
+        if (t.isNotEmpty()) {
+            for (i in 0 until t.size) {
                 val bean = t[i]
                 val  projectTreeFragment = ProjectTreeFragment()
                 projectTreeFragment.cId = bean.id

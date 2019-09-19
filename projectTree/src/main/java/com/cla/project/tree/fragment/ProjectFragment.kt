@@ -1,15 +1,10 @@
 package com.cla.project.tree.fragment
 
-import android.content.Context
 import android.widget.TextView
 import com.cla.project.tree.ProjectAdapter
 import com.cla.project.tree.R
-import com.cla.project.tree.presenter.ProjectPresenter
-import com.cla.project.tree.presenter.ProjectView
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.project.ProjectBean
-import com.konsung.basic.presenter.CollectPresenter
-import com.konsung.basic.presenter.CollectView
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.AppUtils
@@ -39,16 +34,18 @@ abstract class ProjectFragment : BasicFragment() {
             }
         }
     }
+
     private val presenter: ProjectPresenter by lazy { initProjectPresenter(projectView) }
-    private val collectPresenter by lazy { initCollectPresenter() }
 
     override fun getLayoutId(): Int = R.layout.fragment_project
 
-    override fun initPresenters(): List<BasicPresenter>? = listOf(presenter)
+    override fun initPresenters(): List<BasicPresenter>? = listOf(presenter, collectPresenter)
 
     override fun initView() {
         refreshRv = showView?.findViewById(R.id.refreshRv)
         adapter = ProjectAdapter(context!!, listOf())
+        dataListAdapterHelper = adapter
+
         refreshRv?.initRecyclerView(adapter, fragmentRefresh, index) {
             refreshRv?.autoRefresh()
             resetData()
@@ -132,19 +129,6 @@ abstract class ProjectFragment : BasicFragment() {
 
     private fun loadMore(t: List<HomeData.DatasBean>) {
         adapter?.addData(t)
-    }
-
-
-    private fun initCollectPresenter(): CollectPresenter {
-
-        val view = object : CollectView() {
-
-            override fun failed(context: Context, string: String, position: Int, toCollect: Boolean) {
-                adapter?.refreshCollectStatus(position, !toCollect)
-            }
-        }
-
-        return CollectPresenter(this, view)
     }
 
     override fun resetData() {

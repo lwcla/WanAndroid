@@ -13,6 +13,7 @@
             <option value="$PROJECT_DIR$/home" />
             <option value="$PROJECT_DIR$/projectTree" />
             <option value="$PROJECT_DIR$/systemTree" />
+            <option value="$PROJECT_DIR$/wxArticle" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

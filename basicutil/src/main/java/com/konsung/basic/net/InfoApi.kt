@@ -58,6 +58,23 @@ interface InfoApi {
     fun fetchSystemTreeDetail(@Path("page") page: Int, @Query("cid") cId: Int): Call<BasicData<ProjectBean>>
 
     /**
+     * 获取公众号列表
+     * https://wanandroid.com/wxarticle/chapters/json
+     */
+    @GET("wxarticle/chapters/json")
+    fun fetchWxArticleTitle(): Call<BasicData<List<ProjectTitleBean>>>
+
+    /**
+     * 查看某个公众号历史数据
+     * https://wanandroid.com/wxarticle/list/408/1/json
+     *
+     * @param cId 公众号 ID：拼接在 url 中，eg:405
+     * @param page 公众号页码：拼接在url 中，eg:1
+     */
+    @GET("wxarticle/list/{id}/{page}/json")
+    fun fetchWxArticleDetail(@Path("id") cId: Int, @Path("page") page: Int): Call<BasicData<ProjectBean>>
+
+    /**
      * 广告栏
      * https://www.wanandroid.com/banner/json
      *

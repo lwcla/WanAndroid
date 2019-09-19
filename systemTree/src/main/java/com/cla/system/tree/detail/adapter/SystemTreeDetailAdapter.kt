@@ -3,14 +3,14 @@ package com.cla.system.tree.detail.adapter
 import android.content.Context
 import android.view.View
 import android.widget.TextView
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cla.system.tree.R
+import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
 
-class SystemTreeDetailAdapter(private val context: Context, data: List<HomeData.DatasBean>) : BaseQuickAdapter<HomeData.DatasBean, BaseViewHolder>(R.layout.adapter_system_tree_detail, data) {
+class SystemTreeDetailAdapter(private val context: Context, data: List<HomeData.DatasBean>) : BasicDataQuickAdapter<HomeData.DatasBean, BaseViewHolder>(R.layout.adapter_system_tree_detail, data) {
 
     companion object {
         val TAG: String = SystemTreeDetailAdapter::class.java.simpleName
@@ -65,7 +65,7 @@ class SystemTreeDetailAdapter(private val context: Context, data: List<HomeData.
     /**
      * 刷新收藏状态
      */
-    fun refreshCollectStatus(position: Int, toCollect: Boolean) {
+    override fun refreshCollectStatus(position: Int, toCollect: Boolean) {
 
         val data = findDataByPosition(position)
         if (data == null) {
@@ -99,7 +99,7 @@ class SystemTreeDetailAdapter(private val context: Context, data: List<HomeData.
     override fun convert(helper: BaseViewHolder, item: HomeData.DatasBean?) {
         item?.apply {
             helper.setText(R.id.tvTitle, StringUtils.instance.formHtml(title))
-                    .setText(R.id.tvAuthor, context.getString(R.string.author) + author)
+                    .setText(R.id.tvAuthor, author)
                     .setText(R.id.tvTime, context.getString(R.string.date) + niceDate)
                     .addOnClickListener(R.id.imvStart)
 

@@ -4,16 +4,16 @@ import android.content.Context
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
-import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.cla.home.R
+import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.config.ImageLoadUtil
 import com.konsung.basic.util.DateUtils
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
 
-class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) : BaseQuickAdapter<HomeData.DatasBean, BaseViewHolder>(R.layout.adapter_view_home, data) {
+class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) : BasicDataQuickAdapter<HomeData.DatasBean, BaseViewHolder>(R.layout.adapter_view_home, data) {
 
     companion object {
         val TAG: String = HomeAdapter::class.java.simpleName
@@ -68,7 +68,7 @@ class HomeAdapter(private val context: Context, data: List<HomeData.DatasBean>) 
     /**
      * 刷新收藏状态
      */
-    fun refreshCollectStatus(position: Int, toCollect: Boolean) {
+    override fun refreshCollectStatus(position: Int, toCollect: Boolean) {
 
         val data = findDataByPosition(position)
         if (data == null) {

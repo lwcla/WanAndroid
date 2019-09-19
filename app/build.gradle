@@ -60,4 +60,5 @@ dependencies {
     implementation project(':projectTree')
     implementation project(':systemTree')
     implementation project(':home')
+    implementation project(':wxArticle')
 }

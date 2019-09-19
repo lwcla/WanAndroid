@@ -5,8 +5,6 @@ import android.widget.TextView
 import com.cla.home.R
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.presenter.CollectPresenter
-import com.konsung.basic.presenter.CollectView
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.AppUtils
@@ -27,7 +25,6 @@ class HomeFragment : BasicFragment() {
 
     private val loadBanner by lazy { initLoadBanner() }
     private val loadHomeData by lazy { initLoadHomeData() }
-    private val collectPresenter by lazy { initCollectPresenter() }
 
     override fun getLayoutId(): Int = R.layout.fragment_home
 
@@ -38,7 +35,10 @@ class HomeFragment : BasicFragment() {
     override fun initView() {
         refreshRv = showView?.findViewById(R.id.refreshRv)
         headView = BannerHeadView(context!!)
+
         homeAdapter?.addHeaderView(headView)
+        dataListAdapterHelper = homeAdapter
+
         refreshRv?.initRecyclerView(homeAdapter, fragmentRefresh, index, true) {
             refreshRv?.autoRefresh()
             resetData()
@@ -134,18 +134,6 @@ class HomeFragment : BasicFragment() {
     override fun leave() {
         //停止轮播
         headView.stopAutoPlay()
-    }
-
-    private fun initCollectPresenter(): CollectPresenter {
-
-        val view = object : CollectView() {
-
-            override fun failed(context: Context, string: String, position: Int, toCollect: Boolean) {
-                homeAdapter?.refreshCollectStatus(position, !toCollect)
-            }
-        }
-
-        return CollectPresenter(this, view)
     }
 
     private fun initLoadBanner(): BannerPresenter {

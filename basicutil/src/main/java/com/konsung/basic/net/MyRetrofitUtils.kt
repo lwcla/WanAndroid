@@ -127,6 +127,18 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
+    fun fetchWxArticleTitle(context: Context, result: RequestResult<List<ProjectTitleBean>>) {
+        getRetrofit()
+                .fetchWxArticleTitle()
+                .enqueue(CallInterceptor(context, result))
+    }
+
+    fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<ProjectBean>) {
+        getRetrofit()
+                .fetchWxArticleDetail(cId, page)
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun loadCommonWeb(context: Context, result: RequestResult<List<CommonWebBean>>) {
         getRetrofit()
                 .loadCommonWeb()

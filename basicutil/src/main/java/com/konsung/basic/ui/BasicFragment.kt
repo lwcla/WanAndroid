@@ -16,10 +16,13 @@ import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.classic.common.MultipleStatusView
+import com.konsung.basic.adapter.BaseAdapterHelper
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.net.NetStateChangeObserver
 import com.konsung.basic.net.NetworkType
+import com.konsung.basic.presenter.CollectPresenter
+import com.konsung.basic.presenter.CollectView
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import java.lang.ref.WeakReference
@@ -42,7 +45,11 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
 
     protected var multiplyStatusView: MultipleStatusView? = null
     protected var refreshRv: RefreshRecyclerView? = null
+
     private var presenter: List<BasicPresenter>? = null
+    protected val collectPresenter by lazy { initCollectPresenter() }
+    protected var dataListAdapterHelper: BaseAdapterHelper? = null
+
     private var loadHandler = false
     protected val myHandler: MyHandler by lazy { MyHandler(this) }
     private var rootView: View? = null
@@ -200,6 +207,18 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
      */
     open fun leave() {
 
+    }
+
+    private fun initCollectPresenter(): CollectPresenter {
+
+        val view = object : CollectView() {
+
+            override fun failed(context: Context, string: String, position: Int, toCollect: Boolean) {
+                dataListAdapterHelper?.refreshCollectStatus(position, !toCollect)
+            }
+        }
+
+        return CollectPresenter(this, view)
     }
 
     override fun onNetDisconnected() {
