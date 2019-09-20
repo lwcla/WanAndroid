@@ -48,7 +48,6 @@ open class ProductUtils {
             intent.putExtra(BaseConfig.SYSTEM_TREE_TITLE_LIST, title)
             intent.setClass(it, SystemTreeDetailAty::class.java)
 //            it.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity, view, "tvTitle").toBundle())
-
             it.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(it).toBundle())
         }
     }

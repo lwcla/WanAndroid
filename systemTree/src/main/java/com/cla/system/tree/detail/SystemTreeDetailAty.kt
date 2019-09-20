@@ -124,6 +124,13 @@ class SystemTreeDetailAty : BasicAty() {
         } else {
             magicIndicator.visibility = View.VISIBLE
         }
+
+        var currentIndex = systemTreeTitle.currentIndex
+        if (currentIndex < 0) {
+            currentIndex = 0
+        }
+
+        viewPager.currentItem = currentIndex
     }
 
 }

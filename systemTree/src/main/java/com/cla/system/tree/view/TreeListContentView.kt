@@ -157,7 +157,7 @@ class TreeListTextView(context: Context) : TextView(context) {
         layoutParams = ViewGroup.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT)
         val padding = context.resources.getDimension(R.dimen.dp_5).toInt()
         setPadding(padding, padding, padding, 0)
-        setTextColor(ContextCompat.getColor(context, R.color.value_default))
+        setTextColor(context.resources.getColorStateList(R.color.color_text_name))
         textSize = 14.toFloat()
         id = R.id.tvName
 

@@ -89,6 +89,7 @@ class SystemTreeListAdapter(private val dataList: MutableList<SystemTreeListBean
 
             itemView.setOnClickListener {
                 it.setTag(R.id.recycler_view_adapter_item_click, bean)
+                it.setTag(R.id.recycler_view_adapter_item_click_position, -1)
                 listener?.onClick(it)
             }
 
@@ -103,8 +104,9 @@ class SystemTreeListAdapter(private val dataList: MutableList<SystemTreeListBean
 
             llTreeContent.itemClickListener = View.OnClickListener {
 
-                val bean: SystemTreeListBean? = it.getTag(R.id.text_view_click_data) as? SystemTreeListBean
-                        ?: return@OnClickListener
+                if (bean == null) {
+                    return@OnClickListener
+                }
 
                 val position = it.getTag(R.id.text_view_click_position) as? Int
                 if (position == null || position < 0) {
@@ -112,7 +114,9 @@ class SystemTreeListAdapter(private val dataList: MutableList<SystemTreeListBean
                     return@OnClickListener
                 }
 
-                context.toast(TAG, "点击${bean!!.name} $position")
+                it.setTag(R.id.recycler_view_adapter_item_click, bean)
+                it.setTag(R.id.recycler_view_adapter_item_click_position, position)
+                listener?.onClick(it)
             }
 
             StringUtils.instance.loadTextIcon(context, tvDetail)

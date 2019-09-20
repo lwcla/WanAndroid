@@ -63,7 +63,9 @@ class SystemTreeListFragment : BasicFragment() {
                 map[b.name] = b.id
             }
 
-            val systemTreeTitle = SystemTreeTitle(bean.name, map, 0)
+            val position = it.getTag(R.id.recycler_view_adapter_item_click_position) as? Int ?: -1
+
+            val systemTreeTitle = SystemTreeTitle(bean.name, map, position)
             AppUtils.startSystemTreeDetailAty(activity, tvTitle, systemTreeTitle)
         }
     }

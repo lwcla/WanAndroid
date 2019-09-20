@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="recycler_view_adapter_item_click" type="id"/>
+    <item name="recycler_view_adapter_item_click_position" type="id"/>
     <item name="tvName" type="id"/>
     <item name="text_view_click_data" type="id"/>
     <item name="text_view_click_position" type="id"/>
