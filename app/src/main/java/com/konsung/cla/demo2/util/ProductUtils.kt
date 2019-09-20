@@ -11,8 +11,8 @@ import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.ui.ScreenImageAty
 import com.konsung.basic.ui.WebViewAty
-import com.konsung.cla.demo2.login.LoginAty
-import com.konsung.cla.demo2.main.MainActivity
+import com.konsung.cla.demo2.aty.LoginAty
+import com.konsung.cla.demo2.aty.MainActivity
 
 
 open class ProductUtils {
@@ -21,6 +21,10 @@ open class ProductUtils {
         val intent = Intent()
         intent.setClass(context, MainActivity::class.java)
         context.startActivity(intent)
+    }
+
+    open fun startSearchAty(){
+
     }
 
     open fun startScreenImageAty(activity: Activity?, data: ScreenImageData) {
@@ -49,6 +53,14 @@ open class ProductUtils {
             intent.setClass(it, SystemTreeDetailAty::class.java)
 //            it.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity, view, "tvTitle").toBundle())
             it.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(it).toBundle())
+        }
+    }
+
+    open fun startLoginAty(context: Context?) {
+        context?.let {
+            val intent = Intent()
+            intent.setClass(it, LoginAty::class.java)
+            it.startActivity(intent)
         }
     }
 
@@ -108,13 +120,5 @@ open class ProductUtils {
 
         setWebAty(context, intent)
         activity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity, view, "tvTitle").toBundle())
-    }
-
-    open fun startLoginAty(context: Context?) {
-        context?.let {
-            val intent = Intent()
-            intent.setClass(it, LoginAty::class.java)
-            it.startActivity(intent)
-        }
     }
 }

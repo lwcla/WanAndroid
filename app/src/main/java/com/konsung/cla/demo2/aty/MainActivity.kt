@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.main
+package com.konsung.cla.demo2.aty
 
 import android.content.Context
 import android.content.IntentFilter

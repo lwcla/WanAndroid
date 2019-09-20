@@ -65,7 +65,7 @@ class RefreshRecyclerView : SmartRefreshLayout {
     inline fun <T> initRecyclerView(myAdapter: BaseQuickAdapter<T, BaseViewHolder>?, fragmentRefresh: FragmentRefresh?, index: Int, hasHead: Boolean = false, crossinline refreshData: () -> Unit = {}) {
         rv.apply {
             val manager = LinearLayoutManager(context)
-            val space = context.resources.getDimension(R.dimen.dp_8)
+            val space = context.resources.getDimension(R.dimen.dp_10)
             addItemDecoration(SpaceDecoration(space.toInt(), hasHead))
             myAdapter?.setHasStableIds(true)
             itemAnimator?.changeDuration = 0

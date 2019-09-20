@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.login
+package com.konsung.cla.demo2.presenter
 
 import android.content.Context
 import com.konsung.basic.bean.UserDto

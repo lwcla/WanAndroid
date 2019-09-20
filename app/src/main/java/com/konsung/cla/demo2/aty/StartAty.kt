@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.start
+package com.konsung.cla.demo2.aty
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -4,14 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cardView"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:color/white"
+    style="@style/DataShowCardView"
     android:clickable="true"
     android:focusable="true"
-    android:foreground="?android:attr/selectableItemBackground"
-    app:cardElevation="@dimen/dp_4"
-    tools:targetApi="lollipop"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -129,11 +124,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:transitionName="tvTitle"
                     android:focusable="false"
                     android:maxLines="2"
                     android:textColor="@android:color/black"
                     android:textSize="@dimen/sp_16"
+                    android:transitionName="tvTitle"
                     tools:ignore="RtlSymmetry"
                     tools:text="可定制化阴影的万能阴影布局ShadowLayout 2.0 震撼上线，效果赶超CardView。（需要阴影地方，被它嵌套即可享受阴影，阴影可定制化）"
                     />

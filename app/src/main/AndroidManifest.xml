@@ -31,29 +31,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-
-        <activity android:name=".start.StartAty">
+        <activity android:name=".aty.StartAty">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <activity
-            android:name=".main.MainActivity"
-            android:launchMode="singleTask"
-            />
-
+            android:name=".aty.MainActivity"
+            android:launchMode="singleTask"/>
         <activity
             android:name="com.konsung.basic.ui.WebViewAty"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
-            android:theme="@style/ShareActivity"
-            android:launchMode="singleTask"/>
-
-        <activity android:name=".login.LoginAty"/>
-
+            android:launchMode="singleTask"
+            android:theme="@style/ShareActivity"/>
+        <activity android:name=".aty.LoginAty"/>
+        <activity android:name=".aty.SearchAty">
+        </activity>
     </application>
 
 </manifest>

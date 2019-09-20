@@ -1,4 +1,4 @@
-package com.konsung.cla.demo2.login
+package com.konsung.cla.demo2.aty
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
@@ -22,6 +22,10 @@ import com.konsung.basic.util.Utils
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.presenter.LoginPresenter
+import com.konsung.cla.demo2.presenter.LoginView
+import com.konsung.cla.demo2.presenter.RegisterPresenter
+import com.konsung.cla.demo2.presenter.RegisterView
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_login.*
 

@@ -32,7 +32,7 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
     private var presenters: List<BasicPresenter>? = null
     protected lateinit var context: Context
     private var loadingDialog: LoadingDialog? = null
-    protected val myHandler = MyHandler(this)
+    protected val myHandler by lazy{ MyHandler(this)}
     private val initRunnable = Runnable {
         initView()
         initEvent()

@@ -19,12 +19,7 @@ class SpaceDecoration(private val space: Int = 0, private val hasHead: Boolean =
         super.getItemOffsets(outRect, view, parent, state)
 //        Debug.info(TAG, "SpaceDecoration getItemOffsets space=$space")
         val position = parent.getChildAdapterPosition(view)
-        if (position == 0) {
-            outRect.top = 0
-            return
-        }
-
-        if (position == 1 && hasHead) {
+        if (position == 0 && hasHead) {
             outRect.top = 0
             return
         }
