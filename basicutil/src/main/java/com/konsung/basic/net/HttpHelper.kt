@@ -8,6 +8,7 @@ import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
+import com.konsung.basic.bean.search.SearchHotKey
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.config.RequestResult
 
@@ -21,7 +22,7 @@ interface HttpHelper {
     /**
      * 导航
      */
-    fun fetNavigationList(context: Context,result: RequestResult<List<NavigationBean>>)
+    fun fetNavigationList(context: Context, result: RequestResult<List<NavigationBean>>)
 
     /**
      * 最新项目
@@ -32,6 +33,11 @@ interface HttpHelper {
      * 项目列表数据
      */
     fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>)
+
+    /**
+     * 搜索热词
+     */
+    fun fetchSearchHotKey(context: Context, result: RequestResult<List<SearchHotKey>>)
 
     /**
      * 知识体系下的文章

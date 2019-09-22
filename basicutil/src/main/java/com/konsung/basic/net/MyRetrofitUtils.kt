@@ -6,6 +6,7 @@ import com.konsung.basic.bean.*
 import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
+import com.konsung.basic.bean.search.SearchHotKey
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.config.NoNetworkException
@@ -129,6 +130,12 @@ class MyRetrofitUtils private constructor() {
     fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>) {
         getRetrofit()
                 .fetchTreeList()
+                .enqueue(CallInterceptor(context, result))
+    }
+
+    fun fetchSearchHotKey(context: Context,result: RequestResult<List<SearchHotKey>>){
+        getRetrofit()
+                .fetchSearchHotKey()
                 .enqueue(CallInterceptor(context, result))
     }
 

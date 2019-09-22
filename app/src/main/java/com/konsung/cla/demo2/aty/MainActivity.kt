@@ -14,7 +14,6 @@ import com.cla.navigation.NavigationFragment
 import com.cla.project.tree.parent.ProjectParentFragment
 import com.cla.system.tree.list.SystemTreeListFragment
 import com.cla.wx.article.parent.WxParentFragment
-import com.google.android.material.snackbar.Snackbar
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.NetChangeReceiver
@@ -254,13 +253,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
             R.id.rlHead -> App.productUtils.startLoginAty(this)
 
-            R.id.tvIconSearch -> {
-                Snackbar.make(coordinator, "点击搜索", Snackbar.LENGTH_INDEFINITE)
-                        .setAction("搜索") {
-                            ToastUtils.instance.toast(context, TAG, "点击有效")
-                        }
-                        .show()
-            }
+            R.id.tvIconSearch -> App.productUtils.startSearchAty(this)
         }
     }
 

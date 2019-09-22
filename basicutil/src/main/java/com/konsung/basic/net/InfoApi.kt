@@ -4,6 +4,7 @@ import com.konsung.basic.bean.*
 import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
+import com.konsung.basic.bean.search.SearchHotKey
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import retrofit2.Call
 import retrofit2.http.*
@@ -59,6 +60,13 @@ interface InfoApi {
      */
     @GET("tree/json")
     fun fetchTreeList(): Call<BasicData<List<SystemTreeListBean>>>
+
+    /**
+     * 搜索热词
+     * https://www.wanandroid.com/hotkey/json
+     */
+    @GET("hotkey/json")
+    fun fetchSearchHotKey(): Call<BasicData<List<SearchHotKey>>>
 
     /**
      * 知识体系下的文章

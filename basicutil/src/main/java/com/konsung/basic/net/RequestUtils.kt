@@ -8,6 +8,7 @@ import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
+import com.konsung.basic.bean.search.SearchHotKey
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.config.RequestResult
 
@@ -38,6 +39,10 @@ class RequestUtils private constructor() : HttpHelper {
 
     override fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>) {
         request.fetchTreeList(context, result)
+    }
+
+    override fun fetchSearchHotKey(context: Context, result: RequestResult<List<SearchHotKey>>) {
+        request.fetchSearchHotKey(context, result)
     }
 
     override fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>) {

@@ -58,6 +58,7 @@ dependencies {
     implementation config.multiple_status_view
     implementation config.av_loading_indicator_view
     implementation config.blurry
+    implementation config.chipsLayoutManager
 
     implementation project(':basicutil')
     implementation project(':projectTree')

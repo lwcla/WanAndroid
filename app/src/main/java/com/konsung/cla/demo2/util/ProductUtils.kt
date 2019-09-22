@@ -13,6 +13,7 @@ import com.konsung.basic.ui.ScreenImageAty
 import com.konsung.basic.ui.WebViewAty
 import com.konsung.cla.demo2.aty.LoginAty
 import com.konsung.cla.demo2.aty.MainActivity
+import com.konsung.cla.demo2.aty.SearchAty
 
 
 open class ProductUtils {
@@ -23,8 +24,13 @@ open class ProductUtils {
         context.startActivity(intent)
     }
 
-    open fun startSearchAty(){
+    open fun startSearchAty(context: Context?) {
 
+        context?.let {
+            val intent = Intent()
+            intent.setClass(it, SearchAty::class.java)
+            it.startActivity(intent)
+        }
     }
 
     open fun startScreenImageAty(activity: Activity?, data: ScreenImageData) {
