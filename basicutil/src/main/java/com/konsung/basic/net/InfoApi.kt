@@ -69,6 +69,13 @@ interface InfoApi {
     fun fetchSearchHotKey(): Call<BasicData<List<SearchKey>>>
 
     /**
+     * 搜索
+     * https://www.wanandroid.com/article/query/0/json
+     */
+    @GET("article/query/{page}/json")
+    fun fetchSearchResult(@Path("page") page: Int, @Query("k") key: String): Call<BasicData<List<HomeData.DatasBean>>>
+
+    /**
      * 知识体系下的文章
      * https://www.wanandroid.com/article/list/0/json?cid=60
      */

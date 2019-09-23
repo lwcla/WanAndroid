@@ -133,9 +133,15 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun fetchSearchHotKey(context: Context,result: RequestResult<List<SearchKey>>){
+    fun fetchSearchHotKey(context: Context, result: RequestResult<List<SearchKey>>) {
         getRetrofit()
                 .fetchSearchHotKey()
+                .enqueue(CallInterceptor(context, result))
+    }
+
+    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<List<HomeData.DatasBean>>) {
+        getRetrofit()
+                .fetchSearchResult(page, key)
                 .enqueue(CallInterceptor(context, result))
     }
 

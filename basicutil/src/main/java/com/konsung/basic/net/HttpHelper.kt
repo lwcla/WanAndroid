@@ -40,6 +40,11 @@ interface HttpHelper {
     fun fetchSearchHotKey(context: Context, result: RequestResult<List<SearchKey>>)
 
     /**
+     * 搜索
+     */
+    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<List<HomeData.DatasBean>>)
+
+    /**
      * 知识体系下的文章
      */
     fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>)
