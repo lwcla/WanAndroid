@@ -2,6 +2,7 @@ package com.konsung.basic.db
 
 import android.content.Context
 import com.konsung.basic.bean.UserInfo
+import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.db.greendao.GreenDaoUtil
 
 enum class DbType {
@@ -27,6 +28,9 @@ interface DbHelper {
 
     fun getUserInfo(userName: String): UserInfo?
 
+    fun saveSearchKey(searchKey: SearchKey)
+
+    fun loadSearchKey(): List<SearchKey>
 }
 
 

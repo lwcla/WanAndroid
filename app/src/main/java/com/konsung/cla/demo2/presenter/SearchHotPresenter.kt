@@ -1,16 +1,16 @@
 package com.konsung.cla.demo2.presenter
 
 import android.content.Context
-import com.konsung.basic.bean.search.SearchHotKey
+import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.ui.BasePresenter2
 import com.konsung.basic.ui.BasicView
 import com.konsung.basic.ui.UiView
 
-class SearchHotPresenter(uiView: UiView?, view: SearchHotView?) : BasePresenter2<List<SearchHotKey>, SearchHotView>(uiView, view) {
+class SearchHotPresenter(uiView: UiView?, view: SearchHotView?) : BasePresenter2<List<SearchKey>, SearchHotView>(uiView, view) {
 
-    override fun success(context: Context, t: List<SearchHotKey>) {
+    override fun success(context: Context, t: List<SearchKey>) {
 
-        val list = mutableListOf<SearchHotKey>()
+        val list = mutableListOf<SearchKey>()
 
         for (key in t) {
 
@@ -30,4 +30,4 @@ class SearchHotPresenter(uiView: UiView?, view: SearchHotView?) : BasePresenter2
 }
 
 
-open class SearchHotView : BasicView<List<SearchHotKey>>()
+open class SearchHotView : BasicView<List<SearchKey>>()

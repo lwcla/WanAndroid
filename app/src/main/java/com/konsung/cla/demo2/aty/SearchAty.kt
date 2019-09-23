@@ -1,18 +1,25 @@
 package com.konsung.cla.demo2.aty
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.transition.Explode
 import android.view.Gravity
 import android.view.View
+import androidx.recyclerview.widget.RecyclerView
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
-import com.konsung.basic.bean.search.SearchHotKey
+import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.ConvertUtils
 import com.konsung.basic.util.StringUtils
+import com.konsung.basic.util.toast
+import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.adapter.HotSearchAdapter
+import com.konsung.cla.demo2.adapter.SearchKeyAdapter
+import com.konsung.cla.demo2.presenter.SearchHistoryPresenter
+import com.konsung.cla.demo2.presenter.SearchHistoryView
 import com.konsung.cla.demo2.presenter.SearchHotPresenter
 import com.konsung.cla.demo2.presenter.SearchHotView
 import kotlinx.android.synthetic.main.activity_search.*
@@ -30,7 +37,9 @@ class SearchAty : BasicAty(), View.OnClickListener {
     }
 
     private val searchHotPresenter by lazy { initSearchHotPresenter() }
-    private var hotSearchAdapter: HotSearchAdapter? = null
+    private val historyKeyPresenter by lazy { initHistoryKeyPresenter() }
+    private var hotSearchAdapter: SearchKeyAdapter? = null
+    private var historyKeyAdapter: SearchKeyAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,68 +47,148 @@ class SearchAty : BasicAty(), View.OnClickListener {
         window.exitTransition = Explode().setDuration(INIT_DETAIL)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        if (historyKeyAdapter != null) {
+            historyKeyPresenter.load()
+        }
+    }
+
     override fun getLayoutId(): Int = R.layout.activity_search
 
-    override fun initPresenter(): List<BasicPresenter>? = listOf(searchHotPresenter)
+    override fun initPresenter(): List<BasicPresenter>? = listOf(searchHotPresenter, historyKeyPresenter)
 
     override fun initView() {
         StringUtils.instance.loadTextIcon(context, tvBack)
+        StringUtils.instance.loadTextIcon(context, tvClear)
     }
 
     override fun initEvent() {
         tvBack.setOnClickListener(this)
         tvSearch.setOnClickListener(this)
+        tvClear.setOnClickListener(this)
 
+        etSearch.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(s: Editable) {
+                if (s.toString().isEmpty()) {
+                    tvClear.visibility = View.GONE
+                } else {
+                    tvClear.visibility = View.VISIBLE
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+            }
+        })
     }
 
     override fun initData() {
         searchHotPresenter.load()
+        historyKeyPresenter.load()
     }
 
-    private fun setHotKey(t: List<SearchHotKey>) {
-
+    private fun setHotKey(t: List<SearchKey>) {
         if (hotSearchAdapter == null) {
-
-            val chipsLayoutManager = ChipsLayoutManager.newBuilder(context)
-                    //set vertical gravity for all items in a row. Default = Gravity.CENTER_VERTICAL
-                    .setChildGravity(Gravity.LEFT)
-                    //whether RecyclerView can scroll. TRUE by default
-                    .setScrollingEnabled(true)
-                    //a layoutOrientation of layout manager, could be VERTICAL OR HORIZONTAL.
-                    // HORIZONTAL by default
-                    .setOrientation(ChipsLayoutManager.HORIZONTAL)
-                    // row strategy for views in completed row, could be STRATEGY_DEFAULT,
-                    // STRATEGY_FILL_VIEW,
-                    //STRATEGY_FILL_SPACE or STRATEGY_CENTER
-                    .setRowStrategy(ChipsLayoutManager.STRATEGY_DEFAULT)
-                    // whether strategy is applied to last row. FALSE by default
-                    .withLastRow(true)
-                    .build()
-
-            rvHot.layoutManager = chipsLayoutManager
-
-            val horizontalSpacing = ConvertUtils.dp2px(context, 25.toFloat())
-            val verticalSpacing = ConvertUtils.dp2px(context, 15.toFloat())
-            rvHot.addItemDecoration(SpacingItemDecoration(horizontalSpacing, verticalSpacing))
-
-            hotSearchAdapter = HotSearchAdapter(t)
-            rvHot.adapter = hotSearchAdapter
-
+            hotSearchAdapter = initRv(rvHot, t, true)
         } else {
             hotSearchAdapter?.setNewData(t)
         }
+    }
+
+    private fun setHistoryKey(t: List<SearchKey>) {
+
+        if (historyKeyAdapter == null) {
+            historyKeyAdapter = initRv(rvHistory, t, false)
+        } else {
+            historyKeyAdapter?.setNewData(t)
+        }
+    }
+
+    private fun initRv(rv: RecyclerView, t: List<SearchKey>, isHotKey: Boolean): SearchKeyAdapter {
+
+        val searchAdapter = SearchKeyAdapter(this, t, isHotKey)
+        searchAdapter.setOnItemChildClickListener { adapter, view, position ->
+            when (view.id) {
+                R.id.tvName -> {
+
+                    if (position < 0) {
+                        return@setOnItemChildClickListener
+                    }
+
+                    if (position >= adapter.data.size) {
+                        return@setOnItemChildClickListener
+                    }
+
+                    val key = adapter.data[position] as SearchKey
+                    val name = key.name.toString()
+                    etSearch.setText(name)
+                    etSearch.setSelection(name.length)
+                    startSearchResult(key)
+                }
+            }
+        }
+
+        val chipsLayoutManager = ChipsLayoutManager.newBuilder(context)
+                //set vertical gravity for all items in a row. Default = Gravity.CENTER_VERTICAL
+                .setChildGravity(Gravity.LEFT)
+                //whether RecyclerView can scroll. TRUE by default
+                .setScrollingEnabled(true)
+                //a layoutOrientation of layout manager, could be VERTICAL OR HORIZONTAL.
+                // HORIZONTAL by default
+                .setOrientation(ChipsLayoutManager.HORIZONTAL)
+                // row strategy for views in completed row, could be STRATEGY_DEFAULT,
+                // STRATEGY_FILL_VIEW,
+                //STRATEGY_FILL_SPACE or STRATEGY_CENTER
+                .setRowStrategy(ChipsLayoutManager.STRATEGY_DEFAULT)
+                // whether strategy is applied to last row. FALSE by default
+                .withLastRow(true)
+                .build()
+
+        val horizontalSpacing = ConvertUtils.dp2px(context, 25.toFloat())
+        val verticalSpacing = ConvertUtils.dp2px(context, 15.toFloat())
+        rv.addItemDecoration(SpacingItemDecoration(horizontalSpacing, verticalSpacing))
+        rv.layoutManager = chipsLayoutManager
+        rv.adapter = searchAdapter
+
+        return searchAdapter
+    }
+
+    private fun startSearchResult(searchKey: SearchKey) {
+
+        val key = searchKey.name
+        historyKeyPresenter.save(searchKey)
+        App.productUtils.startSearchResultAty(this, key)
     }
 
     private fun initSearchHotPresenter(): SearchHotPresenter {
 
         val view = object : SearchHotView() {
 
-            override fun success(t: List<SearchHotKey>, refreshData: Boolean) {
+            override fun success(t: List<SearchKey>, refreshData: Boolean) {
                 setHotKey(t)
             }
         }
 
         return SearchHotPresenter(this, view)
+    }
+
+    private fun initHistoryKeyPresenter(): SearchHistoryPresenter {
+
+        val view = object : SearchHistoryView() {
+
+            override fun success(t: List<SearchKey>, refreshData: Boolean) {
+                setHistoryKey(t)
+            }
+        }
+
+        return SearchHistoryPresenter(this, view)
     }
 
     override fun onClick(v: View) {
@@ -108,9 +197,18 @@ class SearchAty : BasicAty(), View.OnClickListener {
             R.id.tvBack -> finish()
 
             R.id.tvSearch -> {
+                val key = etSearch.text.toString()
+                if (key.isEmpty()) {
+                    toast(TAG, R.string.search_content_is_empty)
+                    return
+                }
 
+                val searchKey = SearchKey()
+                searchKey.name = key
+                startSearchResult(searchKey)
             }
 
+            R.id.tvClear -> etSearch.setText("")
         }
     }
 }

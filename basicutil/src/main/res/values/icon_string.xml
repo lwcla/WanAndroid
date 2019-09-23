@@ -40,7 +40,9 @@
     <!--隐藏详情-->
     <string name="icon_hide_the_details">&#xe612;</string>
     <!--返回-->
-    <string name="icon_back">&#xe646;</string>
+    <string name="icon_back" tools:ignore="ExtraTranslation">&#xe646;</string>
     <!--公众号-->
     <string name="icon_official_accounts" tools:ignore="ExtraTranslation">&#xe615;</string>
+    <!--关闭-->
+    <string name="icon_close" tools:ignore="ExtraTranslation">&#xe632;</string>
 </resources>

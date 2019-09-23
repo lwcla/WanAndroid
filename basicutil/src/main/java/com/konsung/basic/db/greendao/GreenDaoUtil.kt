@@ -3,14 +3,22 @@ package com.konsung.basic.db.greendao
 import android.content.Context
 import com.greendao.dao.DaoMaster
 import com.greendao.dao.DaoSession
+import com.greendao.dao.SearchKeyDao
 import com.greendao.dao.UserInfoDao
 import com.konsung.basic.bean.UserInfo
+import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.db.DbHelper
+import com.konsung.basic.util.AppUtils
+import java.util.*
 
-class GreenDaoUtil : DbHelper {
+class GreenDaoUtil() : DbHelper {
 
     companion object {
-        val instance = GreenDaoUtil()
+        val instance = Single.INSTANCE
+    }
+
+    init {
+        init(AppUtils.getContext())
     }
 
     private var greenDaoManager: GreenDaoManager? = null
@@ -37,4 +45,23 @@ class GreenDaoUtil : DbHelper {
         }
     }
 
+    override fun saveSearchKey(searchKey: SearchKey) {
+        searchKey.saveTime = Date()
+        daoSession?.searchKeyDao?.insertOrReplace(searchKey)
+    }
+
+    override fun loadSearchKey(): List<SearchKey> {
+        val list = daoSession?.searchKeyDao?.queryBuilder()?.orderDesc(SearchKeyDao.Properties.SaveTime)?.list()
+        return if (list?.size ?: 0 == 0) {
+            emptyList()
+        } else {
+            list!!
+        }
+    }
+
+    class Single {
+        companion object {
+            val INSTANCE = GreenDaoUtil()
+        }
+    }
 }

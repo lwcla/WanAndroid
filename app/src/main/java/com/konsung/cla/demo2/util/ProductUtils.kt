@@ -14,6 +14,7 @@ import com.konsung.basic.ui.WebViewAty
 import com.konsung.cla.demo2.aty.LoginAty
 import com.konsung.cla.demo2.aty.MainActivity
 import com.konsung.cla.demo2.aty.SearchAty
+import com.konsung.cla.demo2.aty.SearchResultAty
 
 
 open class ProductUtils {
@@ -31,6 +32,24 @@ open class ProductUtils {
             intent.setClass(it, SearchAty::class.java)
             it.startActivity(intent)
         }
+    }
+
+    /**
+     * 搜索结果
+     * @param context context
+     * @param searchKey 搜索关键字
+     * @param searchForWxArticle  是否搜索公众号内容
+     */
+    open fun startSearchResultAty(context: Context?, searchKey: String, searchForWxArticle: Boolean = false) {
+
+        context?.let {
+            val intent = Intent()
+            intent.putExtra(BaseConfig.SEARCH_KEY, searchKey)
+            intent.putExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE, searchForWxArticle)
+            intent.setClass(it, SearchResultAty::class.java)
+            it.startActivity(intent)
+        }
+
     }
 
     open fun startScreenImageAty(activity: Activity?, data: ScreenImageData) {
