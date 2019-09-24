@@ -2,35 +2,40 @@ package com.konsung.cla.demo2.aty
 
 import android.os.Bundle
 import android.text.Editable
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.transition.Explode
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
+import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
+import com.konsung.basic.presenter.LoadWxArticleTitle
+import com.konsung.basic.presenter.LoadWxArticleTitleView
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.ConvertUtils
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
+import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.SearchKeyAdapter
+import com.konsung.cla.demo2.adapter.WxArticleTitleAdapter
 import com.konsung.cla.demo2.presenter.SearchHistoryPresenter
 import com.konsung.cla.demo2.presenter.SearchHistoryView
 import com.konsung.cla.demo2.presenter.SearchHotPresenter
 import com.konsung.cla.demo2.presenter.SearchHotView
 import kotlinx.android.synthetic.main.activity_search.*
-import android.text.TextUtils
-import android.view.inputmethod.EditorInfo
-import android.widget.TextView
-import android.view.KeyEvent
-import com.konsung.cla.demo2.R
 
-
+/**
+ * 搜索页面
+ */
 class SearchAty : BasicAty(), View.OnClickListener {
-
 
     companion object {
         val TAG: String = SearchAty::class.java.simpleName
@@ -43,8 +48,11 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
     private val searchHotPresenter by lazy { initSearchHotPresenter() }
     private val historyKeyPresenter by lazy { initHistoryKeyPresenter() }
+    private val loadWxArticleTitle by lazy { initLoadWxArticleTitle() }
+
     private var hotSearchAdapter: SearchKeyAdapter? = null
     private var historyKeyAdapter: SearchKeyAdapter? = null
+    private var wxArticleTitleAdapter: WxArticleTitleAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,12 +75,29 @@ class SearchAty : BasicAty(), View.OnClickListener {
     override fun initView() {
         StringUtils.instance.loadTextIcon(context, tvBack)
         StringUtils.instance.loadTextIcon(context, tvClear)
+        StringUtils.instance.loadTextIcon(context, tvDelete)
+
+        switchSearch.textOff = getString(R.string.search_all)
+        switchSearch.textOn = getString(R.string.search_wx_article)
     }
 
     override fun initEvent() {
         tvBack.setOnClickListener(this)
         tvSearch.setOnClickListener(this)
         tvClear.setOnClickListener(this)
+        tvDelete.setOnClickListener(this)
+
+        switchSearch.setOnCheckedChangeListener { buttonView, isChecked ->
+
+            if (isChecked) {
+                rlWxArticle.visibility = View.VISIBLE
+                if (wxArticleTitleAdapter == null) {
+                    loadWxArticleTitle.load()
+                }
+            } else {
+                rlWxArticle.visibility = View.GONE
+            }
+        }
 
         etSearch.addTextChangedListener(object : TextWatcher {
 
@@ -110,6 +135,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
                 return false
             }
         })
+
     }
 
     override fun initData() {
@@ -196,16 +222,38 @@ class SearchAty : BasicAty(), View.OnClickListener {
         App.productUtils.startSearchResultAty(this, key)
     }
 
-    private fun initSearchHotPresenter(): SearchHotPresenter {
+    private fun setWxTitle(t: List<ProjectTitleBean>) {
+        val chipsLayoutManager = ChipsLayoutManager.newBuilder(context)
+                //set vertical gravity for all items in a row. Default = Gravity.CENTER_VERTICAL
+                .setChildGravity(Gravity.LEFT)
+                //whether RecyclerView can scroll. TRUE by default
+                .setScrollingEnabled(true)
+                //a layoutOrientation of layout manager, could be VERTICAL OR HORIZONTAL.
+                // HORIZONTAL by default
+                .setOrientation(ChipsLayoutManager.HORIZONTAL)
+                // row strategy for views in completed row, could be STRATEGY_DEFAULT,
+                // STRATEGY_FILL_VIEW,
+                //STRATEGY_FILL_SPACE or STRATEGY_CENTER
+                .setRowStrategy(ChipsLayoutManager.STRATEGY_DEFAULT)
+                // whether strategy is applied to last row. FALSE by default
+                .withLastRow(true)
+                .build()
 
-        val view = object : SearchHotView() {
+        rvWxArticleTitle.layoutManager = chipsLayoutManager
 
-            override fun success(t: List<SearchKey>, refreshData: Boolean) {
-                setHotKey(t)
-            }
+        val horizontalSpacing = ConvertUtils.dp2px(context, 25.toFloat())
+        val verticalSpacing = ConvertUtils.dp2px(context, 15.toFloat())
+        rvWxArticleTitle.addItemDecoration(SpacingItemDecoration(horizontalSpacing, verticalSpacing))
+
+        wxArticleTitleAdapter = WxArticleTitleAdapter(this, t)
+        wxArticleTitleAdapter?.setOnItemClickListener { adapter, view, position ->
+
         }
 
-        return SearchHotPresenter(this, view)
+        rvWxArticleTitle.adapter = wxArticleTitleAdapter
+
+        rvWxArticleTitle.visibility = View.VISIBLE
+        progressBar.visibility = View.GONE
     }
 
     private fun initHistoryKeyPresenter(): SearchHistoryPresenter {
@@ -218,6 +266,30 @@ class SearchAty : BasicAty(), View.OnClickListener {
         }
 
         return SearchHistoryPresenter(this, view)
+    }
+
+    private fun initSearchHotPresenter(): SearchHotPresenter {
+
+        val view = object : SearchHotView() {
+
+            override fun success(t: List<SearchKey>, refreshData: Boolean) {
+                setHotKey(t)
+            }
+        }
+
+        return SearchHotPresenter(this, view)
+    }
+
+    private fun initLoadWxArticleTitle(): LoadWxArticleTitle {
+
+        val view = object : LoadWxArticleTitleView() {
+
+            override fun success(t: List<ProjectTitleBean>, refreshData: Boolean) {
+                setWxTitle(t)
+            }
+        }
+
+        return LoadWxArticleTitle(this, view)
     }
 
     override fun onClick(v: View) {
@@ -236,6 +308,8 @@ class SearchAty : BasicAty(), View.OnClickListener {
             }
 
             R.id.tvClear -> etSearch.setText("")
+
+            R.id.tvDelete -> historyKeyPresenter.clear()
         }
     }
 }

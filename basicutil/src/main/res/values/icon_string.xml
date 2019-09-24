@@ -45,4 +45,6 @@
     <string name="icon_official_accounts" tools:ignore="ExtraTranslation">&#xe615;</string>
     <!--关闭-->
     <string name="icon_close" tools:ignore="ExtraTranslation">&#xe632;</string>
+    <!--删除-->
+    <string name="icon_delete" tools:ignore="ExtraTranslation">&#xe673;</string>
 </resources>

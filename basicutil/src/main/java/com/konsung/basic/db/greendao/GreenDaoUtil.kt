@@ -11,7 +11,7 @@ import com.konsung.basic.db.DbHelper
 import com.konsung.basic.util.AppUtils
 import java.util.*
 
-class GreenDaoUtil() : DbHelper {
+class GreenDaoUtil : DbHelper {
 
     companion object {
         val instance = Single.INSTANCE
@@ -27,6 +27,10 @@ class GreenDaoUtil() : DbHelper {
 
     override fun init(context: Context) {
         greenDaoManager = GreenDaoManager.getInstance(context)
+    }
+
+    override fun clearSearchHistory() {
+        daoSession?.searchKeyDao?.deleteAll()
     }
 
     override fun saveUserInfo(userInfo: UserInfo) {

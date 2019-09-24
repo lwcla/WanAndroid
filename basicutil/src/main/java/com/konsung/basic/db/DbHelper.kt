@@ -31,6 +31,8 @@ interface DbHelper {
     fun saveSearchKey(searchKey: SearchKey)
 
     fun loadSearchKey(): List<SearchKey>
+
+    fun clearSearchHistory()
 }
 
 

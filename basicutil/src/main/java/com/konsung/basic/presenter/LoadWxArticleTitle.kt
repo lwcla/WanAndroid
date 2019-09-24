@@ -1,4 +1,4 @@
-package com.cla.wx.article.parent
+package com.konsung.basic.presenter
 
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.ui.BasePresenter2
