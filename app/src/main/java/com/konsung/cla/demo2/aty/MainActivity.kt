@@ -9,6 +9,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.cla.home.HomeParentFragment
 import com.cla.navigation.NavigationFragment
 import com.cla.project.tree.parent.ProjectParentFragment
@@ -17,6 +18,7 @@ import com.cla.wx.article.parent.WxParentFragment
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.NetChangeReceiver
+import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
@@ -41,6 +43,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
     }
 
     private val netChangeReceiver = NetChangeReceiver()
+    private val collectReceiver = CollectReceiver()
 
     private var tvHeadName: TextView? = null
     private var lastBackTime = 0L
@@ -58,6 +61,9 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         filter.addAction("android.net.wifi.STATE_CHANGE")
 
         registerReceiver(netChangeReceiver, filter)
+
+        val intentFilter = IntentFilter(BaseConfig.COLLECT_RESULT_ACTION)
+        LocalBroadcastManager.getInstance(this).registerReceiver(collectReceiver, intentFilter)
     }
 
     override fun onResume() {
@@ -68,6 +74,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(netChangeReceiver)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(collectReceiver)
     }
 
     override fun initView() {

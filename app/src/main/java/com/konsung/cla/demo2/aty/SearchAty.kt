@@ -16,13 +16,18 @@ import com.konsung.basic.util.ConvertUtils
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
-import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.SearchKeyAdapter
 import com.konsung.cla.demo2.presenter.SearchHistoryPresenter
 import com.konsung.cla.demo2.presenter.SearchHistoryView
 import com.konsung.cla.demo2.presenter.SearchHotPresenter
 import com.konsung.cla.demo2.presenter.SearchHotView
 import kotlinx.android.synthetic.main.activity_search.*
+import android.text.TextUtils
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
+import android.view.KeyEvent
+import com.konsung.cla.demo2.R
+
 
 class SearchAty : BasicAty(), View.OnClickListener {
 
@@ -87,6 +92,24 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
             }
         })
+
+        etSearch.setOnEditorActionListener(object : TextView.OnEditorActionListener {
+
+            override fun onEditorAction(v: TextView, actionId: Int, event: KeyEvent?): Boolean {
+                /*判断是否是“搜索”键*/
+                if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    val key = etSearch.text.toString().trim()
+                    if (TextUtils.isEmpty(key)) {
+                        toast(TAG, R.string.key_is_null)
+                        return true
+                    }
+                    searchKey(key)
+                    hideSoftKeyboard(this@SearchAty)
+                    return true
+                }
+                return false
+            }
+        })
     }
 
     override fun initData() {
@@ -130,7 +153,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
                     val name = key.name.toString()
                     etSearch.setText(name)
                     etSearch.setSelection(name.length)
-                    startSearchResult(key)
+                    searchKey(key)
                 }
             }
         }
@@ -160,7 +183,13 @@ class SearchAty : BasicAty(), View.OnClickListener {
         return searchAdapter
     }
 
-    private fun startSearchResult(searchKey: SearchKey) {
+    private fun searchKey(key: String) {
+        val searchKey = SearchKey()
+        searchKey.name = key
+        searchKey(searchKey)
+    }
+
+    private fun searchKey(searchKey: SearchKey) {
 
         val key = searchKey.name
         historyKeyPresenter.save(searchKey)
@@ -203,9 +232,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
                     return
                 }
 
-                val searchKey = SearchKey()
-                searchKey.name = key
-                startSearchResult(searchKey)
+                searchKey(key)
             }
 
             R.id.tvClear -> etSearch.setText("")

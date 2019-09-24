@@ -59,6 +59,7 @@ dependencies {
     implementation config.av_loading_indicator_view
     implementation config.blurry
     implementation config.chipsLayoutManager
+    implementation config.floatingactionbutton
 
     implementation project(':basicutil')
     implementation project(':projectTree')

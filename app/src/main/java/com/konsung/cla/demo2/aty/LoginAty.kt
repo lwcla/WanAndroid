@@ -268,7 +268,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
             override fun success(t: UserDto, refreshData: Boolean) {
                 toast(TAG, R.string.login_success)
                 SpUtils.putString(context, BaseConfig.USER_NAME, t.username)
-                App.productUtils.startMainAty(context)
+//                App.productUtils.startMainAty(context)
                 finish()
             }
 

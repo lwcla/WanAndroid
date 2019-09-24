@@ -33,4 +33,5 @@ ext {
     green_dao = "org.greenrobot:greendao:3.2.2"//数据库
     chipsLayoutManager = 'com.beloo.widget:ChipsLayoutManager:0.3.7@aar' //recyclerView自动换行
     wraplayout = "am.widget:wraplayout:1.2.1"//自动换行控件
+    floatingactionbutton = "com.melnykov:floatingactionbutton:1.3.0"//悬浮按钮
 }

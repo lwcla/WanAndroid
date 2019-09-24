@@ -139,7 +139,7 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<List<HomeData.DatasBean>>) {
+    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<ProjectBean>) {
         getRetrofit()
                 .fetchSearchResult(page, key)
                 .enqueue(CallInterceptor(context, result))

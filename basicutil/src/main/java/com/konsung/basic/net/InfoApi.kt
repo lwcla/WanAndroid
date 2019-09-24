@@ -72,8 +72,8 @@ interface InfoApi {
      * 搜索
      * https://www.wanandroid.com/article/query/0/json
      */
-    @GET("article/query/{page}/json")
-    fun fetchSearchResult(@Path("page") page: Int, @Query("k") key: String): Call<BasicData<List<HomeData.DatasBean>>>
+    @POST("article/query/{page}/json")
+    fun fetchSearchResult(@Path("page") page: Int, @Query("k") key: String): Call<BasicData<ProjectBean>>
 
     /**
      * 知识体系下的文章

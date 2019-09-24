@@ -46,6 +46,15 @@ class GreenDaoUtil() : DbHelper {
     }
 
     override fun saveSearchKey(searchKey: SearchKey) {
+
+        val whereCondition = SearchKeyDao.Properties.Name.eq(searchKey.name)
+        val list = daoSession?.searchKeyDao?.queryBuilder()?.where(whereCondition)?.list()
+        if (list?.size ?: 0 > 0) {
+            for (key in list!!) {
+                daoSession?.searchKeyDao?.delete(key)
+            }
+        }
+
         searchKey.saveTime = Date()
         daoSession?.searchKeyDao?.insertOrReplace(searchKey)
     }

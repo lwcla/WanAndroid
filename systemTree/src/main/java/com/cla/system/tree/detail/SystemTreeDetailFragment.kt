@@ -18,7 +18,7 @@ class SystemTreeDetailFragment : BasicFragment() {
     private val systemAdapter by lazy { context?.let { SystemTreeDetailAdapter(it, mutableListOf()) } }
     private val loadSystemTreeDetail by lazy { initLoadSystemTreeDetail() }
 
-    override fun getLayoutId(): Int = R.layout.fragment_system_tree_detail
+    override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(collectPresenter, loadSystemTreeDetail)
 

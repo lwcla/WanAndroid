@@ -20,7 +20,7 @@ class SystemTreeListFragment : BasicFragment() {
     private val loadTreeList: LoadSystemTreeList by lazy { initLoadSystemTreeList() }
     private val systemAdapter = SystemTreeListAdapter(mutableListOf())
 
-    override fun getLayoutId(): Int = R.layout.fragment_system_tree_list
+    override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(loadTreeList)
 

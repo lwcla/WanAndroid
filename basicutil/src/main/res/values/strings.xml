@@ -53,6 +53,7 @@
     <string name="click_position_is_error">点击位置出错</string>
     <string name="data_list_is_null">获取的数据集合为空</string>
     <string name="image_url_is_null">图片地址为空</string>
+    <string name="key_is_null">传过来的关键字为空</string>
     <string name="author">作者：</string>
     <string name="date">时间：</string>
     <string name="search" tools:ignore="ExtraTranslation">搜索</string>
@@ -60,5 +61,5 @@
     <string name="search_hot_key">搜索热词</string>
     <string name="search_history">搜索历史</string>
     <string name="search_content_is_empty">搜索内容为空</string>
-
+    <string name="there_is_no_data">这里没有数据</string>
 </resources>

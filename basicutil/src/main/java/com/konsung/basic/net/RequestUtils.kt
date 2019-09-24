@@ -45,7 +45,7 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchSearchHotKey(context, result)
     }
 
-    override fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<List<HomeData.DatasBean>>) {
+    override fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<ProjectBean>) {
         request.fetchSearchResult(context, page, key, result)
     }
 

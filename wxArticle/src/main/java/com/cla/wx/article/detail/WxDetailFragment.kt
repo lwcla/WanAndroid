@@ -16,7 +16,7 @@ class WxDetailFragment : BasicFragment() {
     private var wxAdapter: WxDetailAdapter? = null
     private val loadWxDetail by lazy { initLoadWxDetail() }
 
-    override fun getLayoutId(): Int = R.layout.fragment_wx_detail
+    override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(collectPresenter, loadWxDetail)
 

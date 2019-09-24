@@ -42,7 +42,7 @@ interface HttpHelper {
     /**
      * 搜索
      */
-    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<List<HomeData.DatasBean>>)
+    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<ProjectBean>)
 
     /**
      * 知识体系下的文章

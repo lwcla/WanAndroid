@@ -1,9 +1,6 @@
 package com.konsung.basic.ui
 
-import android.content.BroadcastReceiver
 import android.content.Context
-import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,20 +11,20 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.classic.common.MultipleStatusView
 import com.konsung.basic.adapter.BaseAdapterHelper
-import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.net.NetStateChangeObserver
 import com.konsung.basic.net.NetworkType
 import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
+import com.konsung.basic.receiver.CollectReceiver
+import com.konsung.basic.receiver.CollectResult
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import java.lang.ref.WeakReference
 
-abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
+abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, CollectResult {
 
     companion object {
         val TAG: String = BasicFragment::class.java.simpleName
@@ -62,40 +59,12 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
     private var showedContent = false
     var needDelayInitView = true
 
-    private val localReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-
-            if (context == null || intent == null) {
-                return
-            }
-
-            if (intent.action == BaseConfig.COLLECT_RESULT_ACTION) {
-                //收藏结果
-
-                val collectResult = intent.getBooleanExtra(BaseConfig.COLLECT_RESULT, false)
-                val collectDataPosition = intent.getIntExtra(BaseConfig.COLLECT_DATA_POSITION, -1)
-                val toCollect = intent.getBooleanExtra(BaseConfig.TO_COLLECT, false)
-                val collectId = intent.getIntExtra(BaseConfig.COLLECT_ID, -1)
-
-                if (collectDataPosition < 0 || collectId < 0) {
-                    return
-                }
-
-                collectResult(collectResult, collectId, collectDataPosition, toCollect)
-            }
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Debug.info(TAG, "BasicFragment onCreate $this")
-
         presenter = initPresenters()
-
-        val intentFilter = IntentFilter(BaseConfig.COLLECT_RESULT_ACTION)
-        context?.let {
-            LocalBroadcastManager.getInstance(it).registerReceiver(localReceiver, intentFilter)
-        }
+        CollectReceiver.registerObserver(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -155,9 +124,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
     override fun onDestroy() {
         super.onDestroy()
         Debug.info(TAG, "BasicFragment onDestroy $this")
-        context?.let {
-            LocalBroadcastManager.getInstance(it).unregisterReceiver(localReceiver)
-        }
+        CollectReceiver.unRegisterObserver(this)
 
         if (loadHandler) {
             myHandler.removeCallbacksAndMessages(null)
@@ -173,7 +140,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver {
     /**
      * 收藏结果
      */
-    open fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
+    override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
 
     }
 

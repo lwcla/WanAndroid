@@ -26,7 +26,7 @@ class HomeFragment : BasicFragment() {
     private val loadBanner by lazy { initLoadBanner() }
     private val loadHomeData by lazy { initLoadHomeData() }
 
-    override fun getLayoutId(): Int = R.layout.fragment_home
+    override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
     override fun initPresenters(): List<BasicPresenter>? {
         return listOf(loadBanner, loadHomeData, collectPresenter)

@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardView"
+    style="@style/DataShowCardView"
+    android:clickable="true"
+    android:focusable="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/clContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingStart="@dimen/dp_13"
+        android:paddingTop="@dimen/dp_8"
+        android:paddingEnd="@dimen/dp_13">
+
+
+        <TextView
+            android:id="@+id/tvChapter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimary"
+            android:textSize="@dimen/sp_15"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0"
+            tools:text="基础知识" />
+
+        <TextView
+            android:id="@+id/tvAuthor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_10"
+            android:textColor="@color/value_default"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="@id/tvChapter"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@id/tvChapter"
+            app:layout_constraintTop_toTopOf="@id/tvChapter"
+            app:layout_constraintVertical_bias="0.5"
+            tools:text="wdnmd" />
+
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_10"
+            android:focusable="false"
+            android:orientation="vertical"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvChapter">
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:maxLines="2"
+                android:textColor="@android:color/black"
+                android:textSize="@dimen/sp_16"
+                android:transitionName="tvTitle"
+                tools:ignore="RtlSymmetry"
+                tools:text="可定制化阴影的万能阴影布局ShadowLayout 2.0 震撼上线，效果赶超CardView。（需要阴影地方，被它嵌套即可享受阴影，阴影可定制化）" />
+
+            <TextView
+                android:id="@+id/tvDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_8"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:maxLines="4"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="@dimen/sp_12"
+                tools:text="可定制化阴影的万能阴影布局ShadowLayout 2.0 震撼上线。效果赶超CardView。阴影支持x,y轴偏移，支持阴影扩散程度，支持阴影圆角，支持单边或多边不显示阴影；支持随意更改颜色值，支持随意更改颜色值，支持随意更改颜色值。重要的事情说三遍" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/value_default"
+            android:textSize="@dimen/sp_11"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@id/imvStart"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/linearLayout2"
+            app:layout_constraintTop_toTopOf="@id/imvStart"
+            app:layout_constraintVertical_bias="0.5"
+            tools:text="2019-08-15 11:30" />
+
+        <ImageView
+            android:id="@+id/imvStart"
+            android:layout_width="@dimen/dp_41"
+            android:layout_height="@dimen/dp_35"
+            android:layout_marginTop="@dimen/dp_5"
+            android:clickable="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="horizontal"
+            android:paddingStart="@dimen/dp_13"
+            android:paddingTop="@dimen/dp_10"
+            android:paddingEnd="@dimen/dp_13"
+            android:paddingBottom="@dimen/dp_10"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintTop_toBottomOf="@id/linearLayout2"
+            app:layout_constraintVertical_bias="0.5"
+            app:srcCompat="@mipmap/start_off"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

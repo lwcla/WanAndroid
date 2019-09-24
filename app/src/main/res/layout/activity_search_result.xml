@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:background="@color/red"
+            android:gravity="center_vertical"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.classic.common.MultipleStatusView
+        android:id="@+id/multiplyStatusView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:contentView="@layout/view_fresh_rv"
+        app:emptyView="@layout/custom_empty_view"
+        app:errorView="@layout/view_custom_error"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:loadingView="@layout/view_custom_loading"
+        app:noNetworkView="@layout/view_custom_no_network" />
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/dp_20"
+        android:src="@mipmap/scroll_to_top"
+        app:fab_colorNormal="@color/white"
+        app:fab_colorPressed="@color/white"
+        app:fab_colorRipple="@color/normal_color_13" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

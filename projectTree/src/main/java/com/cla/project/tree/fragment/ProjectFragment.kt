@@ -37,7 +37,7 @@ abstract class ProjectFragment : BasicFragment() {
 
     private val presenter: ProjectPresenter by lazy { initProjectPresenter(projectView) }
 
-    override fun getLayoutId(): Int = R.layout.fragment_project
+    override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(presenter, collectPresenter)
 

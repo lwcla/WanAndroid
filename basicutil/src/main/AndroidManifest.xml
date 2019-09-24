@@ -9,6 +9,8 @@
     <application>
         <receiver android:name="com.konsung.basic.net.NetChangeReceiver"/>
 
+        <receiver android:name="com.konsung.basic.receiver.CollectReceiver"/>
+
         <activity
             android:name="com.konsung.basic.ui.ScreenImageAty"
             android:launchMode="singleTop"

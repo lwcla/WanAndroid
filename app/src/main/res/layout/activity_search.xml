@@ -28,13 +28,16 @@
             android:id="@+id/etSearch"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_20"
+            android:layout_marginStart="@dimen/dp_15"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
             android:layout_weight="1"
             android:background="@null"
+            android:gravity="center_vertical"
             android:hint="@string/search_all"
             android:inputType="text"
             android:textColor="@color/black"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/sp_15"
             tools:ignore="Autofill" />
 
         <TextView
@@ -54,7 +57,7 @@
             android:layout_marginStart="@dimen/dp_15"
             android:text="@string/search"
             android:textColor="@color/value_default"
-            android:textSize="@dimen/sp_18" />
+            android:textSize="@dimen/sp_16" />
 
     </LinearLayout>
 
