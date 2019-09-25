@@ -130,7 +130,7 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
             override fun success(t: T) {
                 val context = getContext()
                 if (context == null) {
-                    destroy()
+                    stop()
                     return
                 }
 
@@ -165,6 +165,16 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
                 }
 
                 presenter.complete(context)
+            }
+
+            override fun noNetwork() {
+                val context = getContext()
+                if (context == null) {
+                    destroy()
+                    return
+                }
+
+                presenter.noNetwork(context)
             }
         }
     }

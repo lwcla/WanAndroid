@@ -211,7 +211,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     }
 
     override fun showNoNetworkView() {
-        myHandler.sendEmptyMessageDelayed(SHOW_NO_NETWORK, 1000)
+        myHandler.sendEmptyMessage(SHOW_NO_NETWORK)
     }
 
     @LayoutRes

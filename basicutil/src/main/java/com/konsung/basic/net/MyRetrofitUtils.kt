@@ -233,7 +233,7 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
         Debug.info(TAG, "CallInterceptor onFailure t=$t")
 
         if (t is NoNetworkException) {
-            failed(R.string.network_is_not_connected)
+            failed(R.string.network_is_not_connected, toFailed = false)
             if (!result.stop) {
                 result.noNetwork()
             }
@@ -307,16 +307,16 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
         result.success(resultData)
     }
 
-    private fun failed(@StringRes textRes: Int) {
+    private fun failed(@StringRes textRes: Int, toFailed: Boolean = true) {
 
         try {
             val text = context.getString(textRes)
-            failed(text)
+            failed(text, toFailed)
         } catch (e: Exception) {
         }
     }
 
-    private fun failed(text: String) {
+    private fun failed(text: String, toFailed: Boolean = true) {
 
         if (result.stop) {
             return
@@ -327,6 +327,8 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
         }
 
         result.complete()
-        result.failed(text)
+        if (toFailed) {
+            result.failed(text)
+        }
     }
 }
