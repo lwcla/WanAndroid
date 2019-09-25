@@ -60,9 +60,6 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
     private var wxName: String? = null
     private var wxId: Int? = null
-    private val showWxInfo = Runnable {
-        showSearchWx(true)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -99,8 +96,11 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
         switch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                showChooseWxDialog()
-//                myHandler.postDelayed(showWxInfo, 1000)
+
+                if (wxInfoEmpty()) {
+                    showChooseWxDialog()
+                }
+
                 showSearchWx(true)
             } else {
                 showSearchWx(false)
@@ -187,7 +187,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
                     val name = key.name.toString()
                     etSearch.setText(name)
                     etSearch.setSelection(name.length)
-                    searchKey(key)
+//                    searchKey(key)
                 }
             }
         }
@@ -248,7 +248,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
                     //这次弹窗期间没有做任何选择
                     if (name.isNullOrEmpty()) {
                         //之前也没有选择过
-                        if (tvWxArticleName.text == getString(R.string.unknown)) {
+                        if (wxInfoEmpty()) {
                             switch.isChecked = false
                         }
                         return
@@ -271,7 +271,6 @@ class SearchAty : BasicAty(), View.OnClickListener {
      * 是否显示搜索具体是谁的微信公众号的描述
      */
     private fun showSearchWx(show: Boolean) {
-        myHandler.removeCallbacks(showWxInfo)
         if (show) {
             cvWxArticleName.visibility = View.VISIBLE
             tvWxTitle1.visibility = View.VISIBLE
@@ -288,6 +287,11 @@ class SearchAty : BasicAty(), View.OnClickListener {
             etSearch.hint = getString(R.string.search_all)
         }
     }
+
+    /**
+     * 还没有选择微信公众号
+     */
+    private fun wxInfoEmpty(): Boolean = tvWxArticleName.text == getString(R.string.unknown)
 
     private fun initHistoryKeyPresenter(): SearchHistoryPresenter {
 
@@ -318,6 +322,12 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
             R.id.tvBack -> finish()
 
+            R.id.tvClear -> etSearch.setText("")
+
+            R.id.tvDelete -> historyKeyPresenter.clear()
+
+            R.id.tvWxName -> showChooseWxDialog()
+
             R.id.tvSearch -> {
                 val key = etSearch.text.toString()
                 if (key.isEmpty()) {
@@ -327,12 +337,6 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
                 searchKey(key)
             }
-
-            R.id.tvClear -> etSearch.setText("")
-
-            R.id.tvDelete -> historyKeyPresenter.clear()
-
-            R.id.tvWxName -> showChooseWxDialog()
         }
     }
 }
