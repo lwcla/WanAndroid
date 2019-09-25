@@ -49,6 +49,10 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchSearchResult(context, page, key, result)
     }
 
+    override fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<ProjectBean>) {
+        request.fetchWxSearchResult(context, wxId, page, key, result)
+    }
+
     override fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>) {
         request.fetchSystemTreeDetail(context, page, cid, result)
     }

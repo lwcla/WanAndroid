@@ -31,5 +31,5 @@
     <color name="grey2">#f1f1f1</color>
     <color name="grey3">#dfdfdf</color>
     <color name="transparent">#00000000</color>
-
+    <color name="gray_64">#646464</color>
 </resources>

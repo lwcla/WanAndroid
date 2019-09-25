@@ -10,13 +10,12 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
+import androidx.appcompat.widget.SwitchCompat
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
-import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
-import com.konsung.basic.presenter.LoadWxArticleTitle
-import com.konsung.basic.presenter.LoadWxArticleTitleView
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.ConvertUtils
@@ -25,7 +24,8 @@ import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.SearchKeyAdapter
-import com.konsung.cla.demo2.adapter.WxArticleTitleAdapter
+import com.konsung.cla.demo2.dialog.ChooseWxArticleNameListener
+import com.konsung.cla.demo2.dialog.ChooseWxSearchDialog
 import com.konsung.cla.demo2.presenter.SearchHistoryPresenter
 import com.konsung.cla.demo2.presenter.SearchHistoryView
 import com.konsung.cla.demo2.presenter.SearchHotPresenter
@@ -46,13 +46,23 @@ class SearchAty : BasicAty(), View.OnClickListener {
         initDelay = INIT_DETAIL
     }
 
+    private val tvWxArticleName by lazy { findViewById<TextView>(R.id.tvWxName) }
+    private val cvWxArticleName by lazy { findViewById<CardView>(R.id.cvWxName) }
+    private val tvWxTitle1 by lazy { findViewById<TextView>(R.id.tvWxTitle1) }
+    private val tvWxTitle2 by lazy { findViewById<TextView>(R.id.tvWxTitle2) }
+    private val switch by lazy { findViewById<SwitchCompat>(R.id.switchSearch) }
+
     private val searchHotPresenter by lazy { initSearchHotPresenter() }
     private val historyKeyPresenter by lazy { initHistoryKeyPresenter() }
-    private val loadWxArticleTitle by lazy { initLoadWxArticleTitle() }
 
     private var hotSearchAdapter: SearchKeyAdapter? = null
     private var historyKeyAdapter: SearchKeyAdapter? = null
-    private var wxArticleTitleAdapter: WxArticleTitleAdapter? = null
+
+    private var wxName: String? = null
+    private var wxId: Int? = null
+    private val showWxInfo = Runnable {
+        showSearchWx(true)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,8 +87,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
         StringUtils.instance.loadTextIcon(context, tvClear)
         StringUtils.instance.loadTextIcon(context, tvDelete)
 
-        switchSearch.textOff = getString(R.string.search_all)
-        switchSearch.textOn = getString(R.string.search_wx_article)
+        showSearchWx(false)
     }
 
     override fun initEvent() {
@@ -86,16 +95,15 @@ class SearchAty : BasicAty(), View.OnClickListener {
         tvSearch.setOnClickListener(this)
         tvClear.setOnClickListener(this)
         tvDelete.setOnClickListener(this)
+        tvWxArticleName.setOnClickListener(this)
 
-        switchSearch.setOnCheckedChangeListener { buttonView, isChecked ->
-
+        switch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
-                rlWxArticle.visibility = View.VISIBLE
-                if (wxArticleTitleAdapter == null) {
-                    loadWxArticleTitle.load()
-                }
+                showChooseWxDialog()
+//                myHandler.postDelayed(showWxInfo, 1000)
+                showSearchWx(true)
             } else {
-                rlWxArticle.visibility = View.GONE
+                showSearchWx(false)
             }
         }
 
@@ -219,41 +227,66 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
         val key = searchKey.name
         historyKeyPresenter.save(searchKey)
-        App.productUtils.startSearchResultAty(this, key)
-    }
 
-    private fun setWxTitle(t: List<ProjectTitleBean>) {
-        val chipsLayoutManager = ChipsLayoutManager.newBuilder(context)
-                //set vertical gravity for all items in a row. Default = Gravity.CENTER_VERTICAL
-                .setChildGravity(Gravity.LEFT)
-                //whether RecyclerView can scroll. TRUE by default
-                .setScrollingEnabled(true)
-                //a layoutOrientation of layout manager, could be VERTICAL OR HORIZONTAL.
-                // HORIZONTAL by default
-                .setOrientation(ChipsLayoutManager.HORIZONTAL)
-                // row strategy for views in completed row, could be STRATEGY_DEFAULT,
-                // STRATEGY_FILL_VIEW,
-                //STRATEGY_FILL_SPACE or STRATEGY_CENTER
-                .setRowStrategy(ChipsLayoutManager.STRATEGY_DEFAULT)
-                // whether strategy is applied to last row. FALSE by default
-                .withLastRow(true)
-                .build()
-
-        rvWxArticleTitle.layoutManager = chipsLayoutManager
-
-        val horizontalSpacing = ConvertUtils.dp2px(context, 25.toFloat())
-        val verticalSpacing = ConvertUtils.dp2px(context, 15.toFloat())
-        rvWxArticleTitle.addItemDecoration(SpacingItemDecoration(horizontalSpacing, verticalSpacing))
-
-        wxArticleTitleAdapter = WxArticleTitleAdapter(this, t)
-        wxArticleTitleAdapter?.setOnItemClickListener { adapter, view, position ->
-
+        var name = wxName
+        var id = wxId
+        if (!switch.isChecked) {
+            name = ""
+            id = -1
         }
 
-        rvWxArticleTitle.adapter = wxArticleTitleAdapter
+        App.productUtils.startSearchResultAty(this, key, switch.isChecked, name, id)
+    }
 
-        rvWxArticleTitle.visibility = View.VISIBLE
-        progressBar.visibility = View.GONE
+    private fun showChooseWxDialog() {
+
+        val chooseWxSearchDialog = ChooseWxSearchDialog()
+        chooseWxSearchDialog.apply {
+            chooseWxArticleNameListener = object : ChooseWxArticleNameListener {
+                override fun choose(name: String?, id: Int?) {
+
+                    //这次弹窗期间没有做任何选择
+                    if (name.isNullOrEmpty()) {
+                        //之前也没有选择过
+                        if (tvWxArticleName.text == getString(R.string.unknown)) {
+                            switch.isChecked = false
+                        }
+                        return
+                    }
+
+                    tvWxArticleName.text = name
+                    wxName = name
+                    wxId = id
+                    showSearchWx(true)
+                }
+            }
+
+            if (!isAdded) {
+                show(supportFragmentManager, ChooseWxSearchDialog::class.java.simpleName)
+            }
+        }
+    }
+
+    /**
+     * 是否显示搜索具体是谁的微信公众号的描述
+     */
+    private fun showSearchWx(show: Boolean) {
+        myHandler.removeCallbacks(showWxInfo)
+        if (show) {
+            cvWxArticleName.visibility = View.VISIBLE
+            tvWxTitle1.visibility = View.VISIBLE
+            tvWxTitle2.visibility = View.VISIBLE
+
+            tvWxTitle1.text = getString(R.string.search)
+            etSearch.hint = getString(R.string.search_wx_article)
+        } else {
+            cvWxArticleName.visibility = View.GONE
+            tvWxTitle1.visibility = View.VISIBLE
+            tvWxTitle2.visibility = View.GONE
+
+            tvWxTitle1.text = getString(R.string.search_wx_article)
+            etSearch.hint = getString(R.string.search_all)
+        }
     }
 
     private fun initHistoryKeyPresenter(): SearchHistoryPresenter {
@@ -280,18 +313,6 @@ class SearchAty : BasicAty(), View.OnClickListener {
         return SearchHotPresenter(this, view)
     }
 
-    private fun initLoadWxArticleTitle(): LoadWxArticleTitle {
-
-        val view = object : LoadWxArticleTitleView() {
-
-            override fun success(t: List<ProjectTitleBean>, refreshData: Boolean) {
-                setWxTitle(t)
-            }
-        }
-
-        return LoadWxArticleTitle(this, view)
-    }
-
     override fun onClick(v: View) {
         when (v.id) {
 
@@ -310,6 +331,8 @@ class SearchAty : BasicAty(), View.OnClickListener {
             R.id.tvClear -> etSearch.setText("")
 
             R.id.tvDelete -> historyKeyPresenter.clear()
+
+            R.id.tvWxName -> showChooseWxDialog()
         }
     }
 }

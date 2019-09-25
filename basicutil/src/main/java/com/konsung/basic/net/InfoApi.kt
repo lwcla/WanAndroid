@@ -76,6 +76,13 @@ interface InfoApi {
     fun fetchSearchResult(@Path("page") page: Int, @Query("k") key: String): Call<BasicData<ProjectBean>>
 
     /**
+     * 在某个公众号中搜索历史文章
+     * https://wanandroid.com/wxarticle/list/405/1/json?k=Java
+     */
+    @GET("wxarticle/list/{id}/{page}/json")
+    fun fetchWxSearchResult(@Path("id") id: Int, @Path("page") page: Int, @Query("k") key: String): Call<BasicData<ProjectBean>>
+
+    /**
      * 知识体系下的文章
      * https://www.wanandroid.com/article/list/0/json?cid=60
      */

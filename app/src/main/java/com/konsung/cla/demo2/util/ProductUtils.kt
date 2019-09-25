@@ -40,12 +40,14 @@ open class ProductUtils {
      * @param searchKey 搜索关键字
      * @param searchForWxArticle  是否搜索公众号内容
      */
-    open fun startSearchResultAty(context: Context?, searchKey: String, searchForWxArticle: Boolean = false) {
+    open fun startSearchResultAty(context: Context?, searchKey: String, searchForWxArticle: Boolean = false, wxName: String? = "", wxId: Int? = -1) {
 
         context?.let {
             val intent = Intent()
             intent.putExtra(BaseConfig.SEARCH_KEY, searchKey)
             intent.putExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE, searchForWxArticle)
+            intent.putExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE_NAME, wxName)
+            intent.putExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE_ID, wxId)
             intent.setClass(it, SearchResultAty::class.java)
             it.startActivity(intent)
         }

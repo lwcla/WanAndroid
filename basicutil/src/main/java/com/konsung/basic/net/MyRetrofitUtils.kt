@@ -145,6 +145,12 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
+    fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<ProjectBean>) {
+        getRetrofit()
+                .fetchWxSearchResult(wxId, page, key)
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>) {
         getRetrofit()
                 .fetchSystemTreeDetail(page, cid)

@@ -3,12 +3,8 @@ package com.konsung.cla.demo2.aty
 import android.content.Context
 import android.os.Bundle
 import android.transition.Fade
-import android.view.LayoutInflater
-import android.view.View
-import android.widget.RelativeLayout
 import android.widget.TextView
 import com.classic.common.MultipleStatusView
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.config.BaseConfig
@@ -45,6 +41,8 @@ class SearchResultAty : BasicAty(), CollectResult {
     private val collectPresenter by lazy { initCollectPresenter() }
 
     private var key: String? = null
+    private var searchForWxArticle = false
+    private var wxId = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,11 +57,22 @@ class SearchResultAty : BasicAty(), CollectResult {
 
     override fun initView() {
 
-        val title = getKey()
+        var title = getKey()
         if (title.isNullOrEmpty()) {
             toast(TAG, R.string.key_is_null)
             finish()
             return
+        }
+
+        val wxName = intent.getStringExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE_NAME)
+        if (searchForWxArticle) {
+            if (wxId < 0) {
+                toast(TAG, R.string.wx_id_is_null)
+                finish()
+                return
+            }
+
+            title = "$wxName : $title"
         }
 
         toolbar.title = title
@@ -96,6 +105,19 @@ class SearchResultAty : BasicAty(), CollectResult {
         }
 
         return key
+    }
+
+    private fun getWxId(): Int {
+
+        searchForWxArticle = intent.getBooleanExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE, false)
+        if (searchForWxArticle) {
+            if (wxId < 0) {
+                wxId = intent.getIntExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE_ID, -1)
+            }
+        }
+
+        Debug.info(TAG, "getWxId id=$wxId")
+        return wxId
     }
 
     private fun setSearchResult(t: List<HomeData.DatasBean>) {
@@ -204,7 +226,7 @@ class SearchResultAty : BasicAty(), CollectResult {
             }
         }
 
-        return SearchResultPresenter(this, view, getKey())
+        return SearchResultPresenter(this, view, getKey(), getWxId())
     }
 
     private fun initCollectPresenter(): CollectPresenter {

@@ -2,10 +2,10 @@ package com.konsung.cla.demo2.adapter
 
 import android.content.Context
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.konsung.basic.bean.project.ProjectTitleBean
+import com.konsung.basic.util.StringUtils
 import com.konsung.cla.demo2.R
 
 /**
@@ -17,7 +17,7 @@ class WxArticleTitleAdapter(private val context: Context, dataList: List<Project
         item?.apply {
             val tvName = helper.getView<TextView>(R.id.tvName)
             tvName.text = name
-            tvName.setTextColor(ContextCompat.getColor(context, R.color.value_default))
+            tvName.setTextColor(StringUtils.instance.intRandomColor())
         }
     }
 

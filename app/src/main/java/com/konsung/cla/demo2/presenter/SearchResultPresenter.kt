@@ -7,7 +7,7 @@ import com.konsung.basic.ui.UiView
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 
-class SearchResultPresenter(uiView: UiView?, view: SearchResultView?, private val key: String?) : BasePresenter3<ProjectBean, SearchResultView>(uiView, view) {
+class SearchResultPresenter(uiView: UiView?, view: SearchResultView?, private val key: String?, private val wxId: Int) : BasePresenter3<ProjectBean, SearchResultView>(uiView, view) {
 
     companion object {
         val TAG: String = SearchResultPresenter::class.java.simpleName
@@ -20,7 +20,11 @@ class SearchResultPresenter(uiView: UiView?, view: SearchResultView?, private va
             return
         }
 
-        refresh { ctx, result -> httpHelper.fetchSearchResult(ctx, page, key, result) }
+        if (wxId < 0) {
+            refresh { ctx, result -> httpHelper.fetchSearchResult(ctx, page, key, result) }
+        } else {
+            refresh { ctx, result -> httpHelper.fetchWxSearchResult(ctx, wxId, page, key, result) }
+        }
     }
 
     override fun loadMore() {
@@ -30,7 +34,11 @@ class SearchResultPresenter(uiView: UiView?, view: SearchResultView?, private va
             return
         }
 
-        loadMore { ctx, result -> httpHelper.fetchSearchResult(ctx, page, key, result) }
+        if (wxId < 0) {
+            loadMore { ctx, result -> httpHelper.fetchSearchResult(ctx, page, key, result) }
+        } else {
+            loadMore { ctx, result -> httpHelper.fetchWxSearchResult(ctx, wxId, page, key, result) }
+        }
     }
 
 }

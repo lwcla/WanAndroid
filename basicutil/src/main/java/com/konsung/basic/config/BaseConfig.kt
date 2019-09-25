@@ -45,6 +45,8 @@ class BaseConfig {
         const val SEARCH_KEY = "searchKey"
         //是否在微信公众号内容搜索
         const val SEARCH_FOR_WX_ARTICLE = "searchForWxArticle"
+        const val SEARCH_FOR_WX_ARTICLE_NAME = "searchForWxArticleName"
+        const val SEARCH_FOR_WX_ARTICLE_ID = "searchForWxArticleId"
     }
 
 }

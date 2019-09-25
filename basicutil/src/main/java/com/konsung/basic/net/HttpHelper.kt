@@ -45,6 +45,11 @@ interface HttpHelper {
     fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<ProjectBean>)
 
     /**
+     * 在某个公众号中搜索历史文章
+     */
+    fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<ProjectBean>)
+
+    /**
      * 知识体系下的文章
      */
     fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>)
