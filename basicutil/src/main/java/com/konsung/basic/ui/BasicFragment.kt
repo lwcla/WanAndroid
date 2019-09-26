@@ -220,8 +220,12 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     override fun getUiContext(): Context? = context
 
     override fun loadComplete(success: Boolean) {
-        refreshRv?.finishLoadMore(success)
-        refreshRv?.finishRefresh(success)
+
+        //加载成功的话，由自己来处理,主要是显示是否还有数据
+        if (!success) {
+            refreshRv?.finishLoadMore(success)
+            refreshRv?.finishRefresh(success)
+        }
     }
 
     override fun showContentView() {

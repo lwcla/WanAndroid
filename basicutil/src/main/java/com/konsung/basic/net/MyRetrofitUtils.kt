@@ -86,23 +86,6 @@ class MyRetrofitUtils private constructor() {
         return retrofit.create(InfoApi::class.java)
     }
 
-    fun getWeChatOfficial() {
-
-        val call = getRetrofit().getWeChatOfficial()
-
-        call.enqueue(object : Callback<WeChatOfficial> {
-
-            override fun onFailure(call: Call<WeChatOfficial>, t: Throwable) {
-                println("lwl $TAG RequestUtils.onFailure")
-            }
-
-            override fun onResponse(call: Call<WeChatOfficial>, response: Response<WeChatOfficial>) {
-                println("lwl $TAG RequestUtils.onResponse ${response.body().toString()}")
-            }
-
-        })
-    }
-
     fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
         getRetrofit()
                 .loadBanner()

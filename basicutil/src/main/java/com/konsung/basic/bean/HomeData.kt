@@ -152,7 +152,7 @@ class HomeData {
     var total: Int = 0
     var datas: List<DatasBean>? = null
 
-    public class DatasBean {
+    class DatasBean {
         /**
          * apkLink :
          * author : gdutxiaoxu

@@ -10,10 +10,6 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface InfoApi {
-
-    @GET("wxarticle/chapters/json")
-    fun getWeChatOfficial(): Call<WeChatOfficial>
-
     /**
      * 收藏站内文章
      * https://www.wanandroid.com/lg/collect/1165/json
