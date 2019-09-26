@@ -13,18 +13,17 @@ abstract class ProjectFragment : BasicFragment() {
 
     private var adapter: ProjectAdapter? = null
 
-    private var over = false
     private val projectView = object : ProjectView() {
 
         override fun success(t: HomeData, refreshData: Boolean) {
-            over = t.over
             presenter.page = t.curPage
 
-            refreshRv?.finishRefresh(200)
-            refreshRv?.finishLoadMore(200, true, over)
+            fetSuccess(t.over)
 
             val list = mutableListOf<HomeData.DatasBean>()
-            list.addAll(t.datas!!.filterNotNull())
+            t.datas?.let {
+                list.addAll(it)
+            }
 
             if (refreshData) {
                 refreshData(list)
@@ -75,7 +74,7 @@ abstract class ProjectFragment : BasicFragment() {
 
             setOnItemChildClickListener { _, view, position ->
 
-                if (context == null) {
+                if (activity == null) {
                     return@setOnItemChildClickListener
                 }
 
@@ -132,14 +131,6 @@ abstract class ProjectFragment : BasicFragment() {
 
     override fun resetData() {
         presenter.refresh()
-    }
-
-    override fun refreshView() {
-        if (!resume) {
-            return
-        }
-
-        refreshRv?.refreshDataAfterScrollTop()
     }
 
     abstract fun initProjectPresenter(view: ProjectView): ProjectPresenter

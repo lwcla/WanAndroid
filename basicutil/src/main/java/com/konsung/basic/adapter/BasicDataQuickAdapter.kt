@@ -46,6 +46,8 @@ abstract class BasicDataQuickAdapter<K : BaseViewHolder>(val context: Context, l
         return findDataByPosition(position)?.chapterId ?: -1
     }
 
+    override fun getSize(): Int = data.size
+
     /**
      * 设置收藏状态
      */

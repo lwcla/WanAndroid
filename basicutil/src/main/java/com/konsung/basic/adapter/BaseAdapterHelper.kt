@@ -5,6 +5,8 @@ import com.konsung.basic.bean.HomeData
 
 interface BaseAdapterHelper {
 
+    fun getSize(): Int
+
     /**
      * 根据位置找到那条数据
      */

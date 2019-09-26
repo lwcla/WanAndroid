@@ -180,7 +180,19 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
      * 点击图标滚动到顶部并刷新视图
      */
     open fun refreshView() {
+        if (!resume) {
+            return
+        }
 
+        val size = dataListAdapterHelper?.getSize() ?: 0
+        if (size == 0) {
+            //如果之前没有获取到数据，那么这个时候就不滚动recyclerView直接刷新数据
+            refreshRv?.autoRefresh()
+            resetData()
+            return
+        }
+
+        refreshRv?.refreshDataAfterScrollTop()
     }
 
     /**

@@ -55,7 +55,7 @@ class WxDetailFragment : BasicFragment() {
 
             setOnItemChildClickListener { _, view, position ->
 
-                if (context == null) {
+                if (activity == null) {
                     return@setOnItemChildClickListener
                 }
 
@@ -95,12 +95,12 @@ class WxDetailFragment : BasicFragment() {
             override fun success(t: HomeData, refreshData: Boolean) {
 
                 loadWxDetail.page = t.curPage
-
-                refreshRv?.finishRefresh(200)
-                refreshRv?.finishLoadMore(200, true, t.over)
+                fetSuccess(t.over)
 
                 val list = mutableListOf<HomeData.DatasBean>()
-                list.addAll(t.datas!!.filterNotNull())
+                t.datas?.let {
+                    list.addAll(it)
+                }
 
                 if (refreshData) {
                     wxAdapter?.setNewData(list)
@@ -116,9 +116,4 @@ class WxDetailFragment : BasicFragment() {
     override fun resetData() {
         loadWxDetail.refresh()
     }
-
-    override fun refreshView() {
-        refreshRv?.refreshDataAfterScrollTop()
-    }
-
 }

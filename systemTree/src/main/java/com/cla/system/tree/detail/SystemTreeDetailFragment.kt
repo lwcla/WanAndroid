@@ -7,7 +7,6 @@ import com.konsung.basic.bean.HomeData
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.AppUtils
-import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
 
 class SystemTreeDetailFragment : BasicFragment() {
@@ -42,7 +41,7 @@ class SystemTreeDetailFragment : BasicFragment() {
 
             setOnItemChildClickListener { _, view, position ->
 
-                if (context == null) {
+                if (activity == null) {
                     return@setOnItemChildClickListener
                 }
 
@@ -100,9 +99,7 @@ class SystemTreeDetailFragment : BasicFragment() {
                 }
 
                 loadSystemTreeDetail.page = t.curPage
-
-                refreshRv?.finishRefresh(200)
-                refreshRv?.finishLoadMore(200, true, t.over)
+                fetSuccess(t.over)
 
                 val list = mutableListOf<HomeData.DatasBean>()
                 t.datas?.let {
@@ -120,31 +117,7 @@ class SystemTreeDetailFragment : BasicFragment() {
         return LoadSystemTreeDetail(this, view, cid)
     }
 
-    override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
-        Debug.info(TAG, "HomeFragment collectResult success?$success collectId=$collectId position=$position toCollect?$toCollect")
-
-        if (context == null) {
-            return
-        }
-
-        if (!success) {
-            return
-        }
-
-        val data = systemAdapter?.findDataByPosition(position) ?: return
-
-        if (data.id != collectId) {
-            return
-        }
-
-        systemAdapter?.refreshCollectStatus(position, toCollect)
-    }
-
     override fun resetData() {
         loadSystemTreeDetail.refresh()
-    }
-
-    override fun refreshView() {
-        refreshRv?.refreshDataAfterScrollTop()
     }
 }

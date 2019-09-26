@@ -179,26 +179,6 @@ class HomeFragment : BasicFragment() {
         return HomeDataPresenter(this, view)
     }
 
-    /*  override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
-          Debug.info(TAG, "collectResult success?$success collectId=$collectId position=$position toCollect?$toCollect")
-
-          if (context == null) {
-              return
-          }
-
-          if (!success) {
-              return
-          }
-
-          val data = homeAdapter?.findDataByPosition(position) ?: return
-
-          if (data.id != collectId) {
-              return
-          }
-
-          homeAdapter?.refreshCollectStatus(position, toCollect)
-      }*/
-
     /**
      *刷新数据
      */
@@ -208,25 +188,5 @@ class HomeFragment : BasicFragment() {
         }
 
         loadHomeData.loadWithTopData()
-    }
-
-    /**
-     * 刷新数据
-     */
-    override fun refreshView() {
-
-        if (!resume) {
-            return
-        }
-
-        val size = homeAdapter?.data?.size ?: 0
-        if (size == 0) {
-            //如果之前没有获取到数据，那么这个时候就不滚动recyclerView直接获取数据
-            refreshRv?.autoRefresh()
-            resetData()
-            return
-        }
-
-        refreshRv?.refreshDataAfterScrollTop()
     }
 }

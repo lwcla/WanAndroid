@@ -214,14 +214,11 @@ class SearchResultAty : BasicAty(), CollectResult {
                 }
             }
 
-            override fun failed(string: String) {
-                refreshRv?.finishLoadMore(false)
-                refreshRv?.finishRefresh(false)
-            }
-
-            override fun noNetwork() {
-                refreshRv?.finishLoadMore(false)
-                refreshRv?.finishRefresh(false)
+            override fun complete(success: Boolean) {
+                if (!success) {
+                    refreshRv?.finishLoadMore(false)
+                    refreshRv?.finishRefresh(false)
+                }
             }
         }
 
