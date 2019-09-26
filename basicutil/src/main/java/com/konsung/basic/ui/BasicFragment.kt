@@ -51,7 +51,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     protected val myHandler: MyHandler by lazy { MyHandler(this) }
     private var rootView: View? = null
     protected var showView: View? = null
-    protected var resume = false
+    var resume = false
     private var firstShow = true
     var fragmentRefresh: FragmentRefresh? = null
     var index: Int = 0

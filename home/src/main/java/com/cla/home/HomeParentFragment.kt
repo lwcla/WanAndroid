@@ -17,6 +17,7 @@ class HomeParentFragment : VpBasicFragment() {
     override fun initView() {
         val homeFragment = HomeFragment()
         homeFragment.fragmentRefresh = fragmentRefresh
+        homeFragment.homeIndex = index
         val commonFragment = CommonWebFragment()
 
         val f1 = TwoBean<String, BasicFragment>("主页", homeFragment)

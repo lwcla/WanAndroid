@@ -36,7 +36,7 @@ abstract class VpBasicFragment : BasicFragment() {
 
     override fun getLayoutId(): Int = R.layout.fragment_vp_basic
 
-    protected fun  initViewPager(fragmentList: List<TwoBean<String, BasicFragment>>) {
+    protected fun initViewPager(fragmentList: List<TwoBean<String, BasicFragment>>) {
 
         if (fragmentList.isEmpty() || context == null) {
             toast(TAG, R.string.data_error)
@@ -110,7 +110,9 @@ abstract class VpBasicFragment : BasicFragment() {
 
         titleList?.let {
             for (two in it) {
-                two.b.refreshView()
+                if (two.b.resume) {
+                    two.b.refreshView()
+                }
             }
         }
     }

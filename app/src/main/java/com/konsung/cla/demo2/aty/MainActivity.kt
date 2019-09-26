@@ -210,7 +210,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         val navigation = ThreeBean<String, Int, BasicFragment>(getString(R.string.navigation), R.string.icon_navigation, NavigationFragment())
         val officialAccount = ThreeBean<String, Int, BasicFragment>(getString(R.string.official_accounts), R.string.icon_official_accounts, WxParentFragment())
 
-        val fragmentList = listOf(home, system, officialAccount, navigation, project)
+        val fragmentList = listOf(officialAccount, system, home, navigation, project)
 //        val fragmentList = listOf(navigation, home, system, officialAccount, project)
 
         for (i in 0 until fragmentList.size) {
@@ -250,6 +250,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         magicIndicator.navigator = commonNavigator
 
         ViewPagerHelper.bind(magicIndicator, viewPager)
+        viewPager.currentItem = homePage.index
     }
 
     override fun onClick(v: View?) {

@@ -26,6 +26,8 @@ class HomeFragment : BasicFragment() {
     private val loadBanner by lazy { initLoadBanner() }
     private val loadHomeData by lazy { initLoadHomeData() }
 
+    var homeIndex  = 0
+
     override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
     override fun initPresenters(): List<BasicPresenter>? {
@@ -39,7 +41,7 @@ class HomeFragment : BasicFragment() {
         homeAdapter?.addHeaderView(headView)
         dataListAdapterHelper = homeAdapter
 
-        refreshRv?.initRecyclerView(homeAdapter, fragmentRefresh, index, true) {
+        refreshRv?.initRecyclerView(homeAdapter, fragmentRefresh, homeIndex, true) {
             refreshRv?.autoRefresh()
             resetData()
         }
