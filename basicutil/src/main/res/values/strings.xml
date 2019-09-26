@@ -66,4 +66,6 @@
     <string name="search_history">搜索历史</string>
     <string name="search_content_is_empty">搜索内容为空</string>
     <string name="there_is_no_data">这里没有数据</string>
+
+    <string name="empty_view_hint">暂无数据</string>
 </resources>

@@ -7,7 +7,7 @@ import android.telephony.TelephonyManager
 import androidx.annotation.RequiresPermission
 
 
-enum class NetworkType private constructor(private val desc: String) {
+enum class NetworkType(private val desc: String) {
 
     NETWORK_WIFI("WiFi"),
     NETWORK_4G("4G"),
@@ -28,10 +28,6 @@ interface NetStateChangeObserver {
 }
 
 class NetworkUtil private constructor() {
-
-    init {
-        throw UnsupportedOperationException("u can't instantiate me...")
-    }
 
     companion object {
 
@@ -69,12 +65,12 @@ class NetworkUtil private constructor() {
 
                         else -> {
                             val subtypeName = info.subtypeName
-                            if (subtypeName.equals("TD-SCDMA", ignoreCase = true)
+                            netType = if (subtypeName.equals("TD-SCDMA", ignoreCase = true)
                                     || subtypeName.equals("WCDMA", ignoreCase = true)
                                     || subtypeName.equals("CDMA2000", ignoreCase = true)) {
-                                netType = NetworkType.NETWORK_3G
+                                NetworkType.NETWORK_3G
                             } else {
-                                netType = NetworkType.NETWORK_UNKNOWN
+                                NetworkType.NETWORK_UNKNOWN
                             }
                         }
                     }

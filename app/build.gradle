@@ -55,7 +55,6 @@ dependencies {
     implementation config.smart_refresh_layout
     implementation config.smart_refresh_header
     implementation config.recycler_view
-    implementation config.multiple_status_view
     implementation config.av_loading_indicator_view
     implementation config.blurry
     implementation config.chipsLayoutManager

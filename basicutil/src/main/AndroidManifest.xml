@@ -7,8 +7,6 @@
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <application>
-        <receiver android:name="com.konsung.basic.net.NetChangeReceiver"/>
-
         <receiver android:name="com.konsung.basic.receiver.CollectReceiver"/>
 
         <activity

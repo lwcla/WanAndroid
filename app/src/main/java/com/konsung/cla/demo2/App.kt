@@ -3,6 +3,7 @@ package com.konsung.cla.demo2
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
+import com.konsung.basic.net.NetworkStatusCallback
 import com.konsung.basic.util.AppUtils
 import com.konsung.cla.demo2.util.AppHelper
 import com.konsung.cla.demo2.util.BasicConfigImpl
@@ -20,6 +21,7 @@ class App : Application() {
         super.onCreate()
         context = applicationContext
         AppUtils.init(BasicConfigImpl.instance)
+        NetworkStatusCallback.registerNetwork(this)
     }
 
 }

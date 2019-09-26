@@ -32,7 +32,7 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
     private var presenters: List<BasicPresenter>? = null
     protected lateinit var context: Context
     private var loadingDialog: LoadingDialog? = null
-    protected val myHandler by lazy{ MyHandler(this)}
+    protected val myHandler by lazy { MyHandler(this) }
     private val initRunnable = Runnable {
         initView()
         initEvent()
@@ -42,11 +42,10 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(getLayoutId())
-        Debug.info(TAG, "BasicAty onCreate $this")
+        Debug.info(TAG, "onCreate $this initDelay=$initDelay ")
         initStatusBar()
         context = this
 
-        Debug.info(TAG, "BasicAty onCreate initDelay=$initDelay")
         presenters = initPresenter()
         if (initDelay > 0) {
             myHandler.postDelayed(initRunnable, initDelay)
@@ -57,32 +56,32 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        Debug.info(TAG, "BasicAty onNewIntent $this")
+        Debug.info(TAG, "onNewIntent $this")
     }
 
     override fun onStart() {
         super.onStart()
-        Debug.info(TAG, "BasicAty onStart $this")
+        Debug.info(TAG, "onStart $this")
     }
 
     override fun onResume() {
         super.onResume()
-        Debug.info(TAG, "BasicAty onResume $this")
+        Debug.info(TAG, "onResume $this")
     }
 
     override fun onPause() {
         super.onPause()
-        Debug.info(TAG, "BasicAty onPause $this")
+        Debug.info(TAG, "onPause $this")
     }
 
     override fun onStop() {
         super.onStop()
-        Debug.info(TAG, "BasicAty onStop $this")
+        Debug.info(TAG, "onStop $this")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Debug.info(TAG, "BasicAty onDestroy $this")
+        Debug.info(TAG, "onDestroy $this")
         presenters?.let {
             for (p in it) {
                 p.destroy()

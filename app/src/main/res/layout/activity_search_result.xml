@@ -20,12 +20,12 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <com.classic.common.MultipleStatusView
+    <com.konsung.basic.view.MultipleStatusView
         android:id="@+id/multiplyStatusView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:contentView="@layout/view_fresh_rv"
-        app:emptyView="@layout/custom_empty_view"
+        app:emptyView="@layout/view_custom_empty"
         app:errorView="@layout/view_custom_error"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
         app:loadingView="@layout/view_custom_loading"

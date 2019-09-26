@@ -17,7 +17,6 @@ import com.cla.system.tree.list.SystemTreeListFragment
 import com.cla.wx.article.parent.WxParentFragment
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.config.BaseConfig
-import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
@@ -34,6 +33,7 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.CommonNavigat
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.CommonNavigatorAdapter
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerIndicator
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTitleView
+import kotlin.system.exitProcess
 
 
 open class MainActivity : BasicAty(), View.OnClickListener {
@@ -42,7 +42,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         val TAG: String = MainActivity::class.java.simpleName
     }
 
-    private val netChangeReceiver = NetChangeReceiver()
     private val collectReceiver = CollectReceiver()
 
     private var tvHeadName: TextView? = null
@@ -55,13 +54,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val filter = IntentFilter()
-        filter.addAction("android.NET.conn.CONNECTIVITY_CHANGE")
-        filter.addAction("android.Net.wifi.WIFI_STATE_CHANGED")
-        filter.addAction("android.net.wifi.STATE_CHANGE")
-
-        registerReceiver(netChangeReceiver, filter)
-
         val intentFilter = IntentFilter(BaseConfig.COLLECT_RESULT_ACTION)
         LocalBroadcastManager.getInstance(this).registerReceiver(collectReceiver, intentFilter)
     }
@@ -73,7 +65,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
     override fun onDestroy() {
         super.onDestroy()
-        unregisterReceiver(netChangeReceiver)
         LocalBroadcastManager.getInstance(this).unregisterReceiver(collectReceiver)
     }
 
@@ -251,6 +242,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
         ViewPagerHelper.bind(magicIndicator, viewPager)
         viewPager.currentItem = homePage.index
+//        viewPager.offscreenPageLimit = 3
     }
 
     override fun onClick(v: View?) {
@@ -280,6 +272,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
                 val time = System.currentTimeMillis()
                 return if (time - lastBackTime < 1000) {
                     finish()
+                    exitProcess(0)
                     true
                 } else {
                     lastBackTime = time

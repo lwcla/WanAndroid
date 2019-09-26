@@ -55,7 +55,7 @@ class MyRetrofitUtils private constructor() {
         val net = object : Interceptor {
             override fun intercept(chain: Interceptor.Chain): okhttp3.Response {
 
-                if (NetChangeReceiver.mType == NetworkType.NETWORK_NO) {
+                if (NetworkStatusCallback.mType == NetworkType.NETWORK_NO) {
                     throw NoNetworkException()
                 }
 
@@ -317,6 +317,8 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
     }
 
     private fun failed(text: String, toFailed: Boolean = true) {
+
+        Debug.info(TAG,"failed text=$text toFailed=$toFailed")
 
         if (result.stop) {
             return

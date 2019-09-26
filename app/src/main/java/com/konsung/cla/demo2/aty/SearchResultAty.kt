@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.transition.Fade
 import android.widget.TextView
-import com.classic.common.MultipleStatusView
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.config.BaseConfig
@@ -18,6 +17,7 @@ import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
+import com.konsung.basic.view.MultipleStatusView
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.SearchResultAdapter
 import com.konsung.cla.demo2.presenter.SearchResultPresenter

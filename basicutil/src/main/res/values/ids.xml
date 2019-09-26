@@ -5,4 +5,14 @@
     <item name="tvName" type="id"/>
     <item name="text_view_click_data" type="id"/>
     <item name="text_view_click_position" type="id"/>
+
+    <item name="empty_view" type="id"/>
+    <item name="error_view" type="id"/>
+    <item name="loading_view" type="id"/>
+    <item name="content_view" type="id"/>
+    <item name="no_network_view" type="id"/>
+
+    <item name="empty_retry_view" type="id"/>
+    <item name="error_retry_view" type="id"/>
+    <item name="no_network_retry_view" type="id"/>
 </resources>

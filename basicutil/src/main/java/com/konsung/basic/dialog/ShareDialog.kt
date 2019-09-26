@@ -186,7 +186,7 @@ class ShareAdapter(private val list: List<ThreeBean<Int, Int, Int>>) : RecyclerV
                 }
             }
 
-            view.setOnTouchListener { v, ev ->
+            view.setOnTouchListener { _, ev ->
                 when (ev.action) {
                     MotionEvent.ACTION_DOWN -> tvIcon.setBackgroundResource(R.drawable.bg_grey_round)
                     MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> tvIcon.setBackgroundResource(R.drawable.bg_white_round)

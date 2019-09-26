@@ -9,12 +9,16 @@ import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.AppUtils
+import com.konsung.basic.util.Debug
 
 /**
  * 常用网站
  */
 class CommonWebFragment : BasicFragment() {
 
+    companion object {
+        val TAG: String = CommonWebFragment::class.java.simpleName
+    }
 
     private var rvCommon: RecyclerView? = null
     private var commonWebAdapter: CommonWebAdapter? = null
@@ -34,6 +38,7 @@ class CommonWebFragment : BasicFragment() {
     }
 
     override fun initData() {
+        Debug.info(TAG, "initData ")
         commonPresenter.load()
     }
 

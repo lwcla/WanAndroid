@@ -32,10 +32,6 @@ class HomeDataPresenter(uiView: UiView?, view: LoadHomeView?) : BasePresenter3<H
             result(context)
             super.failed(context, message)
         }
-
-        override fun noNetwork(context: Context) {
-            failed(context, "")
-        }
     }
 
     /**

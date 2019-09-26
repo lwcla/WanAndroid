@@ -11,10 +11,9 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import com.classic.common.MultipleStatusView
 import com.konsung.basic.adapter.BaseAdapterHelper
-import com.konsung.basic.net.NetChangeReceiver
 import com.konsung.basic.net.NetStateChangeObserver
+import com.konsung.basic.net.NetworkStatusCallback
 import com.konsung.basic.net.NetworkType
 import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
@@ -22,6 +21,7 @@ import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.receiver.CollectResult
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
+import com.konsung.basic.view.MultipleStatusView
 import java.lang.ref.WeakReference
 
 abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, CollectResult {
@@ -30,7 +30,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
         val TAG: String = BasicFragment::class.java.simpleName
 
         //这个时间不确定设置多少比较合适，设置为1秒以下起的作用不大，设置1秒以上会影响加载速度
-        const val INIT_VIEW_DELAY_TIME = 0L
+        const val INIT_VIEW_DELAY_TIME = 500L
 
         const val SHOW_NO_NETWORK = 0x001
         const val SHOW_LOADING = 0x002
@@ -38,6 +38,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
         const val SHOW_CONTENT = 0x004
 
         const val INIT_VIEW = 0X005
+        const val SHOW_DATA = 0x006
     }
 
     protected var multiplyStatusView: MultipleStatusView? = null
@@ -58,17 +59,18 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     //是否已经加载过contentView
     private var showedContent = false
     var needDelayInitView = true
-
+    var resetData = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Debug.info(TAG, "BasicFragment onCreate $this")
+        Debug.info(TAG, "onCreate $this")
         presenter = initPresenters()
         CollectReceiver.registerObserver(this)
+        NetworkStatusCallback.registerObserver(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        Debug.info(TAG, "BasicFragment onCreateView $this")
+        Debug.info(TAG, "onCreateView $this rootView==null?${rootView == null}")
 
         if (rootView == null) {
             rootView = layoutInflater.inflate(R.layout.view_multiplee_status_container, container, false)
@@ -84,47 +86,46 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
 
     override fun onStart() {
         super.onStart()
-        Debug.info(TAG, "BasicFragment onStart $this")
+        Debug.info(TAG, "onStart $this")
     }
 
     override fun onResume() {
         super.onResume()
-        Debug.info(TAG, "BasicFragment onResume $this firstShow?$firstShow ")
-        NetChangeReceiver.registerObserver(this)
+        Debug.info(TAG, "onResume $this firstShow?$firstShow needDelayInitView=$needDelayInitView")
 
         resume = true
 
         if (firstShow) {
             multiplyStatusView?.showLoading()
-//            Debug.info(TAG, "BasicFragment onResume showLoading needDelayInitView?$needDelayInitView")
             if (needDelayInitView) {
                 myHandler.sendEmptyMessageDelayed(INIT_VIEW, INIT_VIEW_DELAY_TIME)
             } else {
                 myHandler.sendEmptyMessage(INIT_VIEW)
             }
-        } else {
-            show()
+            return
         }
+
+        myHandler.sendEmptyMessage(SHOW_DATA)
     }
 
     override fun onPause() {
         super.onPause()
-        Debug.info(TAG, "BasicFragment onPause $this")
+        Debug.info(TAG, "onPause $this")
         myHandler.removeMessages(INIT_VIEW)
-        NetChangeReceiver.unRegisterObserver(this)
         resume = false
         leave()
     }
 
     override fun onStop() {
         super.onStop()
-        Debug.info(TAG, "BasicFragment onStop $this")
+        Debug.info(TAG, "onStop $this")
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        Debug.info(TAG, "BasicFragment onDestroy $this")
+        Debug.info(TAG, "onDestroy $this")
         CollectReceiver.unRegisterObserver(this)
+        NetworkStatusCallback.unRegisterObserver(this)
 
         if (loadHandler) {
             myHandler.removeCallbacksAndMessages(null)
@@ -189,11 +190,22 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     }
 
     override fun onNetDisconnected() {
-
+        Debug.info(TAG, "onNetDisconnected ")
+        resetData = false
     }
 
     override fun onNetConnected(networkType: NetworkType) {
+        Debug.info(TAG, "$this onNetConnected showedContent?$showedContent resume=$resume")
 
+        if (!showedContent) {
+            //之前还从来没有获取到数据，这个时候网络连接成功，那么就刷新数据
+            if (resume) {
+                resetData()
+            } else {
+                Debug.info(TAG, "$this onNetConnected resetData is true")
+                resetData = true
+            }
+        }
     }
 
     override fun getUiContext(): Context? = context
@@ -297,13 +309,52 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
                 }
 
                 INIT_VIEW -> {
-                    Debug.info(TAG, "MyHandler handleMessage initView")
-                    fragment.firstShow = false
+                    removeMessages(SHOW_DATA)
+                    removeMessages(INIT_VIEW)
+
+                    if (!fragment.firstShow) {
+                        return
+                    }
+
+                    synchronized(this) {
+                        if (!fragment.firstShow) {
+                            return
+                        }
+                        fragment.firstShow = false
+                    }
+
                     fragment.showView = fragment.layoutInflater.inflate(fragment.getLayoutId(), null)
 
+                    Debug.info(TAG, "$fragment handleMessage initView()")
                     fragment.initView()
                     fragment.initEvent()
                     fragment.initData()
+                }
+
+                SHOW_DATA -> {
+
+                    //这里写的复杂了
+                    //是担心来回切换的时候，firstShow没有正确表示当先这一刻的状态而多次去initView
+                    //用Handler队列的特性来保证firstShow的正确性
+                    removeMessages(SHOW_DATA)
+                    removeMessages(INIT_VIEW)
+
+                    if (fragment.firstShow) {
+                        sendEmptyMessage(INIT_VIEW)
+                        return
+                    }
+
+                    Debug.info(TAG, "$fragment handleMessage showedContent?${fragment.showedContent} resetData?${fragment.resetData}")
+
+                    if (!fragment.showedContent && fragment.resetData) {
+                        fragment.resetData = false
+                        fragment.multiplyStatusView?.showLoading()
+                        Debug.info(TAG, "$fragment  handleMessage SHOW_DATA resetData()")
+                        fragment.resetData()
+                    } else {
+                        Debug.info(TAG, "$fragment  handleMessage SHOW_DATA show()")
+                        fragment.show()
+                    }
                 }
             }
 

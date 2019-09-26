@@ -54,7 +54,6 @@ dependencies {
     implementation config.base_recycler_view_adapter_helper
     implementation config.recycler_view
     implementation config.av_loading_indicator_view
-    implementation config.multiple_status_view
     implementation config.design
     implementation config.magicIndicator
     implementation config.magicIndicator
