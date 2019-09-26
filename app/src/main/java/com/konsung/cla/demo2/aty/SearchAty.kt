@@ -92,6 +92,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
         tvSearch.setOnClickListener(this)
         tvClear.setOnClickListener(this)
         tvDelete.setOnClickListener(this)
+        rlSwitch.setOnClickListener(this)
         tvWxArticleName.setOnClickListener(this)
 
         switch.setOnCheckedChangeListener { buttonView, isChecked ->
@@ -239,6 +240,9 @@ class SearchAty : BasicAty(), View.OnClickListener {
     }
 
     private fun showChooseWxDialog() {
+        if (!switch.isChecked) {
+            return
+        }
 
         val chooseWxSearchDialog = ChooseWxSearchDialog()
         chooseWxSearchDialog.apply {
@@ -326,7 +330,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
             R.id.tvDelete -> historyKeyPresenter.clear()
 
-            R.id.tvWxName -> showChooseWxDialog()
+            R.id.rlSwitch, R.id.tvWxName -> showChooseWxDialog()
 
             R.id.tvSearch -> {
                 val key = etSearch.text.toString()
