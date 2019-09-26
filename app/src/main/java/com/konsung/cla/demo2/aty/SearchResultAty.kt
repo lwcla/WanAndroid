@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.transition.Fade
 import android.widget.TextView
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
@@ -191,7 +190,7 @@ class SearchResultAty : BasicAty(), CollectResult {
 
         val view = object : SearchResultView() {
 
-            override fun success(t: ProjectBean, refreshData: Boolean) {
+            override fun success(t: HomeData, refreshData: Boolean) {
 
                 val list = mutableListOf<HomeData.DatasBean>()
                 t.datas?.let {

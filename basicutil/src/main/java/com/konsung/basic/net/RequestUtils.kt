@@ -6,7 +6,6 @@ import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.navigation.NavigationBean
-import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.bean.tree.SystemTreeListBean
@@ -29,11 +28,11 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetNavigationList(context, result)
     }
 
-    override fun fetchNewestProject(context: Context, page: Int, result: RequestResult<ProjectBean>) {
+    override fun fetchNewestProject(context: Context, page: Int, result: RequestResult<HomeData>) {
         request.fetchNewestProject(context, page, result)
     }
 
-    override fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>) {
+    override fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<HomeData>) {
         request.fetchProjectTree(context, page, cId, result)
     }
 
@@ -45,15 +44,15 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchSearchHotKey(context, result)
     }
 
-    override fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<ProjectBean>) {
+    override fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<HomeData>) {
         request.fetchSearchResult(context, page, key, result)
     }
 
-    override fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<ProjectBean>) {
+    override fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<HomeData>) {
         request.fetchWxSearchResult(context, wxId, page, key, result)
     }
 
-    override fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>) {
+    override fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<HomeData>) {
         request.fetchSystemTreeDetail(context, page, cid, result)
     }
 
@@ -61,7 +60,7 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchWxArticleTitle(context, result)
     }
 
-    override fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<ProjectBean>) {
+    override fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<HomeData>) {
         request.fetchWxArticleDetail(context, cId, page, result)
     }
 

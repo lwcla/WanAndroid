@@ -4,7 +4,6 @@ import android.widget.TextView
 import com.cla.wx.article.R
 import com.cla.wx.article.adapter.WxDetailAdapter
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.AppUtils
@@ -93,7 +92,7 @@ class WxDetailFragment : BasicFragment() {
     private fun initLoadWxDetail(): LoadWxDetail {
         val view = object : LoadWxDetailView() {
 
-            override fun success(t: ProjectBean, refreshData: Boolean) {
+            override fun success(t: HomeData, refreshData: Boolean) {
 
                 loadWxDetail.page = t.curPage
 

@@ -4,7 +4,6 @@ import android.widget.TextView
 import com.cla.system.tree.R
 import com.cla.system.tree.detail.adapter.SystemTreeDetailAdapter
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.AppUtils
@@ -93,7 +92,7 @@ class SystemTreeDetailFragment : BasicFragment() {
     private fun initLoadSystemTreeDetail(): LoadSystemTreeDetail {
         val view = object : LoadSystemTreeDetailView() {
 
-            override fun success(t: ProjectBean, refreshData: Boolean) {
+            override fun success(t: HomeData, refreshData: Boolean) {
 
                 if (t.datas?.size ?: 0 == 0) {
                     refreshRv?.finishLoadMore(0, true, true)
@@ -106,7 +105,9 @@ class SystemTreeDetailFragment : BasicFragment() {
                 refreshRv?.finishLoadMore(200, true, t.over)
 
                 val list = mutableListOf<HomeData.DatasBean>()
-                list.addAll(t.datas!!.filterNotNull())
+                t.datas?.let {
+                    list.addAll(it)
+                }
 
                 if (refreshData) {
                     systemAdapter?.setNewData(list)

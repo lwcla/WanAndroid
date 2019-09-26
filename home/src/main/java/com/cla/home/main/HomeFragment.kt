@@ -8,7 +8,6 @@ import com.konsung.basic.bean.HomeData
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.AppUtils
-import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
 
 /**
@@ -26,7 +25,7 @@ class HomeFragment : BasicFragment() {
     private val loadBanner by lazy { initLoadBanner() }
     private val loadHomeData by lazy { initLoadHomeData() }
 
-    var homeIndex  = 0
+    var homeIndex = 0
 
     override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
@@ -172,10 +171,7 @@ class HomeFragment : BasicFragment() {
                         }
                     }
 
-                    refreshRv?.apply {
-                        finishRefresh(300)
-                        finishLoadMore(200, true, t.over)
-                    }
+                    fetSuccess(t.over)
                 }
             }
         }
@@ -183,25 +179,25 @@ class HomeFragment : BasicFragment() {
         return HomeDataPresenter(this, view)
     }
 
-    override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
-        Debug.info(TAG, "HomeFragment collectResult success?$success collectId=$collectId position=$position toCollect?$toCollect")
+    /*  override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
+          Debug.info(TAG, "collectResult success?$success collectId=$collectId position=$position toCollect?$toCollect")
 
-        if (context == null) {
-            return
-        }
+          if (context == null) {
+              return
+          }
 
-        if (!success) {
-            return
-        }
+          if (!success) {
+              return
+          }
 
-        val data = homeAdapter?.findDataByPosition(position) ?: return
+          val data = homeAdapter?.findDataByPosition(position) ?: return
 
-        if (data.id != collectId) {
-            return
-        }
+          if (data.id != collectId) {
+              return
+          }
 
-        homeAdapter?.refreshCollectStatus(position, toCollect)
-    }
+          homeAdapter?.refreshCollectStatus(position, toCollect)
+      }*/
 
     /**
      *刷新数据

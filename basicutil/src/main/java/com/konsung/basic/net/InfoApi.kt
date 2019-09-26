@@ -2,7 +2,6 @@ package com.konsung.basic.net
 
 import com.konsung.basic.bean.*
 import com.konsung.basic.bean.navigation.NavigationBean
-import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.bean.tree.SystemTreeListBean
@@ -37,7 +36,7 @@ interface InfoApi {
      * @param page 页码
      */
     @GET("article/listproject/{page}/json")
-    fun fetchNewestProject(@Path("page") page: Int): Call<BasicData<ProjectBean>>
+    fun fetchNewestProject(@Path("page") page: Int): Call<BasicData<HomeData>>
 
     /**
      * 项目列表数据
@@ -48,7 +47,7 @@ interface InfoApi {
      * @param page 页码，从1开始
      */
     @GET("project/list/{page}/json")
-    fun fetchProjectTree(@Path("page") page: Int, @Query("cid") cId: Int): Call<BasicData<ProjectBean>>
+    fun fetchProjectTree(@Path("page") page: Int, @Query("cid") cId: Int): Call<BasicData<HomeData>>
 
     /**
      * 体系数据
@@ -69,21 +68,21 @@ interface InfoApi {
      * https://www.wanandroid.com/article/query/0/json
      */
     @POST("article/query/{page}/json")
-    fun fetchSearchResult(@Path("page") page: Int, @Query("k") key: String): Call<BasicData<ProjectBean>>
+    fun fetchSearchResult(@Path("page") page: Int, @Query("k") key: String): Call<BasicData<HomeData>>
 
     /**
      * 在某个公众号中搜索历史文章
      * https://wanandroid.com/wxarticle/list/405/1/json?k=Java
      */
     @GET("wxarticle/list/{id}/{page}/json")
-    fun fetchWxSearchResult(@Path("id") id: Int, @Path("page") page: Int, @Query("k") key: String): Call<BasicData<ProjectBean>>
+    fun fetchWxSearchResult(@Path("id") id: Int, @Path("page") page: Int, @Query("k") key: String): Call<BasicData<HomeData>>
 
     /**
      * 知识体系下的文章
      * https://www.wanandroid.com/article/list/0/json?cid=60
      */
     @GET("article/list/{page}/json")
-    fun fetchSystemTreeDetail(@Path("page") page: Int, @Query("cid") cId: Int): Call<BasicData<ProjectBean>>
+    fun fetchSystemTreeDetail(@Path("page") page: Int, @Query("cid") cId: Int): Call<BasicData<HomeData>>
 
     /**
      * 获取公众号列表
@@ -100,7 +99,7 @@ interface InfoApi {
      * @param page 公众号页码：拼接在url 中，eg:1
      */
     @GET("wxarticle/list/{id}/{page}/json")
-    fun fetchWxArticleDetail(@Path("id") cId: Int, @Path("page") page: Int): Call<BasicData<ProjectBean>>
+    fun fetchWxArticleDetail(@Path("id") cId: Int, @Path("page") page: Int): Call<BasicData<HomeData>>
 
     /**
      * 广告栏

@@ -4,7 +4,6 @@ import android.content.Context
 import androidx.annotation.StringRes
 import com.konsung.basic.bean.*
 import com.konsung.basic.bean.navigation.NavigationBean
-import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.bean.tree.SystemTreeListBean
@@ -98,13 +97,13 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun fetchNewestProject(context: Context, page: Int, result: RequestResult<ProjectBean>) {
+    fun fetchNewestProject(context: Context, page: Int, result: RequestResult<HomeData>) {
         getRetrofit()
                 .fetchNewestProject(page)
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>) {
+    fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<HomeData>) {
         getRetrofit()
                 .fetchProjectTree(page, cId)
                 .enqueue(CallInterceptor(context, result))
@@ -122,19 +121,19 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<ProjectBean>) {
+    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<HomeData>) {
         getRetrofit()
                 .fetchSearchResult(page, key)
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<ProjectBean>) {
+    fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<HomeData>) {
         getRetrofit()
                 .fetchWxSearchResult(wxId, page, key)
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>) {
+    fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<HomeData>) {
         getRetrofit()
                 .fetchSystemTreeDetail(page, cid)
                 .enqueue(CallInterceptor(context, result))
@@ -146,7 +145,7 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<ProjectBean>) {
+    fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<HomeData>) {
         getRetrofit()
                 .fetchWxArticleDetail(cId, page)
                 .enqueue(CallInterceptor(context, result))

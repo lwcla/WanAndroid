@@ -1,13 +1,13 @@
 package com.konsung.cla.demo2.presenter
 
-import com.konsung.basic.bean.project.ProjectBean
+import com.konsung.basic.bean.HomeData
 import com.konsung.basic.ui.BasePresenter3
 import com.konsung.basic.ui.BasicView
 import com.konsung.basic.ui.UiView
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 
-class SearchResultPresenter(uiView: UiView?, view: SearchResultView?, private val key: String?, private val wxId: Int) : BasePresenter3<ProjectBean, SearchResultView>(uiView, view) {
+class SearchResultPresenter(uiView: UiView?, view: SearchResultView?, private val key: String?, private val wxId: Int) : BasePresenter3<HomeData, SearchResultView>(uiView, view) {
 
     companion object {
         val TAG: String = SearchResultPresenter::class.java.simpleName
@@ -43,4 +43,4 @@ class SearchResultPresenter(uiView: UiView?, view: SearchResultView?, private va
 
 }
 
-open class SearchResultView : BasicView<ProjectBean>()
+open class SearchResultView : BasicView<HomeData>()

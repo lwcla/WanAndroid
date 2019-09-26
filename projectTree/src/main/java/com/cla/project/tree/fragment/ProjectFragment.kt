@@ -4,7 +4,6 @@ import android.widget.TextView
 import com.cla.project.tree.ProjectAdapter
 import com.cla.project.tree.R
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.util.AppUtils
@@ -17,7 +16,7 @@ abstract class ProjectFragment : BasicFragment() {
     private var over = false
     private val projectView = object : ProjectView() {
 
-        override fun success(t: ProjectBean, refreshData: Boolean) {
+        override fun success(t: HomeData, refreshData: Boolean) {
             over = t.over
             presenter.page = t.curPage
 

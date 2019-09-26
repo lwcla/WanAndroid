@@ -139,10 +139,14 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     }
 
     /**
-     * 收藏结果
+     * 成功获取数据
+     * @param over 已经没有数据了
      */
-    override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
-
+    fun fetSuccess(over: Boolean) {
+        refreshRv?.apply {
+            finishRefresh(200)
+            finishLoadMore(200, true, over)
+        }
     }
 
     override fun setMenuVisibility(menuVisible: Boolean) {
@@ -198,23 +202,28 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
         return CollectPresenter(this, view)
     }
 
-    override fun onNetDisconnected() {
-        Debug.info(TAG, "onNetDisconnected ")
-        resetData = false
-    }
+    /**
+     * 收藏结果
+     */
+    override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
 
-    override fun onNetConnected(networkType: NetworkType) {
-        Debug.info(TAG, "$this onNetConnected showedContent?$showedContent resume=$resume")
+        Debug.info(TAG, "collectResult success?$success collectId=$collectId position=$position toCollect?$toCollect")
 
-        if (!showedContent) {
-            //之前还从来没有获取到数据，这个时候网络连接成功，那么就刷新数据
-            if (resume) {
-                resetData()
-            } else {
-                Debug.info(TAG, "$this onNetConnected resetData is true")
-                resetData = true
-            }
+        if (context == null) {
+            return
         }
+
+        if (!success) {
+            return
+        }
+
+        val data = dataListAdapterHelper?.findDataByPosition(position) ?: return
+
+        if (data.id != collectId) {
+            return
+        }
+
+        dataListAdapterHelper?.refreshCollectStatus(position, toCollect)
     }
 
     override fun getUiContext(): Context? = context
@@ -242,6 +251,25 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
 
     override fun showNoNetworkView() {
         myHandler.sendEmptyMessage(SHOW_NO_NETWORK)
+    }
+
+    override fun onNetDisconnected() {
+        Debug.info(TAG, "onNetDisconnected ")
+        resetData = false
+    }
+
+    override fun onNetConnected(networkType: NetworkType) {
+        Debug.info(TAG, "$this onNetConnected showedContent?$showedContent resume=$resume")
+
+        if (!showedContent) {
+            //之前还从来没有获取到数据，这个时候网络连接成功，那么就刷新数据
+            if (resume) {
+                resetData()
+            } else {
+                Debug.info(TAG, "$this onNetConnected resetData is true")
+                resetData = true
+            }
+        }
     }
 
     @LayoutRes

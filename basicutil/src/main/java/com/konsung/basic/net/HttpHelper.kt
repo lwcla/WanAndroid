@@ -6,7 +6,6 @@ import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.navigation.NavigationBean
-import com.konsung.basic.bean.project.ProjectBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.bean.tree.SystemTreeListBean
@@ -27,12 +26,12 @@ interface HttpHelper {
     /**
      * 最新项目
      */
-    fun fetchNewestProject(context: Context, page: Int, result: RequestResult<ProjectBean>)
+    fun fetchNewestProject(context: Context, page: Int, result: RequestResult<HomeData>)
 
     /**
      * 项目列表数据
      */
-    fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<ProjectBean>)
+    fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<HomeData>)
 
     /**
      * 搜索热词
@@ -42,17 +41,17 @@ interface HttpHelper {
     /**
      * 搜索
      */
-    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<ProjectBean>)
+    fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<HomeData>)
 
     /**
      * 在某个公众号中搜索历史文章
      */
-    fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<ProjectBean>)
+    fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<HomeData>)
 
     /**
      * 知识体系下的文章
      */
-    fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<ProjectBean>)
+    fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<HomeData>)
 
     /**
      * 体系分类列表
@@ -67,7 +66,7 @@ interface HttpHelper {
     /**
      * 查看某个公众号历史数据
      */
-    fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<ProjectBean>)
+    fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<HomeData>)
 
     /**
      * 广告
