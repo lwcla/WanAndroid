@@ -11,13 +11,18 @@ import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.ui.ScreenImageAty
 import com.konsung.basic.ui.WebViewAty
-import com.konsung.cla.demo2.aty.LoginAty
-import com.konsung.cla.demo2.aty.MainActivity
-import com.konsung.cla.demo2.aty.SearchAty
-import com.konsung.cla.demo2.aty.SearchResultAty
+import com.konsung.cla.demo2.aty.*
 
 
 open class ProductUtils {
+
+    open fun startCollectAty(context: Context?) {
+        context?.let {
+            val intent = Intent()
+            intent.setClass(it, CollectAty::class.java)
+            it.startActivity(intent)
+        }
+    }
 
     open fun startMainAty(context: Context) {
         val intent = Intent()

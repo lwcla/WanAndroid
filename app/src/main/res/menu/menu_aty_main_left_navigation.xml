@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/item1"
-        android:icon="@mipmap/ic_launcher_round"
-        android:title="功能列表1"/>
 
     <item
-        android:id="@+id/item2"
-        android:icon="@mipmap/ic_launcher_round"
-        android:title="功能列表2"/>
+        android:id="@+id/menu_search"
+        android:icon="@mipmap/search"
+        android:title="@string/search" />
+
+    <item
+        android:id="@+id/menu_collect"
+        android:icon="@mipmap/collect"
+        android:title="@string/my_collect" />
 
     <item
         android:id="@+id/item3"
         android:icon="@mipmap/ic_launcher_round"
-        android:title="功能列表3"/>
+        android:title="功能列表3" />
 
     <item
         android:id="@+id/item4"
         android:icon="@mipmap/ic_launcher_round"
-        android:title="功能列表4"/>
+        android:title="功能列表4" />
 
     <item
         android:id="@+id/item5"
         android:icon="@mipmap/ic_launcher_round"
-        android:title="功能列表5"/>
+        android:title="功能列表5" />
 
     <item android:title="Sub items">
         <menu>
             <item
                 android:id="@+id/nav_sub_items_1"
                 android:icon="@mipmap/ic_launcher_round"
-                android:title="Sub items 1"/>
+                android:title="Sub items 1" />
             <item
                 android:id="@+id/nav_sub_items_2"
                 android:icon="@mipmap/ic_launcher_round"
-                android:title="Sub items 2"/>
+                android:title="Sub items 2" />
         </menu>
     </item>
 </menu>

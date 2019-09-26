@@ -5,9 +5,9 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
-import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.GravityCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.cla.home.HomeParentFragment
@@ -22,7 +22,10 @@ import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.FragmentRefresh
-import com.konsung.basic.util.*
+import com.konsung.basic.util.Debug
+import com.konsung.basic.util.SpUtils
+import com.konsung.basic.util.StringUtils
+import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
@@ -85,8 +88,17 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         tvIconSearch.setOnClickListener(this)
 
         nvLeft.setNavigationItemSelectedListener { item ->
-            val title = item.title.toString()
-            ToastUtils.instance.toast(context, TAG, title)
+
+            when (item.itemId) {
+                //搜索
+                R.id.menu_search -> App.productUtils.startSearchAty(this)
+                //收藏
+                R.id.menu_collect -> App.productUtils.startCollectAty(this)
+
+            }
+
+//            val title = item.title.toString()
+//            ToastUtils.instance.toast(context, TAG, title)
             //关闭的动画时间太短，影响体验，先不关闭了
 //            drawerLayout.closeDrawer(nvLeft)
             true
@@ -146,7 +158,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
      */
     private fun initNavigationView() {
         val headView = nvLeft.inflateHeaderView(R.layout.view_aty_main_left_navigation)
-        val rlHead = headView.findViewById<RelativeLayout>(R.id.rlHead)
+        val rlHead = headView.findViewById<ConstraintLayout>(R.id.rlHead)
         rlHead.setOnClickListener(this)
 
         tvHeadName = headView.findViewById<TextView>(R.id.tvInfo)
@@ -262,6 +274,11 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         if (event.action == KeyEvent.ACTION_DOWN) {
 
             if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                    return true
+                }
 
                 if (lastBackTime == 0L) {
                     lastBackTime = System.currentTimeMillis()
