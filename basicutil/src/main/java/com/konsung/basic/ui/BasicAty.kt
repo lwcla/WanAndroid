@@ -171,6 +171,10 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
 
     override fun getUiContext(): Context? = context
 
+    override fun loadComplete(success: Boolean) {
+
+    }
+
     override fun showContentView() {
 
     }

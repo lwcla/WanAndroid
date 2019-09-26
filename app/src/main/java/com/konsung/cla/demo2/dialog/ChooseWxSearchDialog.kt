@@ -137,16 +137,22 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
 
     override fun getUiContext(): Context? = context
 
+    override fun loadComplete(success: Boolean) {
+        if (!success) {
+            dismissAllowingStateLoss()
+        }
+    }
+
     override fun showContentView() {
 
     }
 
     override fun showErrorView() {
-        dismissAllowingStateLoss()
+
     }
 
     override fun showNoNetworkView() {
-        dismissAllowingStateLoss()
+
     }
 
     override fun showLoadView() {

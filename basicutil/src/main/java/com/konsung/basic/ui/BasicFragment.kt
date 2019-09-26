@@ -164,7 +164,16 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     }
 
     /**
-     * 刷新视图
+     * 点击图标滚动到顶部并刷新视图
+     */
+    fun scrollToTop() {
+        //刷新视图的情况下，重置showedContent
+        showedContent = false
+        refreshView()
+    }
+
+    /**
+     * 点击图标滚动到顶部并刷新视图
      */
     open fun refreshView() {
 
@@ -209,6 +218,11 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     }
 
     override fun getUiContext(): Context? = context
+
+    override fun loadComplete(success: Boolean) {
+        refreshRv?.finishLoadMore(success)
+        refreshRv?.finishRefresh(success)
+    }
 
     override fun showContentView() {
         myHandler.sendEmptyMessage(SHOW_CONTENT)
@@ -267,7 +281,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
 
                 SHOW_NO_NETWORK, SHOW_LOADING, SHOW_ERROR, SHOW_CONTENT -> {
 
-                    if (msg.what != SHOW_CONTENT) {
+                    /*if (msg.what != SHOW_CONTENT) {
                         //加载成功的话，由自己来处理
                         fragment.refreshRv?.finishRefresh()
 
@@ -276,7 +290,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
                         } else {
                             fragment.refreshRv?.finishLoadMore(0, false, false)
                         }
-                    }
+                    }*/
 
                     removeMessages(SHOW_NO_NETWORK)
                     removeMessages(SHOW_LOADING)

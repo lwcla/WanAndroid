@@ -291,9 +291,8 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
             return
         }
 
-        result.complete()
-
         if (dataWillNull) {
+            result.complete(true)
             result.success()
             return
         }
@@ -304,6 +303,7 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
             return
         }
 
+        result.complete(true)
         result.success(resultData)
     }
 
@@ -318,7 +318,7 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
 
     private fun failed(text: String, toFailed: Boolean = true) {
 
-        Debug.info(TAG,"failed text=$text toFailed=$toFailed")
+        Debug.info(TAG, "failed text=$text toFailed=$toFailed")
 
         if (result.stop) {
             return
@@ -328,7 +328,7 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
             ToastUtils.instance.toast(context, TAG, text)
         }
 
-        result.complete()
+        result.complete(false)
         if (toFailed) {
             result.failed(text)
         }

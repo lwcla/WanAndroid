@@ -111,7 +111,7 @@ abstract class VpBasicFragment : BasicFragment() {
         titleList?.let {
             for (two in it) {
                 if (two.b.resume) {
-                    two.b.refreshView()
+                    two.b.scrollToTop()
                 }
             }
         }

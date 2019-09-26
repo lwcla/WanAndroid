@@ -20,7 +20,6 @@ import com.konsung.basic.util.FileUtils
 import com.konsung.basic.util.SpUtils
 import com.konsung.basic.util.Utils
 import com.konsung.basic.util.toast
-import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.presenter.LoginPresenter
 import com.konsung.cla.demo2.presenter.LoginView
@@ -280,7 +279,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
                 }
             }
 
-            override fun complete() {
+            override fun complete(success: Boolean) {
                 dismissLoadingDialog()
             }
 

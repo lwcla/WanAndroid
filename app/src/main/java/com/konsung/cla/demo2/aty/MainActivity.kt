@@ -230,7 +230,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
                     }
 
                     //点击的是当前fragment的下标，那就刷新本页
-                    fragmentList[index].c.refreshView()
+                    fragmentList[index].c.scrollToTop()
                 }
                 titleViewList.add(viewPagerTitle)
                 return viewPagerTitle

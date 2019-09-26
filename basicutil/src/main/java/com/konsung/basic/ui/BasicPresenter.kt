@@ -10,6 +10,8 @@ interface UiView {
 
     fun getUiContext(): Context?
 
+    fun loadComplete(success: Boolean)
+
     fun showContentView()
 
     fun showErrorView()
@@ -103,8 +105,9 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
     /**
      * 方法调用完毕，已经产生结果
      */
-    open fun complete(context: Context) {
-        view?.complete()
+    open fun complete(context: Context, success: Boolean) {
+        getUiView()?.loadComplete(success)
+        view?.complete(success)
     }
 
     inline fun request(request: (Context, RequestResult<T>) -> Unit) {
@@ -157,14 +160,14 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
                 presenter.failed(context, message)
             }
 
-            override fun complete() {
+            override fun complete(success: Boolean) {
                 val context = getContext()
                 if (context == null) {
                     destroy()
                     return
                 }
 
-                presenter.complete(context)
+                presenter.complete(context, success)
             }
 
             override fun noNetwork() {
@@ -244,7 +247,7 @@ abstract class BasicView<T> {
 
     }
 
-    open fun complete() {
+    open fun complete(success: Boolean) {
 
     }
 }

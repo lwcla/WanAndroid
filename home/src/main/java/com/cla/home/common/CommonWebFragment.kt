@@ -108,7 +108,6 @@ class CommonWebFragment : BasicFragment() {
     }
 
     override fun refreshView() {
-
         if (!resume) {
             return
         }

@@ -43,7 +43,7 @@ abstract class RequestResult<T>(private val view: BasicView<T>?) {
         view?.noNetwork()
     }
 
-    open fun complete() {
-        view?.complete()
+    open fun complete(success:Boolean) {
+        view?.complete(success)
     }
 }

@@ -295,9 +295,13 @@ public class MultipleStatusView extends RelativeLayout {
         checkNull(view, "Content view is null.");
         checkNull(layoutParams, "Layout params is null.");
         changeViewStatus(STATUS_CONTENT);
-        clear(mContentView);
-        mContentView = view;
-        addView(mContentView, 0, layoutParams);
+
+        if (mContentView == null || mContentView != view) {
+            clear(mContentView);
+            mContentView = view;
+            addView(mContentView, 0, layoutParams);
+        }
+
         showViewById(mContentView.getId());
     }
 
@@ -349,6 +353,7 @@ public class MultipleStatusView extends RelativeLayout {
 
         /**
          * 视图状态改变时回调
+         *
          * @param oldViewStatus 之前的视图状态
          * @param newViewStatus 新的视图状态
          */
