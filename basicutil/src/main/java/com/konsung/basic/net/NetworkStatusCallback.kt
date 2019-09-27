@@ -59,7 +59,7 @@ class NetworkStatusCallback private constructor() : ConnectivityManager.NetworkC
             mObservers.remove(observer)
         }
 
-        fun unRegisterAll() {
+        private fun unRegisterAll() {
             for (observer in mObservers) {
                 unRegisterObserver(observer)
             }
@@ -92,6 +92,7 @@ class NetworkStatusCallback private constructor() : ConnectivityManager.NetworkC
     override fun onAvailable(network: Network?) {
         super.onAvailable(network)
         Debug.info(TAG, "onAvailable ")
+        notifyObservers(NetworkType.NETWORK_UNKNOWN)
     }
 
     override fun onLost(network: Network?) {

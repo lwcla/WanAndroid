@@ -2,6 +2,8 @@ package com.cla.home.main
 
 import android.content.Context
 import android.widget.TextView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.cla.home.R
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.bean.HomeData
@@ -67,7 +69,7 @@ class HomeFragment : BasicFragment() {
 
             setOnItemChildClickListener { _, view, position ->
 
-                if (context == null) {
+                if (activity == null) {
                     return@setOnItemChildClickListener
                 }
 
@@ -120,6 +122,35 @@ class HomeFragment : BasicFragment() {
             setOnLoadMoreListener {
                 loadHomeData.loadMore()
             }
+        }
+
+        refreshRv?.rv?.apply {
+            addOnScrollListener(object : RecyclerView.OnScrollListener() {
+
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+
+                    //newState ==0 时表示滚动停止
+                    if (newState != 0) {
+                        return
+                    }
+
+                    val position = (layoutManager as? LinearLayoutManager)?.findFirstVisibleItemPosition()
+                            ?: -1
+
+//                    Debug.info(TAG,"onScrollStateChanged position=$position")
+
+                    if (position < 0) {
+                        return
+                    }
+
+                    //banner是否显示
+                    if (position == 0) {
+                        headView.startPlay()
+                    } else {
+                        headView.stopAutoPlay()
+                    }
+                }
+            })
         }
     }
 
