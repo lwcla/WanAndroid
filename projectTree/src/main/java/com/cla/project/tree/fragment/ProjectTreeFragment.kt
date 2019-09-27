@@ -1,5 +1,6 @@
 package com.cla.project.tree.fragment
 
+import com.konsung.basic.ui.HomeView
 import com.konsung.basic.ui.UiView
 
 /**
@@ -7,11 +8,10 @@ import com.konsung.basic.ui.UiView
  */
 class ProjectTreeFragment : ProjectFragment() {
     var cId = 0
-
-    override fun initProjectPresenter(view: ProjectView): ProjectPresenter = ProjectTreePresenter(this, view, cId)
+    override fun initProjectPresenter(view: HomeView): ProjectPresenter = ProjectTreePresenter(this, view, cId)
 }
 
-class ProjectTreePresenter(uiView: UiView?, view: ProjectView?, private val cId: Int = 0) : ProjectPresenter(uiView, view) {
+class ProjectTreePresenter(uiView: UiView?, view: HomeView?, private val cId: Int = 0) : ProjectPresenter(uiView, view) {
 
     init {
         pageStart = 1

@@ -80,7 +80,6 @@ class HomeFragment : HomeDataFragment() {
     }
 
     override fun initData() {
-        super.initData()
         loadBanner.load()
         loadHomeData.loadWithTopData()
     }

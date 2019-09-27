@@ -1,5 +1,6 @@
 package com.cla.project.tree.fragment
 
+import com.konsung.basic.ui.HomeView
 import com.konsung.basic.ui.UiView
 
 /**
@@ -7,10 +8,10 @@ import com.konsung.basic.ui.UiView
  */
 class NewestProjectFragment : ProjectFragment() {
 
-    override fun initProjectPresenter(view: ProjectView): ProjectPresenter = NewestPresenter(this, view)
+    override fun initProjectPresenter(view: HomeView): ProjectPresenter = NewestPresenter(this, view)
 }
 
-class NewestPresenter(uiView: UiView?, view: ProjectView?) : ProjectPresenter(uiView, view) {
+class NewestPresenter(uiView: UiView?, view: HomeView?) : ProjectPresenter(uiView, view) {
 
     override fun refresh() {
         refresh { ctx, result -> httpHelper.fetchNewestProject(ctx, page, result) }

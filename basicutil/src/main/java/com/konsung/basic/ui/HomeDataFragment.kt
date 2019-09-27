@@ -90,7 +90,7 @@ abstract class HomeDataFragment : BasicFragment() {
     }
 
     override fun initData() {
-
+        resetData()
     }
 
     open fun getScrollIndex() = index
