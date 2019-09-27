@@ -1,6 +1,7 @@
 package com.konsung.basic.ui
 
 import android.content.Context
+import com.konsung.basic.bean.HomeData
 import com.konsung.basic.config.RequestResult
 import com.konsung.basic.net.HttpHelper
 import com.konsung.basic.net.HttpHelperImpl
@@ -19,6 +20,31 @@ interface UiView {
     fun showNoNetworkView()
 
     fun showLoadView()
+}
+
+abstract class UiViewAdapter : UiView {
+
+    override fun getUiContext(): Context? = null
+
+    override fun loadComplete(success: Boolean) {
+
+    }
+
+    override fun showContentView() {
+
+    }
+
+    override fun showLoadView() {
+
+    }
+
+    override fun showErrorView() {
+
+    }
+
+    override fun showNoNetworkView() {
+
+    }
 }
 
 abstract class BasicPresenter(uiView: UiView?) {
@@ -227,6 +253,70 @@ abstract class BasePresenter3<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
     abstract fun refresh()
 
     abstract fun loadMore()
+}
+
+/**
+ * 请求HomeData数据的presenter
+ */
+abstract class HomePresenter(uiView: UiView?, view: HomeView?) : BasePresenter3<HomeData, HomeView>(uiView, view) {
+
+    companion object {
+        val TAG: String = HomePresenter::class.java.simpleName
+    }
+
+    var dataSize = 0
+    var over = false
+
+    var refreshRv: RefreshRecyclerView? = null
+
+    private fun refreshRv(): RefreshRecyclerView? {
+        if (refreshRv == null) {
+            refreshRv = view?.getRefreshRv()
+        }
+
+        return refreshRv
+    }
+
+    override fun success(context: Context, t: HomeData) {
+
+        page = t.curPage
+
+        val list = t.beanList
+        list.clear()
+
+        t.datas?.let {
+            list.addAll(it.filterNotNull())
+        }
+
+        if (list.size == 0) {
+            over = true
+
+            //刷新全部数据的时候，从服务器拿到的数据集合为空
+            if (refreshData) {
+                super.failed(context, "没有数据")
+                return
+            }
+        } else {
+            dataSize += list.size
+
+            //出现过虽然t.over是false但是后台已经把全部的数据都发过来的情况
+            //这个时候再去请求，就会把之前的数据再发一次过来
+            over = if (!t.over) {
+                dataSize >= t.total
+            } else {
+                true
+            }
+        }
+
+        super.success(context, t)
+
+        refreshRv()?.finishRefresh()
+        refreshRv()?.finishLoadMore(200, true, over)
+    }
+}
+
+abstract class HomeView : BasicView<HomeData>() {
+    abstract fun getRefreshRv(): RefreshRecyclerView?
 }
 
 abstract class BasicView<T> {

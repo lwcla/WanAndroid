@@ -12,6 +12,7 @@ import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.receiver.CollectResult
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.ui.HomeView
 import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.Debug
@@ -20,7 +21,6 @@ import com.konsung.basic.view.MultipleStatusView
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.SearchResultAdapter
 import com.konsung.cla.demo2.presenter.SearchResultPresenter
-import com.konsung.cla.demo2.presenter.SearchResultView
 import kotlinx.android.synthetic.main.activity_search_result.*
 
 class SearchResultAty : BasicAty(), CollectResult {
@@ -31,8 +31,8 @@ class SearchResultAty : BasicAty(), CollectResult {
         const val INIT_DELAY = 500L
     }
 
-    private var multiplyStatusView: MultipleStatusView? = null
-    private var refreshRv: RefreshRecyclerView? = null
+    private val multiplyStatusView by lazy { findViewById<MultipleStatusView>(R.id.multiplyStatusView) }
+    private val refreshRv by lazy { multiplyStatusView.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
 
     private var searchResultAdapter: SearchResultAdapter? = null
 
@@ -78,18 +78,17 @@ class SearchResultAty : BasicAty(), CollectResult {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-        multiplyStatusView = findViewById<MultipleStatusView>(R.id.multiplyStatusView)
-        multiplyStatusView?.showLoading()
+        multiplyStatusView.showLoading()
     }
 
     override fun initEvent() {
         toolbar.setNavigationOnClickListener { finish() }
-        multiplyStatusView?.setOnRetryClickListener {
+        multiplyStatusView.setOnRetryClickListener {
             showLoadView()
             resetData()
         }
         fab.setOnClickListener {
-            refreshRv?.refreshDataAfterScrollTop()
+            refreshRv.refreshDataAfterScrollTop()
         }
     }
 
@@ -122,8 +121,6 @@ class SearchResultAty : BasicAty(), CollectResult {
     private fun setSearchResult(t: List<HomeData.DatasBean>) {
 
         if (searchResultAdapter == null) {
-            refreshRv = multiplyStatusView?.findViewById(R.id.refreshRv)
-
             searchResultAdapter = SearchResultAdapter(context, t)
             searchResultAdapter?.apply {
 
@@ -162,7 +159,7 @@ class SearchResultAty : BasicAty(), CollectResult {
                 }
             }
 
-            refreshRv?.apply {
+            refreshRv.apply {
 
                 setOnRefreshListener {
                     resetData()
@@ -173,12 +170,12 @@ class SearchResultAty : BasicAty(), CollectResult {
                 }
             }
 
-            refreshRv?.rv?.let {
+            refreshRv.rv.let {
                 fab.attachToRecyclerView(it)
             }
 
-            refreshRv?.initRecyclerView(searchResultAdapter, null, 0, false) {
-                refreshRv?.autoRefresh()
+            refreshRv.initRecyclerView(searchResultAdapter, null, 0, false) {
+                refreshRv.autoRefresh()
                 resetData()
             }
         } else {
@@ -188,38 +185,30 @@ class SearchResultAty : BasicAty(), CollectResult {
 
     private fun initSearchResultPresenter(): SearchResultPresenter {
 
-        val view = object : SearchResultView() {
+        val view = object : HomeView() {
 
             override fun success(t: HomeData, refreshData: Boolean) {
 
-                val list = mutableListOf<HomeData.DatasBean>()
-                t.datas?.let {
-                    list.addAll(it)
-                }
-
-                if (list.isEmpty() && searchResultAdapter?.data?.size ?: 0 == 0) {
-                    multiplyStatusView?.showEmpty()
+                if (t.beanList.isEmpty() && searchResultAdapter?.data?.size ?: 0 == 0) {
+                    multiplyStatusView.showEmpty()
                     return
                 }
 
-                searchResultPresenter.page = t.curPage
-
-                refreshRv?.finishLoadMore(0, true, t.over)
-                refreshRv?.finishRefresh()
-
                 if (refreshData) {
-                    setSearchResult(list)
+                    setSearchResult(t.beanList)
                 } else {
-                    searchResultAdapter?.addData(list)
+                    searchResultAdapter?.addData(t.beanList)
                 }
             }
 
             override fun complete(success: Boolean) {
                 if (!success) {
-                    refreshRv?.finishLoadMore(false)
-                    refreshRv?.finishRefresh(false)
+                    refreshRv.finishLoadMore(false)
+                    refreshRv.finishRefresh(false)
                 }
             }
+
+            override fun getRefreshRv(): RefreshRecyclerView? = refreshRv
         }
 
         return SearchResultPresenter(this, view, getKey(), getWxId())
@@ -263,18 +252,19 @@ class SearchResultAty : BasicAty(), CollectResult {
     }
 
     override fun showLoadView() {
-        multiplyStatusView?.showLoading()
+        multiplyStatusView.showLoading()
     }
 
     override fun showContentView() {
-        multiplyStatusView?.showContent()
+        Debug.info(TAG, "showContentView ")
+        multiplyStatusView.showContent()
     }
 
     override fun showErrorView() {
-        multiplyStatusView?.showError()
+        multiplyStatusView.showError()
     }
 
     override fun showNoNetworkView() {
-        multiplyStatusView?.showNoNetwork()
+        multiplyStatusView.showNoNetwork()
     }
 }

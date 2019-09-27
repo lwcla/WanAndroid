@@ -22,7 +22,7 @@ abstract class ProjectFragment : BasicFragment() {
 
             val list = mutableListOf<HomeData.DatasBean>()
             t.datas?.let {
-                list.addAll(it)
+                list.addAll(it.filterNotNull())
             }
 
             if (refreshData) {
