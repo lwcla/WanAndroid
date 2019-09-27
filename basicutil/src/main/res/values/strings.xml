@@ -28,6 +28,7 @@
     <string name="circle_of_friends">朋友圈</string>
     <string name="qq_space">qq空间</string>
     <string name="other">其他</string>
+    <string name="sure">确定</string>
     <string name="cancel" tools:ignore="ExtraTranslation">取消</string>
     <string name="link_copy_success">链接已复制到系统粘贴板</string>
     <string name="share_to_other">分享到</string>
@@ -60,6 +61,8 @@
     <string name="date">时间：</string>
     <string name="search" tools:ignore="ExtraTranslation">搜索</string>
     <string name="search_all">全局搜索</string>
+    <string name="search_content">搜索内容</string>
+    <string name="all">全部</string>
     <string name="official_accounts">公众号</string>
     <string name="official_accounts1">的公众号</string>
     <string name="search_wx_article">公众号搜索</string>
@@ -69,4 +72,5 @@
     <string name="there_is_no_data">这里没有数据</string>
 
     <string name="empty_view_hint">暂无数据</string>
+    <string name="filter">筛选</string>
 </resources>

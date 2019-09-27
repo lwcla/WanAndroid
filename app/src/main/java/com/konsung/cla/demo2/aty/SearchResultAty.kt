@@ -194,7 +194,7 @@ class SearchResultAty : BasicAty(), CollectResult {
 
                 val list = mutableListOf<HomeData.DatasBean>()
                 t.datas?.let {
-                    list.addAll(it.filterNotNull())
+                    list.addAll(it)
                 }
 
                 if (list.isEmpty() && searchResultAdapter?.data?.size ?: 0 == 0) {

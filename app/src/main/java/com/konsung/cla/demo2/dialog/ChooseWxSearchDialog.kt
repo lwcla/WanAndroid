@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentManager
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -40,6 +41,8 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
 
     private var chooseWx: ProjectTitleBean? = null
 
+    private var selectId = -1
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         context?.let {
@@ -65,7 +68,7 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
 
     override fun onStop() {
         super.onStop()
-        chooseWxArticleNameListener?.choose(chooseWx?.name, chooseWx?.id)
+        chooseWxArticleNameListener?.choose(getString(R.string.official_accounts) + " - " + chooseWx?.name, chooseWx?.id)
     }
 
     override fun onDestroy() {
@@ -96,7 +99,7 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
         val verticalSpacing = ConvertUtils.dp2px(context!!, 15.toFloat())
         rvWxArticleTitle.addItemDecoration(SpacingItemDecoration(horizontalSpacing, verticalSpacing))
 
-        wxArticleTitleAdapter = WxArticleTitleAdapter(context!!, t)
+        wxArticleTitleAdapter = WxArticleTitleAdapter(context!!, t, selectId)
         wxArticleTitleAdapter?.setOnItemClickListener { adapter, view, position ->
 
             if (position < 0 || position >= t.size) {
@@ -106,7 +109,15 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
             }
 
             val bean = t[position]
-            chooseWx = bean
+
+            //这是取消之前的选择
+            if (bean.id == selectId) {
+                chooseWx = bean
+                chooseWx?.id = -1
+            } else {
+                chooseWx = bean
+            }
+
             dismissAllowingStateLoss()
         }
 
@@ -157,6 +168,11 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
 
     override fun showLoadView() {
 
+    }
+
+    fun show(manager: FragmentManager, tag: String?, selectId: Int) {
+        this.selectId = selectId
+        super.show(manager, tag)
     }
 }
 

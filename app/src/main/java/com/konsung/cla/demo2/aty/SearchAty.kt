@@ -10,8 +10,7 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.TextView
-import androidx.appcompat.widget.SwitchCompat
-import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
@@ -46,20 +45,15 @@ class SearchAty : BasicAty(), View.OnClickListener {
         initDelay = INIT_DETAIL
     }
 
-    private val tvWxArticleName by lazy { findViewById<TextView>(R.id.tvWxName) }
-    private val cvWxArticleName by lazy { findViewById<CardView>(R.id.cvWxName) }
-    private val tvWxTitle1 by lazy { findViewById<TextView>(R.id.tvWxTitle1) }
-    private val tvWxTitle2 by lazy { findViewById<TextView>(R.id.tvWxTitle2) }
-    private val switch by lazy { findViewById<SwitchCompat>(R.id.switchSearch) }
-
     private val searchHotPresenter by lazy { initSearchHotPresenter() }
     private val historyKeyPresenter by lazy { initHistoryKeyPresenter() }
 
     private var hotSearchAdapter: SearchKeyAdapter? = null
     private var historyKeyAdapter: SearchKeyAdapter? = null
+    private var filterAdapter: SearchKeyAdapter? = null
 
-    private var wxName: String? = null
-    private var wxId: Int? = null
+    private var wxName: String = ""
+    private var wxId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,8 +77,9 @@ class SearchAty : BasicAty(), View.OnClickListener {
         StringUtils.instance.loadTextIcon(context, tvBack)
         StringUtils.instance.loadTextIcon(context, tvClear)
         StringUtils.instance.loadTextIcon(context, tvDelete)
+        StringUtils.instance.loadTextIcon(context, tvIconFilter)
 
-        showSearchWx(false)
+        resetFilter()
     }
 
     override fun initEvent() {
@@ -92,21 +87,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
         tvSearch.setOnClickListener(this)
         tvClear.setOnClickListener(this)
         tvDelete.setOnClickListener(this)
-        rlSwitch.setOnClickListener(this)
-        tvWxArticleName.setOnClickListener(this)
-
-        switch.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked) {
-
-                if (wxInfoEmpty()) {
-                    showChooseWxDialog()
-                }
-
-                showSearchWx(true)
-            } else {
-                showSearchWx(false)
-            }
-        }
+        llFilter.setOnClickListener(this)
 
         etSearch.addTextChangedListener(object : TextWatcher {
 
@@ -169,6 +150,24 @@ class SearchAty : BasicAty(), View.OnClickListener {
         }
     }
 
+    private fun resetFilter() {
+        val horizontalSpacing = ConvertUtils.dp2px(context, 25.toFloat())
+        val verticalSpacing = ConvertUtils.dp2px(context, 5.toFloat())
+        rvFilter.addItemDecoration(SpacingItemDecoration(horizontalSpacing, verticalSpacing))
+
+        val layoutManager = LinearLayoutManager(this, RecyclerView.HORIZONTAL, false)
+        rvFilter.layoutManager = layoutManager
+
+
+        val key = SearchKey()
+        key.name = getString(R.string.all)
+        key.id = -1
+
+        val list = listOf(key)
+        filterAdapter = SearchKeyAdapter(this, list, false, R.drawable.bg_corner_text_name)
+        rvFilter.adapter = filterAdapter
+    }
+
     private fun initRv(rv: RecyclerView, t: List<SearchKey>, isHotKey: Boolean): SearchKeyAdapter {
 
         val searchAdapter = SearchKeyAdapter(this, t, isHotKey)
@@ -188,7 +187,6 @@ class SearchAty : BasicAty(), View.OnClickListener {
                     val name = key.name.toString()
                     etSearch.setText(name)
                     etSearch.setSelection(name.length)
-//                    searchKey(key)
                 }
             }
         }
@@ -225,24 +223,12 @@ class SearchAty : BasicAty(), View.OnClickListener {
     }
 
     private fun searchKey(searchKey: SearchKey) {
-
         val key = searchKey.name
         historyKeyPresenter.save(searchKey)
-
-        var name = wxName
-        var id = wxId
-        if (!switch.isChecked) {
-            name = ""
-            id = -1
-        }
-
-        App.productUtils.startSearchResultAty(this, key, switch.isChecked, name, id)
+        App.productUtils.startSearchResultAty(this, key, wxId > 0, wxName, wxId)
     }
 
     private fun showChooseWxDialog() {
-        if (!switch.isChecked) {
-            return
-        }
 
         val chooseWxSearchDialog = ChooseWxSearchDialog()
         chooseWxSearchDialog.apply {
@@ -250,52 +236,37 @@ class SearchAty : BasicAty(), View.OnClickListener {
                 override fun choose(name: String?, id: Int?) {
 
                     //这次弹窗期间没有做任何选择
-                    if (name.isNullOrEmpty()) {
+                    if (id == null || name.isNullOrEmpty()) {
                         //之前也没有选择过
-                        if (wxInfoEmpty()) {
-                            switch.isChecked = false
-                        }
                         return
                     }
 
-                    tvWxArticleName.text = name
-                    wxName = name
-                    wxId = id
-                    showSearchWx(true)
+                    val name2: String
+                    val id2: Int
+
+                    if (id == -1) {
+                        name2 = getString(R.string.all)
+                        id2 = -1
+                    } else {
+                        name2 = name
+                        id2 = id
+                    }
+
+                    wxName = name2
+                    wxId = id2
+
+                    val key = SearchKey()
+                    key.name = name2
+                    key.id = id2
+                    filterAdapter?.setNewData(listOf(key))
                 }
             }
 
             if (!isAdded) {
-                show(supportFragmentManager, ChooseWxSearchDialog::class.java.simpleName)
+                show(supportFragmentManager, ChooseWxSearchDialog::class.java.simpleName, wxId)
             }
         }
     }
-
-    /**
-     * 是否显示搜索具体是谁的微信公众号的描述
-     */
-    private fun showSearchWx(show: Boolean) {
-        if (show) {
-            cvWxArticleName.visibility = View.VISIBLE
-            tvWxTitle1.visibility = View.VISIBLE
-            tvWxTitle2.visibility = View.VISIBLE
-
-            tvWxTitle1.text = getString(R.string.search)
-            etSearch.hint = getString(R.string.search_wx_article)
-        } else {
-            cvWxArticleName.visibility = View.GONE
-            tvWxTitle1.visibility = View.VISIBLE
-            tvWxTitle2.visibility = View.GONE
-
-            tvWxTitle1.text = getString(R.string.search_wx_article)
-            etSearch.hint = getString(R.string.search_all)
-        }
-    }
-
-    /**
-     * 还没有选择微信公众号
-     */
-    private fun wxInfoEmpty(): Boolean = tvWxArticleName.text == getString(R.string.unknown)
 
     private fun initHistoryKeyPresenter(): SearchHistoryPresenter {
 
@@ -330,7 +301,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
             R.id.tvDelete -> historyKeyPresenter.clear()
 
-            R.id.rlSwitch, R.id.tvWxName -> showChooseWxDialog()
+            R.id.llFilter -> showChooseWxDialog()
 
             R.id.tvSearch -> {
                 val key = etSearch.text.toString()
