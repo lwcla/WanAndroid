@@ -1,113 +1,41 @@
 package com.cla.wx.article.detail
 
-import android.widget.TextView
+import com.chad.library.adapter.base.BaseViewHolder
 import com.cla.wx.article.R
 import com.cla.wx.article.adapter.WxDetailAdapter
+import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
-import com.konsung.basic.util.AppUtils
-import com.konsung.basic.util.toast
+import com.konsung.basic.ui.HomeDataFragment
+import com.konsung.basic.ui.HomeView
+import com.konsung.basic.ui.RefreshRecyclerView
 
-class WxDetailFragment : BasicFragment() {
+class WxDetailFragment : HomeDataFragment() {
 
     var cId = -1
-    private var wxAdapter: WxDetailAdapter? = null
-    private val loadWxDetail by lazy { initLoadWxDetail() }
 
-    override fun getLayoutId(): Int = R.layout.view_fresh_rv
+    private val loadWxDetail by lazy { initLoadWxDetail() }
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(collectPresenter, loadWxDetail)
 
-    override fun initView() {
-        refreshRv = showView?.findViewById(R.id.refreshRv)
-
-        wxAdapter = WxDetailAdapter(context!!, listOf())
-        dataListAdapterHelper = wxAdapter
-
-        refreshRv?.initRecyclerView(wxAdapter, fragmentRefresh, index) {
-            refreshRv?.autoRefresh()
-            resetData()
-        }
+    override fun loadMoreData() {
+        loadWxDetail.loadMore()
     }
 
-    override fun initEvent() {
-        refreshRv?.apply {
-
-            setOnRefreshListener {
-                resetData()
-            }
-
-            setOnLoadMoreListener {
-                loadWxDetail.loadMore()
-            }
-        }
-
-        wxAdapter?.apply {
-
-            setOnItemClickListener { _, view, position ->
-                val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
-                val d = findDataByPosition(position)
-                d?.apply {
-                    AppUtils.startWebAty(activity, context, tvTitle, title, link, artId = id, dataPosition = position, collect = d.collect)
-                }
-            }
-
-            setOnItemChildClickListener { _, view, position ->
-
-                if (activity == null) {
-                    return@setOnItemChildClickListener
-                }
-
-                when (view.id) {
-                    //收藏
-                    R.id.imvStart -> {
-
-                        val data = wxAdapter?.findDataByPosition(position)
-                        if (data == null) {
-                            toast(TAG, R.string.data_error)
-                            return@setOnItemChildClickListener
-                        }
-
-                        val id = data.id
-                        if (id < 0) {
-                            toast(TAG, R.string.data_error)
-                            return@setOnItemChildClickListener
-                        }
-
-                        val b = collectPresenter.collect(position, id, data.collect)
-                        if (b) {
-                            wxAdapter?.refreshCollectStatus(position, data)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    override fun initData() {
-        resetData()
-    }
+    override fun initDataAdapter(): BasicDataQuickAdapter<BaseViewHolder>? = WxDetailAdapter(context!!, listOf())
 
     private fun initLoadWxDetail(): LoadWxDetail {
-        val view = object : LoadWxDetailView() {
+        val view = object : HomeView() {
 
             override fun success(t: HomeData, refreshData: Boolean) {
-
-                loadWxDetail.page = t.curPage
-                fetSuccess(t.over)
-
-                val list = mutableListOf<HomeData.DatasBean>()
-                t.datas?.let {
-                    list.addAll(it.filterNotNull())
-                }
-
                 if (refreshData) {
-                    wxAdapter?.setNewData(list)
+                    dataAdapter?.setNewData(t.beanList)
                 } else {
-                    wxAdapter?.addData(list)
+                    dataAdapter?.addData(t.beanList)
                 }
             }
+
+            override fun getRefreshRv(): RefreshRecyclerView? = refreshRv
         }
 
         return LoadWxDetail(this, view, cId)
@@ -116,4 +44,6 @@ class WxDetailFragment : BasicFragment() {
     override fun resetData() {
         loadWxDetail.refresh()
     }
+
+    override fun getImvStartId(): Int = R.id.imvStart
 }
