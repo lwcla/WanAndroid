@@ -26,7 +26,7 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
     }
 
     private val multiplyStatusView by lazy { findViewById<MultipleStatusView>(R.id.multiplyStatusView) }
-    protected val refreshRv by lazy { multiplyStatusView.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
+    protected val refreshRv: RefreshRecyclerView by lazy { multiplyStatusView.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
     protected var dataAdapter: BasicDataQuickAdapter<BaseViewHolder>? = null
 
     protected val homeView = object : HomeView() {
@@ -39,7 +39,6 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
             }
 
             if (refreshData) {
-//                setSearchResult(t.beanList)
                 setAdapter(t.beanList)
             } else {
                 dataAdapter?.addData(t.beanList)
@@ -76,7 +75,11 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
     override fun getLayoutId(): Int = R.layout.activity_home_data
 
     override fun initView() {
-        toolbar.title = getAtyTitle()
+        val title = getAtyTitle()
+        if (title.isNotEmpty()) {
+            toolbar.title = getAtyTitle()
+        }
+
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         showLoadView()
