@@ -191,6 +191,10 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
 
     }
 
+    override fun showEmptyView() {
+
+    }
+
     @LayoutRes
     abstract fun getLayoutId(): Int
 

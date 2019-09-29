@@ -265,6 +265,10 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
         myHandler.sendEmptyMessage(SHOW_NO_NETWORK)
     }
 
+    override fun showEmptyView() {
+        myHandler.sendEmptyMessage(SHOW_ERROR)
+    }
+
     override fun onNetDisconnected() {
         Debug.info(TAG, "onNetDisconnected ")
         resetData = false

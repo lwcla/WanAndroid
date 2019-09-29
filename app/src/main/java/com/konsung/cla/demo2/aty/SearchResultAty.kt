@@ -1,100 +1,30 @@
 package com.konsung.cla.demo2.aty
 
-import android.content.Context
-import android.os.Bundle
-import android.transition.Fade
-import android.widget.TextView
+import com.chad.library.adapter.base.BaseViewHolder
+import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.config.BaseConfig
-import com.konsung.basic.presenter.CollectPresenter
-import com.konsung.basic.presenter.CollectView
-import com.konsung.basic.receiver.CollectReceiver
-import com.konsung.basic.receiver.CollectResult
-import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
-import com.konsung.basic.ui.HomeView
-import com.konsung.basic.ui.RefreshRecyclerView
-import com.konsung.basic.util.AppUtils
+import com.konsung.basic.ui.HomeDataAty
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
-import com.konsung.basic.view.MultipleStatusView
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.SearchResultAdapter
 import com.konsung.cla.demo2.presenter.SearchResultPresenter
-import kotlinx.android.synthetic.main.activity_search_result.*
 
-class SearchResultAty : BasicAty(), CollectResult {
-
+class SearchResultAty : HomeDataAty() {
 
     companion object {
         val TAG: String = SearchResultAty::class.java.simpleName
-        const val INIT_DELAY = 500L
     }
 
-    private val multiplyStatusView by lazy { findViewById<MultipleStatusView>(R.id.multiplyStatusView) }
-    private val refreshRv by lazy { multiplyStatusView.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
-
-    private var searchResultAdapter: SearchResultAdapter? = null
-
-    private val searchResultPresenter by lazy { initSearchResultPresenter() }
-    private val collectPresenter by lazy { initCollectPresenter() }
+    private val searchResultPresenter by lazy { SearchResultPresenter(this, homeView, getKey(), getWxId()) }
 
     private var key: String? = null
     private var searchForWxArticle = false
     private var wxId = -1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        window.enterTransition = Fade().setDuration(INIT_DELAY)
-        window.exitTransition = Fade().setDuration(INIT_DELAY)
-        CollectReceiver.registerObserver(this)
-    }
-
-    override fun getLayoutId(): Int = R.layout.activity_search_result
-
     override fun initPresenter(): List<BasicPresenter>? = listOf(searchResultPresenter, collectPresenter)
-
-    override fun initView() {
-
-        var title = getKey()
-        if (title.isNullOrEmpty()) {
-            toast(TAG, R.string.key_is_null)
-            finish()
-            return
-        }
-
-        val wxName = intent.getStringExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE_NAME)
-        if (searchForWxArticle) {
-            if (wxId < 0) {
-                toast(TAG, R.string.wx_id_is_null)
-                finish()
-                return
-            }
-
-            title = "$wxName : $title"
-        }
-
-        toolbar.title = title
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-
-        multiplyStatusView.showLoading()
-    }
-
-    override fun initEvent() {
-        toolbar.setNavigationOnClickListener { finish() }
-        multiplyStatusView.setOnRetryClickListener {
-            showLoadView()
-            resetData()
-        }
-        fab.setOnClickListener {
-            refreshRv.refreshDataAfterScrollTop()
-        }
-    }
-
-    override fun initData() {
-        resetData()
-    }
 
     private fun getKey(): String? {
 
@@ -106,7 +36,6 @@ class SearchResultAty : BasicAty(), CollectResult {
     }
 
     private fun getWxId(): Int {
-
         searchForWxArticle = intent.getBooleanExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE, false)
         if (searchForWxArticle) {
             if (wxId < 0) {
@@ -118,153 +47,37 @@ class SearchResultAty : BasicAty(), CollectResult {
         return wxId
     }
 
-    private fun setSearchResult(t: List<HomeData.DatasBean>) {
-
-        if (searchResultAdapter == null) {
-            searchResultAdapter = SearchResultAdapter(context, t)
-            searchResultAdapter?.apply {
-
-                setOnItemClickListener { _, view, position ->
-                    val tvTitle = view.findViewById<TextView>(R.id.tvTitle)
-                    val d = findDataByPosition(position)
-                    d?.apply {
-                        AppUtils.startWebAty(this@SearchResultAty, context, tvTitle, title, link, artId = id, dataPosition = position, collect = d.collect, needCollect = true)
-                    }
-                }
-
-                setOnItemChildClickListener { _, view, position ->
-
-                    when (view.id) {
-                        //收藏
-                        R.id.imvStart -> {
-
-                            val data = searchResultAdapter?.findDataByPosition(position)
-                            if (data == null) {
-                                toast(TAG, R.string.data_error)
-                                return@setOnItemChildClickListener
-                            }
-
-                            val id = data.id
-                            if (id < 0) {
-                                toast(TAG, R.string.data_error)
-                                return@setOnItemChildClickListener
-                            }
-
-                            val b = collectPresenter.collect(position, id, data.collect)
-                            if (b) {
-                                searchResultAdapter?.refreshCollectStatus(position, data)
-                            }
-                        }
-                    }
-                }
-            }
-
-            refreshRv.apply {
-
-                setOnRefreshListener {
-                    resetData()
-                }
-
-                setOnLoadMoreListener {
-                    searchResultPresenter.loadMore()
-                }
-            }
-
-            refreshRv.rv.let {
-                fab.attachToRecyclerView(it)
-            }
-
-            refreshRv.initRecyclerView(searchResultAdapter, null, 0, false) {
-                refreshRv.autoRefresh()
-                resetData()
-            }
-        } else {
-            searchResultAdapter?.setNewData(t)
-        }
-    }
-
-    private fun initSearchResultPresenter(): SearchResultPresenter {
-
-        val view = object : HomeView() {
-
-            override fun success(t: HomeData, refreshData: Boolean) {
-
-                if (t.beanList.isEmpty() && searchResultAdapter?.data?.size ?: 0 == 0) {
-                    multiplyStatusView.showEmpty()
-                    return
-                }
-
-                if (refreshData) {
-                    setSearchResult(t.beanList)
-                } else {
-                    searchResultAdapter?.addData(t.beanList)
-                }
-            }
-
-            override fun complete(success: Boolean) {
-                if (!success) {
-                    refreshRv.finishLoadMore(false)
-                    refreshRv.finishRefresh(false)
-                }
-            }
-
-            override fun getRefreshRv(): RefreshRecyclerView? = refreshRv
+    override fun getAtyTitle(): String {
+        var title = getKey()
+        if (title.isNullOrEmpty()) {
+            toast(TAG, R.string.key_is_null)
+            finish()
+            return ""
         }
 
-        return SearchResultPresenter(this, view, getKey(), getWxId())
-    }
-
-    private fun initCollectPresenter(): CollectPresenter {
-
-        val view = object : CollectView() {
-
-            override fun failed(context: Context, string: String, position: Int, toCollect: Boolean) {
-                //收藏失败
-                searchResultAdapter?.refreshCollectStatus(position, !toCollect)
+        val wxName = intent.getStringExtra(BaseConfig.SEARCH_FOR_WX_ARTICLE_NAME)
+        if (searchForWxArticle) {
+            if (wxId < 0) {
+                toast(TAG, R.string.wx_id_is_null)
+                finish()
+                return ""
             }
+
+            title = "$wxName : $title"
         }
 
-        return CollectPresenter(this, view)
+        return title
     }
 
+    override fun getImvStartId(): Int = R.id.imvStart
 
-    private fun resetData() {
+    override fun initAdapter(t: List<HomeData.DatasBean>): BasicDataQuickAdapter<BaseViewHolder> = SearchResultAdapter(context, t)
+
+    override fun loadMoreData() {
+        searchResultPresenter.loadMore()
+    }
+
+    override fun resetData() {
         searchResultPresenter.refresh()
-    }
-
-    /**
-     * 从WebView点击收藏的结果
-     */
-    override fun collectResult(success: Boolean, collectId: Int, position: Int, toCollect: Boolean) {
-        Debug.info(TAG, "collectResult success?$success collectId=$collectId position=$position toCollect?$toCollect")
-
-        if (!success) {
-            return
-        }
-
-        val data = searchResultAdapter?.findDataByPosition(position) ?: return
-
-        if (data.id != collectId) {
-            return
-        }
-
-        searchResultAdapter?.refreshCollectStatus(position, toCollect)
-    }
-
-    override fun showLoadView() {
-        multiplyStatusView.showLoading()
-    }
-
-    override fun showContentView() {
-        Debug.info(TAG, "showContentView ")
-        multiplyStatusView.showContent()
-    }
-
-    override fun showErrorView() {
-        multiplyStatusView.showError()
-    }
-
-    override fun showNoNetworkView() {
-        multiplyStatusView.showNoNetwork()
     }
 }

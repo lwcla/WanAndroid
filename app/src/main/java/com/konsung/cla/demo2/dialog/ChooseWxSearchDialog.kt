@@ -170,6 +170,10 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
 
     }
 
+    override fun showEmptyView() {
+
+    }
+
     fun show(manager: FragmentManager, tag: String?, selectId: Int) {
         this.selectId = selectId
         super.show(manager, tag)

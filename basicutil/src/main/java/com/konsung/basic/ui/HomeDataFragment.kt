@@ -15,6 +15,12 @@ abstract class HomeDataFragment : BasicFragment() {
     protected var homeView = object : HomeView() {
 
         override fun success(t: HomeData, refreshData: Boolean) {
+
+            if (t.beanList.isEmpty() && dataAdapter?.data?.size ?: 0 == 0) {
+                multiplyStatusView?.showEmpty()
+                return
+            }
+
             if (refreshData) {
                 dataAdapter?.setNewData(t.beanList)
             } else {

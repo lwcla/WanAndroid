@@ -20,6 +20,8 @@ interface UiView {
     fun showNoNetworkView()
 
     fun showLoadView()
+
+    fun showEmptyView()
 }
 
 abstract class UiViewAdapter : UiView {
@@ -43,6 +45,10 @@ abstract class UiViewAdapter : UiView {
     }
 
     override fun showNoNetworkView() {
+
+    }
+
+    override fun showEmptyView() {
 
     }
 }
@@ -126,6 +132,12 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
             getUiView()?.showNoNetworkView()
         }
         view?.noNetwork()
+    }
+
+    open fun empty() {
+        if (refreshData) {
+            getUiView()?.showEmptyView()
+        }
     }
 
     /**
@@ -293,7 +305,7 @@ abstract class HomePresenter(uiView: UiView?, view: HomeView?) : BasePresenter3<
 
             //刷新全部数据的时候，从服务器拿到的数据集合为空
             if (refreshData) {
-                super.failed(context, "没有数据")
+                empty()
                 return
             }
         } else {
@@ -316,6 +328,10 @@ abstract class HomePresenter(uiView: UiView?, view: HomeView?) : BasePresenter3<
 }
 
 abstract class HomeView : BasicView<HomeData>() {
+    /**
+     * 在数据第一次加载出来之后才会去调用showContent()方法拿到显示数据的view,这个时候才能通过id拿到RefreshRecyclerView
+     * 添加这样一个方法，保证是在正确的时候去拿RefreshRecyclerView
+     */
     abstract fun getRefreshRv(): RefreshRecyclerView?
 }
 

@@ -60,6 +60,7 @@ dependencies {
     implementation config.agentweb
     implementation config.agent_web_file_chooser
     implementation config.agent_web_downloader
+    implementation config.floatingactionbutton
 
     //数据库升级
     implementation config.green_dao_upgrade_helper
