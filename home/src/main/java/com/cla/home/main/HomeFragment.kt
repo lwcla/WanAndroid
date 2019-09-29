@@ -6,11 +6,8 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.cla.home.R
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.BannerData
-import com.konsung.basic.bean.HomeData
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.HomeDataFragment
-import com.konsung.basic.ui.HomeView
-import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.util.AppUtils
 
 /**
@@ -25,7 +22,7 @@ class HomeFragment : HomeDataFragment() {
     private lateinit var headView: BannerHeadView
 
     private val loadBanner by lazy { initLoadBanner() }
-    private val loadHomeData by lazy { initLoadHomeData() }
+    private val loadHomeData by lazy { HomeDataPresenter(this, homeView) }
 
     var homeIndex = 0
 
@@ -115,24 +112,6 @@ class HomeFragment : HomeDataFragment() {
         }
 
         return BannerPresenter(this, view)
-    }
-
-    private fun initLoadHomeData(): HomeDataPresenter {
-
-        val view = object : HomeView() {
-
-            override fun success(t: HomeData, refreshData: Boolean) {
-                if (refreshData) {
-                    dataAdapter?.setNewData(t.beanList)
-                } else {
-                    dataAdapter?.addData(t.beanList)
-                }
-            }
-
-            override fun getRefreshRv(): RefreshRecyclerView? = refreshRv
-        }
-
-        return HomeDataPresenter(this, view)
     }
 
     /**

@@ -3,6 +3,7 @@ package com.konsung.basic.ui
 import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
 import com.konsung.basic.adapter.BasicDataQuickAdapter
+import com.konsung.basic.bean.HomeData
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
@@ -10,6 +11,19 @@ import com.konsung.basic.util.toast
 abstract class HomeDataFragment : BasicFragment() {
 
     protected var dataAdapter: BasicDataQuickAdapter<BaseViewHolder>? = null
+
+    protected var homeView = object : HomeView() {
+
+        override fun success(t: HomeData, refreshData: Boolean) {
+            if (refreshData) {
+                dataAdapter?.setNewData(t.beanList)
+            } else {
+                dataAdapter?.addData(t.beanList)
+            }
+        }
+
+        override fun getRefreshRv(): RefreshRecyclerView? = refreshRv
+    }
 
     override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
