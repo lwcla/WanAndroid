@@ -88,7 +88,7 @@ abstract class HomeDataFragment : BasicFragment() {
                             return@setOnItemChildClickListener
                         }
 
-                        val b = collectPresenter.collect(position, id, data.collect)
+                        val b = collectPresenter.collect(position, id, collect = data.collect)
                         if (b) {
                             dataAdapter?.refreshCollectStatus(position, data)
                         }

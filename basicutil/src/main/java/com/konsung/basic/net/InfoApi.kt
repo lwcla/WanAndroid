@@ -20,6 +20,16 @@ interface InfoApi {
     fun collect(@Path("id") id: Int): Call<BasicData<String>>
 
     /**
+     * 收藏文章列表
+     * https://www.wanandroid.com/lg/collect/list/0/json
+     *
+     * @param page 页码：拼接在链接中，从0开始。
+     * @return 收藏文章列表
+     */
+    @GET("lg/collect/list/{page}/json")
+    fun fetchCollectList(@Path("page") page: Int): Call<BasicData<HomeData>>
+
+    /**
      * 导航数据
      * https://www.wanandroid.com/navi/json
      *
@@ -177,4 +187,14 @@ interface InfoApi {
     @POST("lg/uncollect_originId/{id}/json")
     fun unCollect(@Path("id") id: Int): Call<BasicData<String>>
 
+    /**
+     * 在我的收藏页面取消收藏（该页面包含自己录入的内容）
+     * https://www.wanandroid.com/lg/uncollect/2805/json
+     *
+     * @param id id:拼接在链接上
+     * @param originId 代表的是你收藏之前的那篇文章本身的id； 但是收藏支持主动添加，这种情况下，没有originId则为-1
+     * @return 取消收藏站内文章数据
+     */
+    @POST("lg/uncollect/{id}/json")
+    fun unCollectInList(@Path("id") id: Int, @Query("originId") originId: Int): Call<BasicData<String>>
 }

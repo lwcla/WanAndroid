@@ -12,7 +12,11 @@ import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
 
-class CollectPresenter(uiView: UiView?, view: CollectView?) : BasePresenter1<String, CollectView>(uiView, view) {
+/**
+ * 收藏
+ * @param isCollectListPage 是否在我的收藏页面
+ */
+class CollectPresenter(uiView: UiView?, view: CollectView?, private val isCollectListPage: Boolean = false) : BasePresenter1<String, CollectView>(uiView, view) {
 
     companion object {
         val TAG: String = CollectPresenter::class.java.simpleName
@@ -28,7 +32,7 @@ class CollectPresenter(uiView: UiView?, view: CollectView?) : BasePresenter1<Str
      *
      * @return 是否去上报数据了
      */
-    fun collect(index: Int, id: Int, collect: Boolean): Boolean {
+    fun collect(index: Int, id: Int, originId: Int = -1, collect: Boolean): Boolean {
 
         val ctx = getContext() ?: return false
         if (!AppUtils.instance.hasLogined(ctx)) {
@@ -52,7 +56,6 @@ class CollectPresenter(uiView: UiView?, view: CollectView?) : BasePresenter1<Str
 
                 sendMessage(c, true, collectId, position, toCollect)
 
-                getUiView()?.showContentView()
                 view?.success(c, position, toCollect)
             }
 
@@ -68,7 +71,6 @@ class CollectPresenter(uiView: UiView?, view: CollectView?) : BasePresenter1<Str
 
                 sendMessage(c, false, collectId, position, toCollect)
 
-                getUiView()?.showErrorView()
                 view?.failed(c, message, position, toCollect)
             }
         }
@@ -76,10 +78,11 @@ class CollectPresenter(uiView: UiView?, view: CollectView?) : BasePresenter1<Str
         result.position = index
         result.toCollect = !collect
         result.collectId = id
+        result.toast = false
 
         if (collect) {
             //取消收藏
-            unCollect(id, result)
+            unCollect(id, originId, result)
         } else {
             collect(id, result)
         }
@@ -101,9 +104,13 @@ class CollectPresenter(uiView: UiView?, view: CollectView?) : BasePresenter1<Str
         LocalBroadcastManager.getInstance(context).sendBroadcast(intent)
     }
 
-    private fun unCollect(id: Int, result: RequestResult<String>) {
+    private fun unCollect(id: Int, originId: Int, result: RequestResult<String>) {
         val ctx = getContext() ?: return
-        httpHelper.unCollect(ctx, id, result)
+        if (isCollectListPage) {
+            httpHelper.unCollectInList(ctx, id, originId, result)
+        } else {
+            httpHelper.unCollect(ctx, id, result)
+        }
     }
 
     private fun collect(id: Int, result: RequestResult<String>) {

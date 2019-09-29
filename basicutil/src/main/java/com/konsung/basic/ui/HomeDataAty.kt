@@ -58,6 +58,9 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
 
     protected val collectPresenter by lazy { initCollectPresenter() }
 
+    protected var refreshAfterScrollTop = true
+    protected var isCollectListPage = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.enterTransition = Fade().setDuration(INIT_DELAY)
@@ -104,7 +107,7 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
             }
         }
 
-        return CollectPresenter(this, view)
+        return CollectPresenter(this, view, isCollectListPage)
     }
 
     private fun setAdapter(t: List<HomeData.DatasBean>) {
@@ -138,7 +141,7 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
                                 return@setOnItemChildClickListener
                             }
 
-                            val b = collectPresenter.collect(position, id, data.collect)
+                            val b = collectPresenter.collect(position, id, data.originId, collect = data.collect)
                             if (b) {
                                 dataAdapter?.refreshCollectStatus(position, data)
                             }
@@ -163,8 +166,10 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
             }
 
             refreshRv.initRecyclerView(dataAdapter, null, 0, false) {
-                refreshRv.autoRefresh()
-                resetData()
+                if (refreshAfterScrollTop) {
+                    refreshRv.autoRefresh()
+                    resetData()
+                }
             }
         } else {
             dataAdapter?.setNewData(t)

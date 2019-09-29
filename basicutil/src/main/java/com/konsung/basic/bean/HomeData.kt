@@ -197,6 +197,7 @@ class HomeData {
         var link: String? = null
         var niceDate: String? = null
         var origin: String? = null
+        var originId: Int = -1
         var prefix: String? = null
         var projectLink: String? = null
         var publishTime: Long = 0
@@ -209,26 +210,13 @@ class HomeData {
         var zan: Int = 0
         var tags: List<TagsBean>? = null
 
-        public class TagsBean {
+        class TagsBean {
             /**
              * name : 项目
              * url : /project/list/1?cid=358
              */
-
             var name: String? = null
             var url: String? = null
-
-            override fun toString(): String {
-                return "TagsBean(name=$name, url=$url)"
-            }
         }
-
-        override fun toString(): String {
-            return "DatasBean(apkLink=$apkLink, author=$author, chapterId=$chapterId, chapterName=$chapterName, collect=$collect, courseId=$courseId, desc=$desc, envelopePic=$envelopePic, fresh=$fresh, id=$id, link=$link, niceDate=$niceDate, origin=$origin, prefix=$prefix, projectLink=$projectLink, publishTime=$publishTime, superChapterId=$superChapterId, superChapterName=$superChapterName, title=$title, type=$type, userId=$userId, visible=$visible, zan=$zan, tags=$tags)"
-        }
-    }
-
-    override fun toString(): String {
-        return "HomeData(curPage=$curPage, offset=$offset, over=$over, pageCount=$pageCount, size=$size, total=$total, datas=$datas)"
     }
 }

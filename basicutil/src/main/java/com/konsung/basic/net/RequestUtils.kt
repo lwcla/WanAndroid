@@ -13,15 +13,17 @@ import com.konsung.basic.config.RequestResult
 
 class RequestUtils private constructor() : HttpHelper {
     companion object {
-
-        val instance = RequestUtils()
-
+        val instance by lazy { RequestUtils() }
     }
 
     private val request = MyRetrofitUtils.instance
 
     override fun collect(context: Context, id: Int, result: RequestResult<String>) {
         request.collect(context, id, result)
+    }
+
+    override fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>) {
+        request.fetchCollectList(context, page, result)
     }
 
     override fun fetNavigationList(context: Context, result: RequestResult<List<NavigationBean>>) {
@@ -94,5 +96,9 @@ class RequestUtils private constructor() : HttpHelper {
 
     override fun unCollect(context: Context, id: Int, result: RequestResult<String>) {
         request.unCollect(context, id, result)
+    }
+
+    override fun unCollectInList(context: Context, id: Int, originId: Int, result: RequestResult<String>) {
+        request.unCollectInList(context, id, originId, result)
     }
 }

@@ -138,7 +138,7 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
             return
         }
 
-        val b = collectPresenter.collect(dataPosition, artId, collect)
+        val b = collectPresenter.collect(dataPosition, artId, collect = collect)
         if (b) {
             collect = !collect
         }

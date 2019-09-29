@@ -59,7 +59,7 @@ class MyRetrofitUtils private constructor() {
                 }
 
                 val request = chain.request()
-//                Debug.info(TAG,"MyRetrofitUtils intercept request=$request")
+                Debug.info(TAG, "MyRetrofitUtils intercept request=$request")
                 return chain.proceed(request)
             }
         }
@@ -83,6 +83,18 @@ class MyRetrofitUtils private constructor() {
 
     private fun getRetrofit(): InfoApi {
         return retrofit.create(InfoApi::class.java)
+    }
+
+    fun collect(context: Context, id: Int, result: RequestResult<String>) {
+        getRetrofit()
+                .collect(id)
+                .enqueue(CallInterceptor(context, result, true))
+    }
+
+    fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>) {
+        getRetrofit()
+                .fetchCollectList(page)
+                .enqueue(CallInterceptor(context, result))
     }
 
     fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
@@ -187,15 +199,15 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun collect(context: Context, id: Int, result: RequestResult<String>) {
-        getRetrofit()
-                .collect(id)
-                .enqueue(CallInterceptor(context, result, true))
-    }
-
     fun unCollect(context: Context, id: Int, result: RequestResult<String>) {
         getRetrofit()
                 .unCollect(id)
+                .enqueue(CallInterceptor(context, result, true))
+    }
+
+    fun unCollectInList(context: Context, id: Int, originId: Int, result: RequestResult<String>) {
+        getRetrofit()
+                .unCollectInList(id, originId)
                 .enqueue(CallInterceptor(context, result, true))
     }
 }

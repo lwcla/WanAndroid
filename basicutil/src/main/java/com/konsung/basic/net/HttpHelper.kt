@@ -11,12 +11,25 @@ import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.config.RequestResult
 
+class HttpHelperImpl {
+    companion object {
+        fun create(): HttpHelper {
+            return RequestUtils.instance
+        }
+    }
+}
+
 interface HttpHelper {
 
     /**
      * 收藏
      */
     fun collect(context: Context, id: Int, result: RequestResult<String>)
+
+    /**
+     * 我的收藏列表
+     */
+    fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>)
 
     /**
      * 导航
@@ -108,12 +121,8 @@ interface HttpHelper {
      */
     fun unCollect(context: Context, id: Int, result: RequestResult<String>)
 
-}
-
-class HttpHelperImpl {
-    companion object {
-        fun create(): HttpHelper {
-            return RequestUtils.instance
-        }
-    }
+    /**
+     * 在收藏列表取消收藏
+     */
+    fun unCollectInList(context: Context, id: Int, originId: Int, result: RequestResult<String>)
 }
