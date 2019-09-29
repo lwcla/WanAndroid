@@ -6,6 +6,10 @@ import com.konsung.basic.ui.UiView
 
 class LoadWxDetail(uiView: UiView?, view: HomeView?, private val cId: Int) : HomePresenter(uiView, view) {
 
+    init {
+        pageStart = 1
+    }
+
     override fun refresh() {
         refresh { ctx, result -> httpHelper.fetchWxArticleDetail(ctx, cId, page, result) }
     }
