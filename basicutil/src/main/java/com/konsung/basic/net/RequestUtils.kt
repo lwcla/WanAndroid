@@ -22,6 +22,10 @@ class RequestUtils private constructor() : HttpHelper {
         request.collect(context, id, result)
     }
 
+    override fun collectLink(context: Context, title: String, author: String, link: String, result: RequestResult<HomeData.DatasBean>) {
+        request.collectLink(context, title, author, link, result)
+    }
+
     override fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>) {
         request.fetchCollectList(context, page, result)
     }

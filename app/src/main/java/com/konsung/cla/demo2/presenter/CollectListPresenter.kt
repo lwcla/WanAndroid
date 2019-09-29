@@ -15,11 +15,9 @@ class CollectListPresenter(uiView: UiView?, view: HomeView) : HomePresenter(uiVi
          */
         t.datas?.let {
             for (bean in it) {
-                if (bean == null) {
-                    continue
+                bean?.apply {
+                    collect = true
                 }
-
-                bean.collect = true
             }
         }
 

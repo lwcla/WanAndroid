@@ -26,7 +26,7 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
     }
 
     private val multiplyStatusView by lazy { findViewById<MultipleStatusView>(R.id.multiplyStatusView) }
-    private val refreshRv by lazy { multiplyStatusView.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
+    protected val refreshRv by lazy { multiplyStatusView.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
     protected var dataAdapter: BasicDataQuickAdapter<BaseViewHolder>? = null
 
     protected val homeView = object : HomeView() {
@@ -165,11 +165,10 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
                 fab.attachToRecyclerView(it)
             }
 
+            refreshRv.refreshAfterScrollTop = refreshAfterScrollTop
             refreshRv.initRecyclerView(dataAdapter, null, 0, false) {
-                if (refreshAfterScrollTop) {
-                    refreshRv.autoRefresh()
-                    resetData()
-                }
+                refreshRv.autoRefresh()
+                resetData()
             }
         } else {
             dataAdapter?.setNewData(t)

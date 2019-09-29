@@ -20,6 +20,15 @@ interface InfoApi {
     fun collect(@Path("id") id: Int): Call<BasicData<String>>
 
     /**
+     * 收藏站外文章
+     * https://www.wanandroid.com/lg/collect/add/json
+     *
+     * @return 收藏站外文章
+     */
+    @POST("lg/collect/add/json")
+    fun collectLink(@Query("title") title: String, @Query("author") author: String, @Query("link") link: String): Call<BasicData<HomeData.DatasBean>>
+
+    /**
      * 收藏文章列表
      * https://www.wanandroid.com/lg/collect/list/0/json
      *

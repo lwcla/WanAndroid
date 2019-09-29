@@ -86,6 +86,10 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
      */
     var result: RequestResult<T>? = null
     private var success = false
+    /**
+     * 是否弹出toast
+     */
+    var toast = true
 
     /**
      * 接口调用成功，可重写此方法处理返回的数据
@@ -155,6 +159,7 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
         stop()
 
         result = setRequestResult()
+        result?.toast = toast
         result?.refreshData = refreshData
         request.invoke(ctx, result!!)
     }

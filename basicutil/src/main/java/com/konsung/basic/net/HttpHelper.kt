@@ -27,6 +27,11 @@ interface HttpHelper {
     fun collect(context: Context, id: Int, result: RequestResult<String>)
 
     /**
+     * 收藏站外文章
+     */
+    fun collectLink(context: Context, title: String, author: String, link: String, result: RequestResult<HomeData.DatasBean>)
+
+    /**
      * 我的收藏列表
      */
     fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>)

@@ -8,9 +8,9 @@ import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.HomeDataAty
-import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.adapter.SearchResultAdapter
+import com.konsung.cla.demo2.adapter.CollectListAdapter
+import com.konsung.cla.demo2.dialog.LinkCollectDialog
 import com.konsung.cla.demo2.presenter.CollectListPresenter
 
 /**
@@ -31,6 +31,8 @@ class CollectAty : HomeDataAty(), View.OnClickListener {
 
     private val collectListPresenter by lazy { CollectListPresenter(this, homeView) }
 
+    private var linkCollectDialog: LinkCollectDialog? = null
+
     override fun initPresenter(): List<BasicPresenter>? = listOf(collectListPresenter, collectPresenter)
 
     override fun initView() {
@@ -41,11 +43,37 @@ class CollectAty : HomeDataAty(), View.OnClickListener {
         super.initView()
     }
 
-    override fun getAtyTitle(): String = getString(R.string.my_collect)
+    private fun showLinkCollectDialog() {
+
+        val tag = LinkCollectDialog.TAG
+
+        linkCollectDialog = supportFragmentManager.findFragmentByTag(tag) as LinkCollectDialog?
+
+        if (linkCollectDialog != null) {
+            supportFragmentManager.beginTransaction().remove(linkCollectDialog!!).commitAllowingStateLoss()
+        }
+
+        linkCollectDialog = null
+        linkCollectDialog = LinkCollectDialog()
+
+        linkCollectDialog?.collectLinkSuccess = object : LinkCollectDialog.CollectLinkSuccess {
+
+            override fun success(t: HomeData.DatasBean) {
+                dataAdapter?.addData(0, t)
+                refreshRv?.refreshDataAfterScrollTop()
+            }
+        }
+
+        if (!linkCollectDialog!!.isAdded) {
+            linkCollectDialog!!.show(supportFragmentManager, tag)
+        }
+    }
+
+    override fun getAtyTitle(): String = ""
 
     override fun getImvStartId(): Int = R.id.imvStart
 
-    override fun initAdapter(t: List<HomeData.DatasBean>): BasicDataQuickAdapter<BaseViewHolder> = SearchResultAdapter(context, t)
+    override fun initAdapter(t: List<HomeData.DatasBean>): BasicDataQuickAdapter<BaseViewHolder> = CollectListAdapter(context, t)
 
     override fun loadMoreData() {
         collectListPresenter.loadMore()
@@ -59,9 +87,7 @@ class CollectAty : HomeDataAty(), View.OnClickListener {
 
         when (v.id) {
             //添加收藏
-            R.id.addCollect -> {
-                toast(TAG, "点击收藏")
-            }
+            R.id.addCollect -> showLinkCollectDialog()
         }
     }
 }

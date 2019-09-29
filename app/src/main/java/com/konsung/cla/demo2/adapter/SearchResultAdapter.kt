@@ -8,26 +8,11 @@ import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.util.StringUtils
 import com.konsung.cla.demo2.R
-import java.util.*
 
 class SearchResultAdapter(context: Context, data: List<HomeData.DatasBean>) : BasicDataQuickAdapter<BaseViewHolder>(context, R.layout.adapter_search_result, data) {
 
     companion object {
         val TAG: String = SearchResultAdapter::class.java.simpleName
-    }
-
-    private fun getChapter(item: HomeData.DatasBean?): String {
-        if (item == null) {
-            return ""
-        }
-
-        var chapter = ""
-        val superChapterName = item.superChapterName
-        if (!superChapterName.isNullOrEmpty() && superChapterName.toUpperCase(Locale.CHINA) != "null".toUpperCase(Locale.CHINA)) {
-            chapter = "$superChapterName/"
-        }
-
-        return chapter + item.chapterName
     }
 
     override fun getStartImvId(): Int = R.id.imvStart
@@ -36,7 +21,7 @@ class SearchResultAdapter(context: Context, data: List<HomeData.DatasBean>) : Ba
         item?.apply {
             helper.setText(R.id.tvTitle, StringUtils.instance.formHtml(title))
                     .setText(R.id.tvAuthor, author)
-                    .setText(R.id.tvChapter, StringUtils.instance.formHtml(getChapter(item)))
+                    .setText(R.id.tvChapter, "$superChapterName/$chapterName")
                     .setText(R.id.tvTime, niceDate)
                     .addOnClickListener(R.id.imvStart)
 

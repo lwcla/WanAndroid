@@ -23,6 +23,11 @@ class RefreshRecyclerView : SmartRefreshLayout {
 
     var needRefresh = false
 
+    /**
+     * 滚动到顶部之后是否需要刷新数据
+     */
+    var refreshAfterScrollTop = true
+
     constructor(context: Context) : this(context, null)
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -100,7 +105,7 @@ class RefreshRecyclerView : SmartRefreshLayout {
                 //已经滚动到顶部，修改当前状态
                 fragmentRefresh?.refresh(false, index)
 
-                if (needRefresh) {
+                if (refreshAfterScrollTop && needRefresh) {
                     needRefresh = false
                     refreshData.invoke()
                 }

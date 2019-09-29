@@ -9,7 +9,7 @@ class StartAty : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         App.productUtils.startMainAty(this)
-//        App.productUtils.startSearchAty(this)
+//        App.productUtils.startCollectAty(this)
         finish()
     }
 }

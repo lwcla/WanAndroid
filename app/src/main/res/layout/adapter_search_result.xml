@@ -18,8 +18,11 @@
 
         <TextView
             android:id="@+id/tvChapter"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:singleLine="true"
             android:textColor="@color/colorPrimary"
             android:textSize="@dimen/sp_15"
             android:visibility="visible"
@@ -27,14 +30,19 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0"
+            app:layout_constraintWidth_percent="0.6"
+            tools:ignore="RtlSymmetry"
             tools:text="基础知识" />
 
         <TextView
             android:id="@+id/tvAuthor"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
+            android:ellipsize="end"
+            android:gravity="end"
+            android:lines="1"
+            android:singleLine="true"
             android:textColor="@color/value_default"
             android:textSize="@dimen/sp_12"
             app:layout_constraintBottom_toBottomOf="@id/tvChapter"
@@ -43,6 +51,7 @@
             app:layout_constraintStart_toEndOf="@id/tvChapter"
             app:layout_constraintTop_toTopOf="@id/tvChapter"
             app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintWidth_percent="0.2"
             tools:text="wdnmd" />
 
 

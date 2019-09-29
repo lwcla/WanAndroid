@@ -91,6 +91,12 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result, true))
     }
 
+    fun collectLink(context: Context, title: String, author: String, link: String, result: RequestResult<HomeData.DatasBean>) {
+        getRetrofit()
+                .collectLink(title, author, link)
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>) {
         getRetrofit()
                 .fetchCollectList(page)
