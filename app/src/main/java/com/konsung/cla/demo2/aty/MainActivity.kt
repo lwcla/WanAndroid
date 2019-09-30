@@ -17,6 +17,8 @@ import com.cla.system.tree.list.SystemTreeListFragment
 import com.cla.wx.article.parent.WxParentFragment
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.config.BaseConfig
+import com.konsung.basic.presenter.LogoutPresenter
+import com.konsung.basic.presenter.LogoutView
 import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
@@ -46,16 +48,13 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         val TAG: String = MainActivity::class.java.simpleName
     }
 
-    private val collectReceiver = CollectReceiver()
-
     private var tvHeadName: TextView? = null
-    private var lastBackTime = 0L
-
     private var linkCollectDialog: LinkCollectDialog? = null
 
-    override fun getLayoutId(): Int = R.layout.activity_main
+    private val collectReceiver = CollectReceiver()
+    private val logoutPresenter by lazy { initLogoutPresenter() }
 
-    override fun initPresenter(): List<BasicPresenter>? = null
+    private var lastBackTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,13 +65,18 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        initUserName()
+        resetUserName()
+        showLogoutView()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         LocalBroadcastManager.getInstance(this).unregisterReceiver(collectReceiver)
     }
+
+    override fun getLayoutId(): Int = R.layout.activity_main
+
+    override fun initPresenter(): List<BasicPresenter>? = listOf(logoutPresenter)
 
     override fun initView() {
         Debug.info(TAG, "MainActivity initView")
@@ -100,6 +104,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
                 R.id.add_link -> showLinkCollectDialog()
 
+                R.id.logout -> logoutPresenter.logout()
             }
 
 //            val title = item.title.toString()
@@ -185,18 +190,21 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         rlHead.setOnClickListener(this)
 
         tvHeadName = headView.findViewById<TextView>(R.id.tvInfo)
+        showLogoutView()
     }
 
-    private fun initUserName() {
-        val userName = SpUtils.getString(context, BaseConfig.USER_NAME, "")
-        if (userName.isNullOrEmpty()) {
-            tvHeadName?.text = getString(R.string.not_log_in)
-            tvTitle.text = getString(R.string.not_log_in)
+    private fun initLogoutPresenter(): LogoutPresenter {
 
-        } else {
-            tvHeadName?.text = userName
-            tvTitle.text = userName
+        val view = object : LogoutView() {
+
+            override fun success(refreshData: Boolean) {
+                val userName = SpUtils.getString(context, BaseConfig.USER_NAME, "")
+                resetUserName(userName)
+                showLogoutView(userName)
+            }
         }
+
+        return LogoutPresenter(this, view)
     }
 
     /**
@@ -278,6 +286,41 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         ViewPagerHelper.bind(magicIndicator, viewPager)
         viewPager.currentItem = homePage.index
 //        viewPager.offscreenPageLimit = 3
+    }
+
+    /**
+     * 是否显示退出登录按钮
+     */
+    private fun showLogoutView(userName: String? = null) {
+
+        /* val name: String? = if (userName.isNullOrEmpty()) {
+             SpUtils.getString(context, BaseConfig.USER_NAME, "")
+         } else {
+             userName
+         }
+
+         nvLeft.menu.findItem(R.id.logout).isVisible = !name.isNullOrEmpty()*/
+    }
+
+    private fun resetUserName(userName: String? = null) {
+
+        val name = if (userName.isNullOrEmpty()) {
+            SpUtils.getString(context, BaseConfig.USER_NAME, "")
+        } else {
+            userName
+        }
+
+        if (name.isNullOrEmpty()) {
+            tvHeadName?.text = getString(R.string.not_log_in)
+            tvTitle.text = getString(R.string.not_log_in)
+            //隐藏退出登录按钮
+            nvLeft.menu.findItem(R.id.logout).isVisible = false
+        } else {
+            tvHeadName?.text = name
+            tvTitle.text = name
+            //显示退出登录按钮
+            nvLeft.menu.findItem(R.id.logout).isVisible = true
+        }
     }
 
     override fun onClick(v: View?) {

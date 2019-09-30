@@ -120,7 +120,7 @@
             android:focusable="true"
             android:stateListAnimator="@drawable/lift_on_touch"
             app:cardBackgroundColor="@color/tool_bar_right"
-            app:cardCornerRadius="@dimen/dp_30"
+            app:cardCornerRadius="@dimen/dp_20"
             >
 
             <TextView

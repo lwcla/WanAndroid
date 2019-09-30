@@ -11,8 +11,6 @@ import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.config.NoNetworkException
 import com.konsung.basic.config.RequestResult
 import com.konsung.basic.net.cookie.PersistentCookieJar
-import com.konsung.basic.net.cookie.cache.SetCookieCache
-import com.konsung.basic.net.cookie.persistence.SharedPrefsCookiePersistor
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
@@ -64,7 +62,7 @@ class MyRetrofitUtils private constructor() {
             }
         }
 
-        val cookieJar = PersistentCookieJar(context, SetCookieCache(), SharedPrefsCookiePersistor(context))
+        val cookieJar = PersistentCookieJar(context)
 
         val okHttpClient = OkHttpClient.Builder()
                 .addInterceptor(httpLoggingInterceptor)
@@ -203,6 +201,12 @@ class MyRetrofitUtils private constructor() {
         getRetrofit()
                 .login(userName, passWord)
                 .enqueue(CallInterceptor(context, result))
+    }
+
+    fun logout(context: Context, result: RequestResult<String>) {
+        getRetrofit()
+                .logout()
+                .enqueue(CallInterceptor(context, result, true))
     }
 
     fun unCollect(context: Context, id: Int, result: RequestResult<String>) {

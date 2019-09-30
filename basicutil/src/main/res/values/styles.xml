@@ -44,6 +44,9 @@
         <item name="cardElevation">@dimen/dp_2</item>
         <item name="android:foreground">?android:attr/selectableItemBackground</item>
         <item name="android:background">@color/white</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="android:stateListAnimator">@drawable/lift_on_touch</item>
     </style>
 
 </resources>

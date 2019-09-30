@@ -17,9 +17,9 @@
         android:title="@string/add_collect" />
 
     <item
-        android:id="@+id/item4"
-        android:icon="@mipmap/ic_launcher_round"
-        android:title="功能列表4" />
+        android:id="@+id/logout"
+        android:icon="@mipmap/logout"
+        android:title="@string/logout" />
 
     <item
         android:id="@+id/item5"

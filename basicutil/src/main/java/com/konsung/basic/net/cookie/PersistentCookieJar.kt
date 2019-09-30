@@ -19,20 +19,27 @@ package com.konsung.basic.net.cookie
 import android.content.Context
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.cookie.cache.CookieCache
+import com.konsung.basic.net.cookie.cache.SetCookieCache
 import com.konsung.basic.net.cookie.persistence.CookiePersistor
-import com.konsung.basic.util.Debug
+import com.konsung.basic.net.cookie.persistence.SharedPrefsCookiePersistor
 import com.konsung.basic.util.SpUtils
 import okhttp3.Cookie
 import okhttp3.HttpUrl
 import java.util.*
 
-class PersistentCookieJar(private val context: Context, private val cache: CookieCache, private val persistor: CookiePersistor) : ClearAbleCookieJar {
+class PersistentCookieJar(private val context: Context) : ClearAbleCookieJar {
 
     companion object {
         val TAG: String = PersistentCookieJar::class.java.simpleName
     }
 
+    private val cache: CookieCache
+    private val persistor: CookiePersistor
+
     init {
+        cache = SetCookieCache()
+        persistor = SharedPrefsCookiePersistor(context)
+
         this.cache.addAll(persistor.loadAll())
     }
 

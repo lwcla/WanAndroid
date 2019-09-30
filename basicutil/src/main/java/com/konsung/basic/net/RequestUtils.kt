@@ -98,6 +98,10 @@ class RequestUtils private constructor() : HttpHelper {
         request.login(context, userName, passWord, result)
     }
 
+    override fun logout(context: Context, result: RequestResult<String>) {
+        request.logout(context, result)
+    }
+
     override fun unCollect(context: Context, id: Int, result: RequestResult<String>) {
         request.unCollect(context, id, result)
     }

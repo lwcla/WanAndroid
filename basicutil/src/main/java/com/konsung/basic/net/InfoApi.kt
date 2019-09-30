@@ -187,6 +187,15 @@ interface InfoApi {
     fun login(@Field("username") username: String, @Field("password") password: String): Call<BasicData<UserDto>>
 
     /**
+     * 退出登录
+     * https://www.wanandroid.com/user/logout/json
+     *
+     * @return 登录数据
+     */
+    @GET("user/logout/json")
+    fun logout(): Call<BasicData<String>>
+
+    /**
      * 取消收藏
      * https://www.wanandroid.com/lg/uncollect_originId/2333/json
      *

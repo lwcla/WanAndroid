@@ -117,6 +117,11 @@ interface HttpHelper {
     fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>)
 
     /**
+     * 退出登录
+     */
+    fun logout(context: Context, result: RequestResult<String>)
+
+    /**
      * 注册
      */
     fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>)
