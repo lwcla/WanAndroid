@@ -15,4 +15,5 @@
     <string name="please_input_link">请输入链接地址(必填)</string>
     <string name="title_is_null">标题不能为空</string>
     <string name="link_is_null">地址链接不能为空</string>
+    <string name="search_terms_are_separated_by_spaces">搜索关键词以空格形式隔开</string>
 </resources>

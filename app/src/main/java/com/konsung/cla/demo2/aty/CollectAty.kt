@@ -60,7 +60,7 @@ class CollectAty : HomeDataAty(), View.OnClickListener {
 
             override fun success(t: HomeData.DatasBean) {
                 dataAdapter?.addData(0, t)
-                refreshRv?.refreshDataAfterScrollTop()
+                refreshRv.refreshDataAfterScrollTop()
             }
         }
 

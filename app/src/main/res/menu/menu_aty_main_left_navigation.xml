@@ -12,9 +12,9 @@
         android:title="@string/my_collect" />
 
     <item
-        android:id="@+id/item3"
-        android:icon="@mipmap/ic_launcher_round"
-        android:title="功能列表3" />
+        android:id="@+id/add_link"
+        android:icon="@mipmap/add_link"
+        android:title="@string/add_collect" />
 
     <item
         android:id="@+id/item4"

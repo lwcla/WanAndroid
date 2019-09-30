@@ -29,6 +29,7 @@ import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
+import com.konsung.cla.demo2.dialog.LinkCollectDialog
 import com.konsung.cla.demo2.view.ViewPagerTitle
 import kotlinx.android.synthetic.main.activity_main.*
 import net.lucode.hackware.magicindicator.ViewPagerHelper
@@ -49,6 +50,8 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
     private var tvHeadName: TextView? = null
     private var lastBackTime = 0L
+
+    private var linkCollectDialog: LinkCollectDialog? = null
 
     override fun getLayoutId(): Int = R.layout.activity_main
 
@@ -95,6 +98,8 @@ open class MainActivity : BasicAty(), View.OnClickListener {
                 //收藏
                 R.id.menu_collect -> App.productUtils.startCollectAty(this)
 
+                R.id.add_link -> showLinkCollectDialog()
+
             }
 
 //            val title = item.title.toString()
@@ -107,6 +112,24 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
     override fun initData() {
         Debug.info(TAG, "MainActivity initData")
+    }
+
+    private fun showLinkCollectDialog() {
+
+        val tag = LinkCollectDialog.TAG
+
+        linkCollectDialog = supportFragmentManager.findFragmentByTag(tag) as LinkCollectDialog?
+
+        if (linkCollectDialog != null) {
+            supportFragmentManager.beginTransaction().remove(linkCollectDialog!!).commitAllowingStateLoss()
+        }
+
+        linkCollectDialog = null
+        linkCollectDialog = LinkCollectDialog()
+
+        if (!linkCollectDialog!!.isAdded) {
+            linkCollectDialog!!.show(supportFragmentManager, tag)
+        }
     }
 
     private fun initToolBar() {
