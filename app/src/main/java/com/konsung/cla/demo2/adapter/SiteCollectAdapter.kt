@@ -9,10 +9,11 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.util.StringUtils
-import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 
 class SiteCollectAdapter(private var dataList: List<SiteCollectBean>) : RecyclerView.Adapter<SiteCollectAdapter.SiteCollectViewHolder>() {
+
+    var editListener: EditListener? = null
 
     fun addData(t: SiteCollectBean) {
         val list = mutableListOf<SiteCollectBean>()
@@ -31,16 +32,16 @@ class SiteCollectAdapter(private var dataList: List<SiteCollectBean>) : Recycler
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val view = inflater.inflate(R.layout.adapter_site_collect, parent, false)
-        return SiteCollectViewHolder(context, view)
+        return SiteCollectViewHolder(context, view, editListener)
     }
 
     override fun getItemCount(): Int = dataList.size
 
     override fun onBindViewHolder(holder: SiteCollectViewHolder, position: Int) {
-        holder.bind(dataList[position])
+        holder.bind(dataList[position], position)
     }
 
-    class SiteCollectViewHolder(private val context: Context, itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class SiteCollectViewHolder(private val context: Context, itemView: View, editListener: EditListener?) : RecyclerView.ViewHolder(itemView) {
 
         companion object {
             val TAG: String = SiteCollectViewHolder::class.java.simpleName
@@ -51,11 +52,21 @@ class SiteCollectAdapter(private var dataList: List<SiteCollectBean>) : Recycler
         private val tvLink by lazy { itemView.findViewById<TextView>(R.id.tvLink) }
         private val imvStart by lazy { itemView.findViewById<ImageView>(R.id.imvStart) }
 
+        private var bean: SiteCollectBean? = null
+        private var index = -1
+
         init {
             StringUtils.instance.loadTextIcon(context, tvEdit)
 
             tvEdit.setOnClickListener {
-                context.toast(TAG, "编辑")
+                bean?.apply {
+
+                    if (id == null) {
+                        return@setOnClickListener
+                    }
+
+                    editListener?.edit(id!!, index)
+                }
             }
 
             imvStart.setOnClickListener {
@@ -63,10 +74,18 @@ class SiteCollectAdapter(private var dataList: List<SiteCollectBean>) : Recycler
             }
         }
 
-        fun bind(bean: SiteCollectBean) {
+
+        fun bind(bean: SiteCollectBean, position: Int) {
+            this.bean = bean
+            this.index = position
 
             tvName.text = StringUtils.instance.formHtml(bean.name)
             tvLink.text = bean.link
         }
     }
+}
+
+interface EditListener {
+
+    fun edit(id: Int, position: Int)
 }

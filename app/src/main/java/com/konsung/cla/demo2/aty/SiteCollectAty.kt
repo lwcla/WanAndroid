@@ -9,6 +9,7 @@ import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.ui.SpaceDecoration
 import com.konsung.basic.view.MultipleStatusView
 import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.adapter.EditListener
 import com.konsung.cla.demo2.adapter.SiteCollectAdapter
 import com.konsung.cla.demo2.dialog.SiteCollectDialog
 import com.konsung.cla.demo2.presenter.SiteCollectPresenter
@@ -61,6 +62,12 @@ class SiteCollectAty : BasicAty(), View.OnClickListener {
         if (siteCollectAdapter == null) {
 
             siteCollectAdapter = SiteCollectAdapter(list)
+            siteCollectAdapter?.editListener = object : EditListener {
+
+                override fun edit(id: Int, position: Int) {
+                    showSiteCollectDialog(id, position)
+                }
+            }
 
             refreshRv.apply {
                 setEnableLoadMore(false)
@@ -85,7 +92,7 @@ class SiteCollectAty : BasicAty(), View.OnClickListener {
         }
     }
 
-    private fun showSiteCollectDialog() {
+    private fun showSiteCollectDialog(id: Int = -1, position: Int = -1) {
 
         val tag = SiteCollectDialog.TAG
 
@@ -104,10 +111,14 @@ class SiteCollectAty : BasicAty(), View.OnClickListener {
                 siteCollectAdapter?.addData(t)
                 refreshRv?.refreshDataAfterScrollTop()
             }
+
+            override fun editSuccess(t: SiteCollectBean, position: Int) {
+
+            }
         }
 
         if (!siteCollectDialog!!.isAdded) {
-            siteCollectDialog!!.show(supportFragmentManager, tag)
+            siteCollectDialog!!.show(supportFragmentManager, tag, id, position)
         }
 
     }

@@ -17,10 +17,14 @@
     <string name="my_collect">我的收藏</string>
     <string name="cancel_collect">取消收藏</string>
     <string name="collect_success">收藏成功</string>
+    <string name="edit_success">编辑成功</string>
+    <string name="delete_success">删除成功</string>
     <string name="collect_after_login">请先登录后再收藏</string>
     <string name="cancel_collect_success">已经取消收藏</string>
     <string name="cancel_collect_failed">取消收藏失败</string>
     <string name="collect_failed" tools:ignore="ExtraTranslation">收藏失败</string>
+    <string name="edit_failed" tools:ignore="ExtraTranslation">编辑失败</string>
+    <string name="delete_failed" tools:ignore="ExtraTranslation">删除失败</string>
     <string name="copy_link">复制链接</string>
     <string name="open_in_browser">浏览器打开</string>
     <string name="qq">QQ</string>
@@ -55,6 +59,7 @@
     <string name="fragment_list_is_null">页面数据集合为空</string>
     <string name="click_position_is_error">点击位置出错</string>
     <string name="data_list_is_null">获取的数据集合为空</string>
+    <string name="id_is_error">没有拿到正确的数据id</string>
     <string name="image_url_is_null">图片地址为空</string>
     <string name="key_is_null">传过来的关键字为空</string>
     <string name="wx_id_is_null">传过来的微信公众号id为空</string>

@@ -14,9 +14,6 @@ interface InfoApi {
     /**
      * 收藏网址
      * https://www.wanandroid.com/lg/collect/addtool/json
-     *
-     * @param id article id
-     * @return 收藏站内文章数据
      */
     @POST("lg/collect/addtool/json")
     fun addSite(@Query("name") name: String, @Query("link") link: String): Call<BasicData<SiteCollectBean>>
@@ -39,6 +36,13 @@ interface InfoApi {
      */
     @POST("lg/collect/add/json")
     fun collectLink(@Query("title") title: String, @Query("author") author: String, @Query("link") link: String): Call<BasicData<HomeData.DatasBean>>
+
+    /**
+     * 编辑收藏网站
+     * https://www.wanandroid.com/lg/collect/updatetool/json
+     */
+    @POST("lg/collect/updatetool/json")
+    fun editSite(@Query("id") id: Int, @Query("name") name: String, @Query("link") link: String): Call<BasicData<SiteCollectBean>>
 
     /**
      * 收藏文章列表

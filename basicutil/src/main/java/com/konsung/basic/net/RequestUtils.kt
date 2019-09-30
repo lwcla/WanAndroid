@@ -31,6 +31,10 @@ class RequestUtils private constructor() : HttpHelper {
         request.collectLink(context, title, author, link, result)
     }
 
+    override fun editSite(context: Context, id: Int, name: String, link: String, result: RequestResult<SiteCollectBean>) {
+        request.editSite(context, id, name, link, result)
+    }
+
     override fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>) {
         request.fetchCollectList(context, page, result)
     }

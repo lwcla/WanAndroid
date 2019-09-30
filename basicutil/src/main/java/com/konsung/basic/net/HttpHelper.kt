@@ -38,6 +38,11 @@ interface HttpHelper {
     fun collectLink(context: Context, title: String, author: String, link: String, result: RequestResult<HomeData.DatasBean>)
 
     /**
+     * 编辑收藏的网站
+     */
+    fun editSite(context: Context, id: Int, name: String, link: String, result: RequestResult<SiteCollectBean>)
+
+    /**
      * 我的收藏列表
      */
     fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>)

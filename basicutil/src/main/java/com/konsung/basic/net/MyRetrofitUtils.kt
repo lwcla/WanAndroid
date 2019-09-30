@@ -102,6 +102,12 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
+    fun editSite(context: Context, id: Int, name: String, link: String, result: RequestResult<SiteCollectBean>) {
+        getRetrofit()
+                .editSite(id, name, link)
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>) {
         getRetrofit()
                 .fetchCollectList(page)
