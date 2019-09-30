@@ -8,6 +8,7 @@ import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
+import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.config.RequestResult
 
@@ -20,6 +21,11 @@ class HttpHelperImpl {
 }
 
 interface HttpHelper {
+
+    /**
+     * 网址收藏
+     */
+    fun addSite(context: Context, name: String, link: String, result: RequestResult<SiteCollectBean>)
 
     /**
      * 收藏
@@ -60,6 +66,11 @@ interface HttpHelper {
      * 搜索
      */
     fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<HomeData>)
+
+    /**
+     * 收藏网站列表
+     */
+    fun fetchCollectSiteList(context: Context, result: RequestResult<List<SiteCollectBean>>)
 
     /**
      * 在某个公众号中搜索历史文章

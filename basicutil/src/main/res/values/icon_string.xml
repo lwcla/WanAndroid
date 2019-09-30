@@ -49,4 +49,6 @@
     <string name="icon_delete" tools:ignore="ExtraTranslation">&#xe673;</string>
     <!--筛选-->
     <string name="icon_filter" tools:ignore="ExtraTranslation">&#xe635;</string>
+    <!--编辑-->
+    <string name="icon_edit" tools:ignore="ExtraTranslation">&#xe61c;</string>
 </resources>

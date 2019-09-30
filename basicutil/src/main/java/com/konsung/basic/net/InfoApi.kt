@@ -4,11 +4,23 @@ import com.konsung.basic.bean.*
 import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
+import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import retrofit2.Call
 import retrofit2.http.*
 
 interface InfoApi {
+
+    /**
+     * 收藏网址
+     * https://www.wanandroid.com/lg/collect/addtool/json
+     *
+     * @param id article id
+     * @return 收藏站内文章数据
+     */
+    @POST("lg/collect/addtool/json")
+    fun addSite(@Query("name") name: String, @Query("link") link: String): Call<BasicData<SiteCollectBean>>
+
     /**
      * 收藏站内文章
      * https://www.wanandroid.com/lg/collect/1165/json
@@ -90,11 +102,11 @@ interface InfoApi {
     fun fetchSearchResult(@Path("page") page: Int, @Query("k") key: String): Call<BasicData<HomeData>>
 
     /**
-     * 在某个公众号中搜索历史文章
-     * https://wanandroid.com/wxarticle/list/405/1/json?k=Java
+     * 收藏网站列表
+     * https://www.wanandroid.com/lg/collect/usertools/json
      */
-    @GET("wxarticle/list/{id}/{page}/json")
-    fun fetchWxSearchResult(@Path("id") id: Int, @Path("page") page: Int, @Query("k") key: String): Call<BasicData<HomeData>>
+    @GET("lg/collect/usertools/json")
+    fun fetchCollectSiteList(): Call<BasicData<List<SiteCollectBean>>>
 
     /**
      * 知识体系下的文章
@@ -119,6 +131,13 @@ interface InfoApi {
      */
     @GET("wxarticle/list/{id}/{page}/json")
     fun fetchWxArticleDetail(@Path("id") cId: Int, @Path("page") page: Int): Call<BasicData<HomeData>>
+
+    /**
+     * 在某个公众号中搜索历史文章
+     * https://wanandroid.com/wxarticle/list/405/1/json?k=Java
+     */
+    @GET("wxarticle/list/{id}/{page}/json")
+    fun fetchWxSearchResult(@Path("id") id: Int, @Path("page") page: Int, @Query("k") key: String): Call<BasicData<HomeData>>
 
     /**
      * 广告栏

@@ -6,6 +6,7 @@ import com.konsung.basic.bean.*
 import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
+import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.config.NoNetworkException
@@ -83,6 +84,12 @@ class MyRetrofitUtils private constructor() {
         return retrofit.create(InfoApi::class.java)
     }
 
+    fun addSite(context: Context, name: String, link: String, result: RequestResult<SiteCollectBean>) {
+        getRetrofit()
+                .addSite(name, link)
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun collect(context: Context, id: Int, result: RequestResult<String>) {
         getRetrofit()
                 .collect(id)
@@ -140,6 +147,12 @@ class MyRetrofitUtils private constructor() {
     fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<HomeData>) {
         getRetrofit()
                 .fetchSearchResult(page, key)
+                .enqueue(CallInterceptor(context, result))
+    }
+
+    fun fetchCollectSiteList(context: Context, result: RequestResult<List<SiteCollectBean>>) {
+        getRetrofit()
+                .fetchCollectSiteList()
                 .enqueue(CallInterceptor(context, result))
     }
 

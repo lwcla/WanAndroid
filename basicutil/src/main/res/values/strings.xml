@@ -46,6 +46,7 @@
     <string name="pass_word2_can_not_be_empty">确认密码不能为空</string>
     <string name="inconsistent_password_input">密码输入不一致</string>
     <string name="loading_please_wait">加载中，请稍等</string>
+    <string name="submit_please_wait">数据提交中，请稍等</string>
     <string name="login_please_wait">登录中，请稍等</string>
     <string name="press_again_to_exit_the_application">再按一次退出应用</string>
     <string name="tag_placed_at_the_top">置顶</string>
@@ -59,6 +60,7 @@
     <string name="wx_id_is_null">传过来的微信公众号id为空</string>
     <string name="author">作者：</string>
     <string name="date">时间：</string>
+    <string name="create_date">创建时间：</string>
     <string name="search" tools:ignore="ExtraTranslation">搜索</string>
     <string name="search_all">全局搜索</string>
     <string name="search_content">搜索内容</string>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_50"
+            android:background="@color/red"
+            android:gravity="center_vertical"
+            android:minHeight="?attr/actionBarSize"
+            app:layout_scrollFlags="scroll|enterAlways">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_20"
+                tools:ignore="RtlSymmetry">
+
+                <TextView
+                    android:id="@+id/tvTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/site_collect"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_17" />
+
+                <TextView
+                    android:id="@+id/tvAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text="@string/add_new"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_17" />
+            </RelativeLayout>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <com.konsung.basic.view.MultipleStatusView
+        android:id="@+id/multiplyStatusView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:contentView="@layout/view_fresh_rv"
+        app:emptyView="@layout/view_custom_empty"
+        app:errorView="@layout/view_custom_error"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:loadingView="@layout/view_custom_loading"
+        app:noNetworkView="@layout/view_custom_no_network" />
+
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/dp_20"
+        android:src="@mipmap/scroll_to_top"
+        app:fab_colorNormal="@color/white"
+        app:fab_colorPressed="@color/white"
+        app:fab_colorRipple="@color/normal_color_13" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

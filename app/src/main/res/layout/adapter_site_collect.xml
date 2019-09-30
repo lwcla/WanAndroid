@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/DataShowCardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginEnd="@dimen/dp_20">
+
+        <TextView
+            android:id="@+id/tvName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_25"
+            android:ellipsize="end"
+            android:lines="1"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_17"
+            android:textStyle="bold"
+            tools:text="icons8-屏幕共享-80.png" />
+
+        <TextView
+            android:id="@+id/tvLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvName"
+            android:layout_marginTop="@dimen/dp_10"
+            android:textColor="@color/value_default"
+            android:textSize="@dimen/sp_15"
+            tools:text="http://192.168.0.3:89/zentao/project-task-351.html" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvLink"
+            android:layout_marginTop="@dimen/dp_20"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvLine"
+                android:layout_width="match_parent"
+                android:layout_height="0.1dp"
+                android:background="@color/black" />
+
+            <ImageView
+                android:id="@+id/imvStart"
+                android:layout_width="@dimen/dp_55"
+                android:layout_height="@dimen/dp_36"
+                android:layout_alignParentEnd="true"
+                android:paddingStart="@dimen/dp_25"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingEnd="@dimen/dp_5"
+                android:paddingBottom="@dimen/dp_8"
+                android:src="@mipmap/start"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tvEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tvLine"
+                android:layout_centerVertical="true"
+                android:paddingEnd="@dimen/dp_20"
+                android:layout_toStartOf="@id/imvStart"
+                android:paddingStart="@dimen/dp_30"
+                android:paddingTop="@dimen/dp_8"
+                android:paddingBottom="@dimen/dp_8"
+                android:text="@string/icon_edit"
+                android:textColor="@color/color_text_cancel"
+                android:textSize="@dimen/sp_16"
+                tools:ignore="RtlSymmetry" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

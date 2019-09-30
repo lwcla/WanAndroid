@@ -8,6 +8,7 @@ import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
+import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.config.RequestResult
 
@@ -17,6 +18,10 @@ class RequestUtils private constructor() : HttpHelper {
     }
 
     private val request = MyRetrofitUtils.instance
+
+    override fun addSite(context: Context, name: String, link: String, result: RequestResult<SiteCollectBean>) {
+        request.addSite(context, name, link, result)
+    }
 
     override fun collect(context: Context, id: Int, result: RequestResult<String>) {
         request.collect(context, id, result)
@@ -52,6 +57,10 @@ class RequestUtils private constructor() : HttpHelper {
 
     override fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<HomeData>) {
         request.fetchSearchResult(context, page, key, result)
+    }
+
+    override fun fetchCollectSiteList(context: Context, result: RequestResult<List<SiteCollectBean>>) {
+        request.fetchCollectSiteList(context, result)
     }
 
     override fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<HomeData>) {

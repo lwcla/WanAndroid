@@ -141,7 +141,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
-            android:text="@string/loading_please_wait" />
+            android:text="@string/submit_please_wait" />
     </LinearLayout>
 
 </RelativeLayout>

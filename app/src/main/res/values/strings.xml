@@ -8,8 +8,10 @@
     <string name="system">体系</string>
     <string name="navigation">导航</string>
     <string name="my_collect">我的收藏</string>
-    <string name="add_collect">添加收藏</string>
+    <string name="add_collect">收藏站外文章</string>
+    <string name="site_collect">网站收藏</string>
     <string name="add_new_collect">新增收藏</string>
+    <string name="add_new">新增</string>
     <string name="please_input_title">请输入标题(必填)</string>
     <string name="please_input_author">请输入作者</string>
     <string name="please_input_link">请输入链接地址(必填)</string>

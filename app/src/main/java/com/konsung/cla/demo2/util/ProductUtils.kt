@@ -78,6 +78,14 @@ open class ProductUtils {
         startScreenImageAty(activity, data)
     }
 
+    open fun startSiteCollectAty(context: Context?) {
+        context?.let {
+            val intent = Intent()
+            intent.setClass(it, SiteCollectAty::class.java)
+            it.startActivity(intent)
+        }
+    }
+
     open fun startSystemTreeDetailAty(activity: Activity?, view: View, title: SystemTreeTitle) {
         activity?.let {
             val intent = Intent()

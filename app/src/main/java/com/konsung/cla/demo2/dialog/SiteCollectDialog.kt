@@ -10,70 +10,63 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
-import com.konsung.basic.bean.HomeData
-import com.konsung.basic.presenter.CollectLinkPresenter
-import com.konsung.basic.presenter.CollectLinkView
+import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.ui.UiView
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.presenter.AddSiteCollectPresenter
+import com.konsung.cla.demo2.presenter.AddSiteCollectView
 
-class LinkCollectDialog : DialogFragment(), UiView {
+class SiteCollectDialog : DialogFragment(), UiView {
 
     companion object {
-        val TAG: String = LinkCollectDialog::class.java.simpleName
+        val TAG: String = SiteCollectDialog::class.java.simpleName
     }
 
-    private val collectPresenter by lazy { initCollectPresenter() }
-
-    private var llInput: LinearLayout? = null
+    private var llContent: LinearLayout? = null
     private var llLoading: LinearLayout? = null
 
-    var collectLinkSuccess: CollectLinkSuccess? = null
+    private val siteCollectPresenter2 by lazy { initSiteCollectPresenter2() }
+
+    var siteCollectResult: SiteCollectResult? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+
         dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         isCancelable = false
 
-        val view = inflater.inflate(R.layout.dialog_link_collect, container, false)
-
-        llInput = view.findViewById<LinearLayout>(R.id.llInput)
-        llLoading = view.findViewById<LinearLayout>(R.id.llLoading)
-
-        llInput?.visibility = View.VISIBLE
-        llLoading?.visibility = View.GONE
-
-        val etTitle = view.findViewById<TextInputEditText>(R.id.etTitle)
-        val etAuthor = view.findViewById<TextInputEditText>(R.id.etAuthor)
-        val etLink = view.findViewById<TextInputEditText>(R.id.etLink)
-        val tvCancel = view.findViewById<TextView>(R.id.tvCancel)
+        val view = inflater.inflate(R.layout.dialog_site_collect, container, false)
         val tvSure = view.findViewById<TextView>(R.id.tvSure)
-
-        tvCancel.setOnClickListener {
-            dismissAllowingStateLoss()
-        }
+        val tvCancel = view.findViewById<TextView>(R.id.tvCancel)
+        val etTitle = view.findViewById<TextInputEditText>(R.id.etTitle)
+        val etLink = view.findViewById<TextInputEditText>(R.id.etLink)
+        llContent = view.findViewById<LinearLayout>(R.id.llContent)
+        llLoading = view.findViewById<LinearLayout>(R.id.llLoading)
 
         tvSure.setOnClickListener {
 
             val title = etTitle.text.toString()
             if (title.isEmpty()) {
-                etTitle.requestFocus()
                 toast(TAG, R.string.title_is_null)
+                etTitle.requestFocus()
                 return@setOnClickListener
             }
 
             val link = etLink.text.toString()
             if (link.isEmpty()) {
-                etLink.requestFocus()
                 toast(TAG, R.string.link_is_null)
+                etLink.requestFocus()
                 return@setOnClickListener
             }
 
-
-            llInput?.visibility = View.INVISIBLE
+            llContent?.visibility = View.INVISIBLE
             llLoading?.visibility = View.VISIBLE
 
-            val author = etAuthor.text.toString()
-            collectPresenter.collectLink(title, author, link)
+            siteCollectPresenter2.addSite(title, link)
+        }
+
+        tvCancel.setOnClickListener {
+            dismissAllowingStateLoss()
         }
 
         return view
@@ -81,25 +74,25 @@ class LinkCollectDialog : DialogFragment(), UiView {
 
     override fun onDestroy() {
         super.onDestroy()
-        collectPresenter.destroy()
+        siteCollectPresenter2.destroy()
     }
 
-    private fun initCollectPresenter(): CollectLinkPresenter {
+    private fun initSiteCollectPresenter2(): AddSiteCollectPresenter {
 
-        val view = object : CollectLinkView() {
+        val view = object : AddSiteCollectView() {
 
-            override fun success(t: HomeData.DatasBean, refreshData: Boolean) {
-                collectLinkSuccess?.success(t)
+            override fun success(t: SiteCollectBean, refreshData: Boolean) {
+                siteCollectResult?.addSuccess(t)
                 dismissAllowingStateLoss()
             }
 
             override fun failed(string: String) {
-                llInput?.visibility = View.VISIBLE
+                llContent?.visibility = View.VISIBLE
                 llLoading?.visibility = View.GONE
             }
         }
 
-        return CollectLinkPresenter(this, view)
+        return AddSiteCollectPresenter(this, view)
     }
 
     override fun getUiContext(): Context? = context
@@ -128,7 +121,7 @@ class LinkCollectDialog : DialogFragment(), UiView {
 
     }
 
-    interface CollectLinkSuccess {
-        fun success(t: HomeData.DatasBean)
+    interface SiteCollectResult {
+        fun addSuccess(t: SiteCollectBean)
     }
 }

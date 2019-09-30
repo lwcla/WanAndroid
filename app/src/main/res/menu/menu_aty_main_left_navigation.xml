@@ -17,14 +17,15 @@
         android:title="@string/add_collect" />
 
     <item
+        android:id="@+id/site_collect"
+        android:icon="@mipmap/site"
+        android:title="@string/site_collect" />
+
+    <item
         android:id="@+id/logout"
         android:icon="@mipmap/logout"
         android:title="@string/logout" />
 
-    <item
-        android:id="@+id/item5"
-        android:icon="@mipmap/ic_launcher_round"
-        android:title="功能列表5" />
 
     <item android:title="Sub items">
         <menu>

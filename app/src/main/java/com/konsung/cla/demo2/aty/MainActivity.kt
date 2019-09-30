@@ -66,7 +66,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
     override fun onResume() {
         super.onResume()
         resetUserName()
-        showLogoutView()
     }
 
     override fun onDestroy() {
@@ -99,11 +98,13 @@ open class MainActivity : BasicAty(), View.OnClickListener {
             when (item.itemId) {
                 //搜索
                 R.id.menu_search -> App.productUtils.startSearchAty(this)
-                //收藏
+                //收藏列表
                 R.id.menu_collect -> App.productUtils.startCollectAty(this)
-
+                //添加站外文章收藏
                 R.id.add_link -> showLinkCollectDialog()
-
+                //网站收藏
+                R.id.site_collect -> App.productUtils.startSiteCollectAty(this)
+                //退出登录
                 R.id.logout -> logoutPresenter.logout()
             }
 
@@ -190,7 +191,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         rlHead.setOnClickListener(this)
 
         tvHeadName = headView.findViewById<TextView>(R.id.tvInfo)
-        showLogoutView()
     }
 
     private fun initLogoutPresenter(): LogoutPresenter {
@@ -198,9 +198,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         val view = object : LogoutView() {
 
             override fun success(refreshData: Boolean) {
-                val userName = SpUtils.getString(context, BaseConfig.USER_NAME, "")
-                resetUserName(userName)
-                showLogoutView(userName)
+                resetUserName()
             }
         }
 
@@ -288,27 +286,8 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 //        viewPager.offscreenPageLimit = 3
     }
 
-    /**
-     * 是否显示退出登录按钮
-     */
-    private fun showLogoutView(userName: String? = null) {
-
-        /* val name: String? = if (userName.isNullOrEmpty()) {
-             SpUtils.getString(context, BaseConfig.USER_NAME, "")
-         } else {
-             userName
-         }
-
-         nvLeft.menu.findItem(R.id.logout).isVisible = !name.isNullOrEmpty()*/
-    }
-
-    private fun resetUserName(userName: String? = null) {
-
-        val name = if (userName.isNullOrEmpty()) {
-            SpUtils.getString(context, BaseConfig.USER_NAME, "")
-        } else {
-            userName
-        }
+    private fun resetUserName() {
+        val name = SpUtils.getString(context, BaseConfig.USER_NAME, "")
 
         if (name.isNullOrEmpty()) {
             tvHeadName?.text = getString(R.string.not_log_in)
