@@ -13,6 +13,8 @@ import com.google.android.material.textfield.TextInputLayout
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.dialog.BasicDialog
+import com.konsung.basic.presenter.LogoutPresenter
+import com.konsung.basic.presenter.LogoutView
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.HeightView
@@ -40,12 +42,29 @@ class LoginAty : BasicAty(), View.OnClickListener {
     private val heightView by lazy { HeightView(tilPassWord2) }
     private val registerPresenter by lazy { initRegisterPresenter() }
     private val loginPresenter by lazy { initLoginPresenter() }
+    private val logoutPresenter by lazy { initLogoutPresenter() }
+
+    private var animatorSet: AnimatorSet? = null
 
     override fun getLayoutId(): Int = R.layout.activity_login
-    private var animatorSet: AnimatorSet? = null
+
+    override fun initPresenter(): List<BasicPresenter>? {
+        return listOf(registerPresenter, loginPresenter, logoutPresenter)
+    }
 
     override fun initView() {
         initBg()
+
+        val userName = SpUtils.getString(context, BaseConfig.USER_NAME, "")
+        if (userName.isNullOrEmpty()) {
+            llLogout.visibility = View.GONE
+            llLogin.visibility = View.VISIBLE
+        } else {
+            tvUserName.text = userName
+            llLogout.visibility = View.VISIBLE
+            llLogin.visibility = View.GONE
+        }
+
         setSupportActionBar(toolbar)//利用Toolbar代替ActionBar
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
@@ -56,14 +75,11 @@ class LoginAty : BasicAty(), View.OnClickListener {
         imvBg.setOnClickListener(this)
         rlRegister.setOnClickListener(this)
         cardViewLogin.setOnClickListener(this)
+        cardViewLogout.setOnClickListener(this)
     }
 
     override fun initData() {
 
-    }
-
-    override fun initPresenter(): List<BasicPresenter>? {
-        return listOf(registerPresenter, loginPresenter)
     }
 
     /**
@@ -268,7 +284,7 @@ class LoginAty : BasicAty(), View.OnClickListener {
                 toast(TAG, R.string.login_success)
                 SpUtils.putString(context, BaseConfig.USER_NAME, t.username)
 //                App.productUtils.startMainAty(context)
-                finish()
+                finishAfterTransition()
             }
 
             override fun failed(string: String) {
@@ -288,6 +304,19 @@ class LoginAty : BasicAty(), View.OnClickListener {
         return LoginPresenter(this, view)
     }
 
+    private fun initLogoutPresenter(): LogoutPresenter {
+
+        val view = object : LogoutView() {
+
+            override fun success(refreshData: Boolean) {
+                llLogout.visibility = View.GONE
+                llLogin.visibility = View.VISIBLE
+            }
+        }
+
+        return LogoutPresenter(this, view)
+    }
+
     override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
         //弹窗被手动关闭，取消登录
         loginPresenter.stop()
@@ -298,6 +327,8 @@ class LoginAty : BasicAty(), View.OnClickListener {
             R.id.imvBg -> hideSoftKeyboard(this)
 
             R.id.rlRegister -> showRegister(tilPassWord2.visibility != View.GONE)
+
+            R.id.cardViewLogout -> logoutPresenter.logout()
 
             R.id.cardViewLogin -> {
                 resetEditStatus()
