@@ -19,7 +19,7 @@ class HomeFragment : HomeDataFragment() {
         needDelayInitView = false
     }
 
-    private lateinit var headView: BannerHeadView
+    private var headView: BannerHeadView? = null
 
     private val loadBanner by lazy { initLoadBanner() }
     private val loadHomeData by lazy { HomeDataPresenter(this, homeView) }
@@ -38,7 +38,7 @@ class HomeFragment : HomeDataFragment() {
 
     override fun initEvent() {
         super.initEvent()
-        headView.onBannerItemClickListener = object : BannerHeadView.OnBannerItemClickListener {
+        headView?.onBannerItemClickListener = object : BannerHeadView.OnBannerItemClickListener {
             override fun click(data: BannerData) {
                 context?.let {
                     AppUtils.startWebAty(it, title = data.title, link = data.url, artId = data.id, dataPosition = 0, collect = false, needCollect = false)
@@ -67,9 +67,9 @@ class HomeFragment : HomeDataFragment() {
 
                     //banner是否显示
                     if (position == 0) {
-                        headView.startPlay()
+                        headView?.startPlay()
                     } else {
-                        headView.stopAutoPlay()
+                        headView?.stopAutoPlay()
                     }
                 }
             })
@@ -85,12 +85,12 @@ class HomeFragment : HomeDataFragment() {
 
 
     override fun show() {
-        headView.startPlay()
+        headView?.startPlay()
     }
 
     override fun leave() {
         //停止轮播
-        headView.stopAutoPlay()
+        headView?.stopAutoPlay()
     }
 
 
@@ -103,11 +103,11 @@ class HomeFragment : HomeDataFragment() {
         val view = object : LoadBannerView() {
 
             override fun success(t: List<BannerData>, refreshData: Boolean) {
-                headView.setData(t, resume)
+                headView?.setData(t, resume)
             }
 
             override fun failed(string: String) {
-                headView.error()
+                headView?.error()
             }
         }
 
@@ -118,7 +118,7 @@ class HomeFragment : HomeDataFragment() {
      *刷新数据
      */
     override fun resetData() {
-        if (!headView.loadSuccess) {
+        if (headView?.loadSuccess != true) {
             loadBanner.load()
         }
 

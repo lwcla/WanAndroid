@@ -29,7 +29,6 @@ class SiteCollectAty : BasicAty(), View.OnClickListener {
     private var siteCollectAdapter: SiteCollectAdapter? = null
     private var siteCollectDialog: SiteCollectDialog? = null
 
-
     override fun getLayoutId(): Int = R.layout.activity_site_collect
 
     override fun initPresenter(): List<BasicPresenter>? = listOf(siteCollectPresenter)

@@ -52,7 +52,7 @@ class ScreenImageAty : BasicAty() {
             return
         }
 
-        val adapter = ScreenImageAdapter(this, data.urls, View.OnClickListener { finish() })
+        val adapter = ScreenImageAdapter(this, data.urls, View.OnClickListener { finishAfterTransition() })
         adapter.longClickListener = View.OnLongClickListener { true }
 
         viewPager.adapter = adapter
