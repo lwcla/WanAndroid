@@ -103,7 +103,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
                     if (!AppUtils.instance.hasLogined(context)) {
                         //还没有登录，打开登录界面
-                        toast(BaseConfig.TAG, R.string.collect_after_login)
+                        toast(TAG, R.string.please_login_first)
                         AppUtils.startLoginAty(context)
                         return@setNavigationItemSelectedListener true
                     }

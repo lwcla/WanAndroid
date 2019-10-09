@@ -20,6 +20,7 @@
     <string name="edit_success">编辑成功</string>
     <string name="delete_success">删除成功</string>
     <string name="collect_after_login">请先登录后再收藏</string>
+    <string name="please_login_first">还未登录，请登录后操作</string>
     <string name="cancel_collect_success">已经取消收藏</string>
     <string name="cancel_collect_failed">取消收藏失败</string>
     <string name="collect_failed" tools:ignore="ExtraTranslation">收藏失败</string>

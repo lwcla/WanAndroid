@@ -306,7 +306,15 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
         }
 
         if (data.errorCode != 0) {
-            failed(data.errorMsg ?: context.getString(R.string.data_request_error))
+
+            val info: String? = if (data.errorCode == -1001) {
+                //未登录
+                context.getString(R.string.please_login_first)
+            } else {
+                data.errorMsg
+            }
+
+            failed(info ?: context.getString(R.string.data_request_error))
             return
         }
 

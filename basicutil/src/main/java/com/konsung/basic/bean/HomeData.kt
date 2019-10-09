@@ -196,6 +196,7 @@ class HomeData {
         var id: Int = 0
         var link: String? = null
         var niceDate: String? = null
+        var niceShareDate: String? = null
         var origin: String? = null
         var originId: Int = -1
         var prefix: String? = null
@@ -208,6 +209,8 @@ class HomeData {
         var userId: Int = 0
         var visible: Int = 0
         var zan: Int = 0
+        var shareDate: Long? = 0
+        var shareUser: String? = null
         var tags: List<TagsBean>? = null
 
         class TagsBean {

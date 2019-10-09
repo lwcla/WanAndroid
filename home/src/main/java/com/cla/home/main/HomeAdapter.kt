@@ -22,9 +22,25 @@ class HomeAdapter(context: Context, data: List<HomeData.DatasBean>) : BasicDataQ
 
     override fun convert(helper: BaseViewHolder, item: HomeData.DatasBean?) {
         item?.apply {
-            helper.setText(R.id.tvTitle, StringUtils.instance.formHtml(title))
-                    .setText(R.id.tvAuthor, author)
-                    .setText(R.id.tvChapter, "$superChapterName/$chapterName")
+
+            //作者
+            val user = if (author.isNullOrEmpty()) {
+                shareUser
+            } else {
+                author
+            }
+
+            //分类
+            val chapter = if (superChapterName.isNullOrEmpty()) {
+                chapterName
+            } else {
+                "$superChapterName/$chapterName"
+            }
+
+            helper
+                    .setText(R.id.tvTitle, StringUtils.instance.formHtml(title))
+                    .setText(R.id.tvAuthor, user)
+                    .setText(R.id.tvChapter, chapter)
                     .setText(R.id.tvTime, DateUtils.fromToday(publishTime))
                     .setText(R.id.tvNiceNum, "$zan  ${context.getString(R.string.agree)}")
                     .addOnClickListener(R.id.imvEnvelopePic, R.id.imvStart)
@@ -36,6 +52,7 @@ class HomeAdapter(context: Context, data: List<HomeData.DatasBean>) : BasicDataQ
                    R.mipmap.nice
                })*/
 
+            //收藏状态
             setCollectStatus(helper, collect)
 
             val tvDesc = helper.getView<TextView>(R.id.tvDesc)
