@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -21,6 +22,8 @@ abstract class BasicDialog : DialogFragment() {
     protected var clickCancel = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        dialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+
         rootView = inflater.inflate(getLayoutId(), container, false)
         isCancelable = cancel
         initView(rootView!!)

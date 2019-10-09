@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:clickable="false"
     android:focusable="false"
     android:focusableInTouchMode="false"
     android:gravity="center"
     android:orientation="vertical"
     android:paddingStart="@dimen/dp_25"
-    android:paddingEnd="@dimen/dp_15"
-    >
+    android:paddingEnd="@dimen/dp_15">
 
     <com.wang.avi.AVLoadingIndicatorView
         android:id="@+id/AVLoadingIndicatorView2"
@@ -32,8 +31,7 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        />
+        app:layout_constraintVertical_bias="0.2" />
 
     <TextView
         android:id="@+id/tvTitle"
@@ -51,8 +49,7 @@
         app:layout_constraintHorizontal_bias="0.1"
         app:layout_constraintStart_toEndOf="@+id/AVLoadingIndicatorView2"
         app:layout_constraintTop_toTopOf="@+id/AVLoadingIndicatorView2"
-        tools:text="登录中"
-        />
+        tools:text="登录中" />
 
     <TextView
         android:id="@+id/tvCancel"
@@ -74,7 +71,6 @@
         app:layout_constraintHorizontal_bias="1"
         app:layout_constraintStart_toEndOf="@+id/tvTitle"
         app:layout_constraintTop_toBottomOf="@+id/AVLoadingIndicatorView2"
-        app:layout_constraintVertical_bias="0.0"
-        />
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
