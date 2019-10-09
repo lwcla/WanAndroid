@@ -24,10 +24,7 @@ import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
 import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.FragmentRefresh
-import com.konsung.basic.util.Debug
-import com.konsung.basic.util.SpUtils
-import com.konsung.basic.util.StringUtils
-import com.konsung.basic.util.toast
+import com.konsung.basic.util.*
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.MyFragmentPagerAdapter
@@ -98,14 +95,28 @@ open class MainActivity : BasicAty(), View.OnClickListener {
             when (item.itemId) {
                 //搜索
                 R.id.menu_search -> App.productUtils.startSearchAty(this)
-                //收藏列表
-                R.id.menu_collect -> App.productUtils.startCollectAty(this)
-                //添加站外文章收藏
-                R.id.add_link -> showLinkCollectDialog()
-                //网站收藏
-                R.id.site_collect -> App.productUtils.startSiteCollectAty(this)
                 //退出登录
                 R.id.logout -> logoutPresenter.logout()
+
+                //收藏列表
+                R.id.menu_collect, R.id.add_link, R.id.site_collect -> {
+
+                    if (!AppUtils.instance.hasLogined(context)) {
+                        //还没有登录，打开登录界面
+                        toast(BaseConfig.TAG, R.string.collect_after_login)
+                        AppUtils.startLoginAty(context)
+                        return@setNavigationItemSelectedListener true
+                    }
+
+                    when (item.itemId) {
+                        //收藏列表
+                        R.id.menu_collect -> App.productUtils.startCollectAty(this)
+                        //添加站外文章收藏
+                        R.id.add_link -> showLinkCollectDialog()
+                        //网站收藏
+                        R.id.site_collect -> App.productUtils.startSiteCollectAty(this)
+                    }
+                }
             }
 
 //            val title = item.title.toString()
