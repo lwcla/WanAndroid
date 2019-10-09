@@ -63,6 +63,10 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchSearchResult(context, page, key, result)
     }
 
+    override fun fetchSearchResultByAuthor(context: Context, page: Int, author: String, result: RequestResult<HomeData>) {
+        request.fetchSearchResultByAuthor(context, page, author, result)
+    }
+
     override fun fetchCollectSiteList(context: Context, result: RequestResult<List<SiteCollectBean>>) {
         request.fetchCollectSiteList(context, result)
     }

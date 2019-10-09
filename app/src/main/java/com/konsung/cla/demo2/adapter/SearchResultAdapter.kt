@@ -19,9 +19,24 @@ class SearchResultAdapter(context: Context, data: List<HomeData.DatasBean>) : Ba
 
     override fun convert(helper: BaseViewHolder, item: HomeData.DatasBean?) {
         item?.apply {
+
+            //作者
+            val user = if (author.isNullOrEmpty()) {
+                shareUser
+            } else {
+                author
+            }
+
+            //分类
+            val chapter = if (superChapterName.isNullOrEmpty()) {
+                chapterName
+            } else {
+                "$superChapterName/$chapterName"
+            }
+
             helper.setText(R.id.tvTitle, StringUtils.instance.formHtml(title))
-                    .setText(R.id.tvAuthor, author)
-                    .setText(R.id.tvChapter, "$superChapterName/$chapterName")
+                    .setText(R.id.tvAuthor, user)
+                    .setText(R.id.tvChapter, chapter)
                     .setText(R.id.tvTime, niceDate)
                     .addOnClickListener(R.id.imvStart)
 

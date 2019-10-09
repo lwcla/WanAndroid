@@ -28,5 +28,4 @@ class WxArticleTitleAdapter(private val context: Context, dataList: List<Project
             }
         }
     }
-
 }

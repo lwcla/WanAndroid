@@ -235,16 +235,10 @@ class SearchAty : BasicAty(), View.OnClickListener {
             chooseWxArticleNameListener = object : ChooseWxArticleNameListener {
                 override fun choose(name: String?, id: Int?) {
 
-                    //这次弹窗期间没有做任何选择
-                    if (id == null || name.isNullOrEmpty()) {
-                        //之前也没有选择过
-                        return
-                    }
-
                     val name2: String
                     val id2: Int
 
-                    if (id == -1) {
+                    if (id == null || id == -1 || name.isNullOrEmpty()) {
                         name2 = getString(R.string.all)
                         id2 = -1
                     } else {
@@ -295,7 +289,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
 
-            R.id.tvBack -> finish()
+            R.id.tvBack -> finishAfterTransition()
 
             R.id.tvClear -> etSearch.setText("")
 

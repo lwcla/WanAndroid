@@ -73,6 +73,11 @@ interface HttpHelper {
     fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<HomeData>)
 
     /**
+     * 选择用作者昵称筛选
+     */
+    fun fetchSearchResultByAuthor(context: Context, page: Int, author: String, result: RequestResult<HomeData>)
+
+    /**
      * 收藏网站列表
      */
     fun fetchCollectSiteList(context: Context, result: RequestResult<List<SiteCollectBean>>)

@@ -106,6 +106,16 @@ interface InfoApi {
     fun fetchSearchResult(@Path("page") page: Int, @Query("k") key: String): Call<BasicData<HomeData>>
 
     /**
+     *  按照作者昵称搜索文章
+     * https://wanandroid.com/article/list/0/json?author=鸿洋
+     *
+     * @param page 拼接在链接上，从0开始。
+     * @param author 作者昵称，不支持模糊匹配。
+     */
+    @GET("article/list/{page}/json")
+    fun fetchSearchResultByAuthor(@Path("page") page: Int, @Query("author") author: String): Call<BasicData<HomeData>>
+
+    /**
      * 收藏网站列表
      * https://www.wanandroid.com/lg/collect/usertools/json
      */

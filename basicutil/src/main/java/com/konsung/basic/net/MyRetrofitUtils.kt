@@ -156,6 +156,12 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
+    fun fetchSearchResultByAuthor(context: Context, page: Int, author: String, result: RequestResult<HomeData>) {
+        getRetrofit()
+                .fetchSearchResultByAuthor(page, author)
+                .enqueue(CallInterceptor(context, result))
+    }
+
     fun fetchCollectSiteList(context: Context, result: RequestResult<List<SiteCollectBean>>) {
         getRetrofit()
                 .fetchCollectSiteList()

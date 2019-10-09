@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentManager
+import androidx.recyclerview.widget.RecyclerView
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
@@ -27,21 +28,23 @@ import kotlinx.android.synthetic.main.dialog_switch_wx_search.*
  */
 class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
 
-
     companion object {
         val TAG: String = ChooseWxSearchDialog::class.java.simpleName
+
+        //选择用作者昵称筛选
+        const val AUTHOR_NAME = 0x555
     }
 
     private var rootView: View? = null
 
     private val loadWxArticleTitle by lazy { initLoadWxArticleTitle() }
 
-    private var wxArticleTitleAdapter: WxArticleTitleAdapter? = null
     var chooseWxArticleNameListener: ChooseWxArticleNameListener? = null
 
     private var chooseWx: ProjectTitleBean? = null
 
     private var selectId = -1
+    private var click = false
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -64,11 +67,25 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
     override fun onStart() {
         super.onStart()
         loadWxArticleTitle.load()
+
+        val bean = ProjectTitleBean(null, -1, AUTHOR_NAME, getString(R.string.author_name), -1, -1, false, -1)
+        val list = listOf(bean)
+        setAdapter(list, rvOther)
     }
 
     override fun onStop() {
         super.onStop()
-        chooseWxArticleNameListener?.choose(getString(R.string.official_accounts) + " - " + chooseWx?.name, chooseWx?.id)
+        if (click) {
+            val title = when (chooseWx?.id ?: -1) {
+                //什么都没选
+                -1 -> chooseWx?.name
+                //选择用作者昵称筛选
+                AUTHOR_NAME -> getString(R.string.author_name)
+                //公众号筛选
+                else -> getString(R.string.official_accounts) + " - " + chooseWx?.name
+            }
+            chooseWxArticleNameListener?.choose(title, chooseWx?.id)
+        }
     }
 
     override fun onDestroy() {
@@ -76,7 +93,7 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
         loadWxArticleTitle.destroy()
     }
 
-    private fun setWxTitle(t: List<ProjectTitleBean>) {
+    private fun setAdapter(t: List<ProjectTitleBean>, rv: RecyclerView) {
         val chipsLayoutManager = ChipsLayoutManager.newBuilder(context)
                 //set vertical gravity for all items in a row. Default = Gravity.CENTER_VERTICAL
                 .setChildGravity(Gravity.LEFT)
@@ -93,14 +110,14 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
                 .withLastRow(true)
                 .build()
 
-        rvWxArticleTitle.layoutManager = chipsLayoutManager
+        rv.layoutManager = chipsLayoutManager
 
         val horizontalSpacing = ConvertUtils.dp2px(context!!, 25.toFloat())
         val verticalSpacing = ConvertUtils.dp2px(context!!, 15.toFloat())
-        rvWxArticleTitle.addItemDecoration(SpacingItemDecoration(horizontalSpacing, verticalSpacing))
+        rv.addItemDecoration(SpacingItemDecoration(horizontalSpacing, verticalSpacing))
 
-        wxArticleTitleAdapter = WxArticleTitleAdapter(context!!, t, selectId)
-        wxArticleTitleAdapter?.setOnItemClickListener { adapter, view, position ->
+        val titleAdapter = WxArticleTitleAdapter(context!!, t, selectId)
+        titleAdapter.setOnItemClickListener { _, _, position ->
 
             if (position < 0 || position >= t.size) {
                 toast(TAG, R.string.data_error)
@@ -118,12 +135,16 @@ class ChooseWxSearchDialog : BottomSheetDialogFragment(), UiView {
                 chooseWx = bean
             }
 
+            click = true
             dismissAllowingStateLoss()
         }
 
-        rvWxArticleTitle.adapter = wxArticleTitleAdapter
+        rv.adapter = titleAdapter
+        rv.visibility = View.VISIBLE
+    }
 
-        rvWxArticleTitle.visibility = View.VISIBLE
+    private fun setWxTitle(t: List<ProjectTitleBean>) {
+        setAdapter(t, rvWxArticleTitle)
         progressBar.visibility = View.GONE
     }
 

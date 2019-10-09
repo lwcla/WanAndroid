@@ -86,7 +86,7 @@ abstract class HomeDataAty : BasicAty(), CollectResult {
     }
 
     override fun initEvent() {
-        toolbar.setNavigationOnClickListener { finish() }
+        toolbar.setNavigationOnClickListener { finishAfterTransition() }
         multiplyStatusView.setOnRetryClickListener {
             multiplyStatusView.showLoading()
             resetData()
