@@ -3,20 +3,11 @@ package com.konsung.basic.db
 import android.content.Context
 import com.konsung.basic.bean.UserInfo
 import com.konsung.basic.bean.search.SearchKey
-import com.konsung.basic.db.greendao.GreenDaoUtil
-
-enum class DbType {
-    GREEN_DAO
-}
+import com.konsung.basic.db.greendao.GreenDaoUtil1
 
 class DbFactory {
-
     companion object {
-        fun getDb(dbType: DbType): DbHelper {
-            return when (dbType) {
-                DbType.GREEN_DAO -> GreenDaoUtil.instance
-            }
-        }
+        fun getDb(): DbHelper = GreenDaoUtil1.getInstance()
     }
 }
 

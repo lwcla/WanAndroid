@@ -4,7 +4,6 @@ import android.content.Context
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.UserInfo
 import com.konsung.basic.db.DbFactory
-import com.konsung.basic.db.DbType
 import com.konsung.basic.ui.BasePresenter2
 import com.konsung.basic.ui.BasicView
 import com.konsung.basic.ui.UiView
@@ -19,7 +18,7 @@ class RegisterPresenter(uiView: UiView?, view: RegisterView?) : BasePresenter2<U
         val userInfo = UserInfo()
         userInfo.userName = userName
         userInfo.passWord = pass1
-        DbFactory.getDb(DbType.GREEN_DAO).saveUserInfo(userInfo)
+        DbFactory.getDb().saveUserInfo(userInfo)
         super.success(context, t)
     }
 
