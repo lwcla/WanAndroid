@@ -7,11 +7,30 @@ import com.konsung.basic.util.ImageLoadGlideImpl
 
 interface ImageLoad {
 
+    /**
+     * 加载图片
+     */
     fun into(context: Context?, path: String, imageView: ImageView?, result: ImageLoadResult? = null)
 
+    /**
+     * 停止加载
+     */
     fun stop(context: Context?)
 
+    /**
+     * 清理存储数据
+     */
     fun clearMemory(context: Context?)
+
+    /**
+     * 暂停请求
+     */
+    fun pauseRequests(context: Context?)
+
+    /**
+     * 恢复请求
+     */
+    fun resumeRequests(context: Context?)
 }
 
 interface ImageLoadResult {
@@ -20,27 +39,11 @@ interface ImageLoadResult {
     fun success()
 }
 
-enum class ImageLoadType {
-    GLIDE
-}
-
-class ImageLoadFactory {
-
-    companion object {
-
-        fun getImageLoad(type: ImageLoadType): ImageLoad {
-            return when (type) {
-                ImageLoadType.GLIDE -> ImageLoadGlideImpl.instance
-            }
-        }
-    }
-}
-
 class ImageLoadUtil {
 
     companion object {
         val imageLoad: ImageLoad
-            get() = ImageLoadFactory.getImageLoad(ImageLoadType.GLIDE)
+            get() = ImageLoadGlideImpl.instance
     }
 }
 

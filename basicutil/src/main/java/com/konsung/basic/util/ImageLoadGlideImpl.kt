@@ -56,4 +56,16 @@ class ImageLoadGlideImpl private constructor() : ImageLoad {
             Glide.with(it).onStop()
         }
     }
+
+    override fun pauseRequests(context: Context?) {
+        context?.let {
+            Glide.with(it).pauseRequests()
+        }
+    }
+
+    override fun resumeRequests(context: Context?) {
+        context?.let {
+            Glide.with(it).resumeRequests()
+        }
+    }
 }

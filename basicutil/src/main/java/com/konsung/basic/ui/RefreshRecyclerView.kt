@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
+import com.konsung.basic.config.ImageLoadUtil
 import com.konsung.basic.util.R
 import com.scwang.smartrefresh.header.MaterialHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout
@@ -94,8 +95,11 @@ class RefreshRecyclerView : SmartRefreshLayout {
 
                 //newState ==0 时表示滚动停止
                 if (newState != 0) {
+                    ImageLoadUtil.imageLoad.pauseRequests(context)
                     return
                 }
+
+                ImageLoadUtil.imageLoad.resumeRequests(context)
 
                 //recyclerView.canScrollVertically(-1)为false时表示滚动到顶部
                 if (recyclerView.canScrollVertically(-1)) {
