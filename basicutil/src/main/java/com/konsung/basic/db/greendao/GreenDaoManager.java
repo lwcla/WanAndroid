@@ -7,16 +7,16 @@ import com.greendao.dao.DaoSession;
 import com.konsung.basic.config.BaseConfig;
 
 /**
- * GreenDaoManager1
+ * GreenDaoManager
  */
-public class GreenDaoManager1 {
+public class GreenDaoManager {
 
-    private static volatile GreenDaoManager1 instance = null; //单例
+    private static volatile GreenDaoManager instance = null; //单例
 
     private DaoMaster daoMaster = null;
     private DaoSession daoSession = null;
 
-    private GreenDaoManager1(Context context) {
+    private GreenDaoManager(Context context) {
         // 此处openhelper为自动生成开发所使用，发布版本需自定义
         DaoMaster.OpenHelper devOpenHelper = new DaoOpenHelper(context, BaseConfig.DATABASE_NAME);
         //GreenDaoContext为创建数据库路径使用
@@ -31,12 +31,12 @@ public class GreenDaoManager1 {
      * @param context 上下文
      * @return dao管理器
      */
-    public static GreenDaoManager1 getInstance(Context context) {
+    public static GreenDaoManager getInstance(Context context) {
         if (instance == null) {
-            synchronized (GreenDaoManager1.class) {
+            synchronized (GreenDaoManager.class) {
                 //保证异步处理安全操作
                 if (instance == null) {
-                    instance = new GreenDaoManager1(context);
+                    instance = new GreenDaoManager(context);
                 }
             }
         }

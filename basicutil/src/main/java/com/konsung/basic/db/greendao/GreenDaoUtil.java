@@ -19,16 +19,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class GreenDaoUtil1 implements DbHelper {
+public class GreenDaoUtil implements DbHelper {
 
-    private GreenDaoManager1 greenDaoManager = GreenDaoManager1.getInstance(AppUtils.Companion.getContext());
+    private GreenDaoManager greenDaoManager = GreenDaoManager.getInstance(AppUtils.Companion.getContext());
     private DaoMaster daoMaster = greenDaoManager.getDaoMaster();
     private DaoSession daoSession = greenDaoManager.getDaoSession();
 
-    private GreenDaoUtil1() {
+    private GreenDaoUtil() {
     }
 
-    public static GreenDaoUtil1 getInstance() {
+    public static GreenDaoUtil getInstance() {
         return Single.instance;
     }
 
@@ -135,6 +135,6 @@ public class GreenDaoUtil1 implements DbHelper {
     }
 
     private static class Single {
-        private static GreenDaoUtil1 instance = new GreenDaoUtil1();
+        private static GreenDaoUtil instance = new GreenDaoUtil();
     }
 }
