@@ -33,14 +33,23 @@ interface ImageLoad {
     fun resumeRequests(context: Context?)
 }
 
+/**
+ * 图片加载结果
+ */
 interface ImageLoadResult {
+
+    /**
+     * 加载失败
+     */
     fun failed(drawable: Drawable?)
 
+    /**
+     * 加载成功
+     */
     fun success()
 }
 
 class ImageLoadUtil {
-
     companion object {
         val imageLoad: ImageLoad
             get() = ImageLoadGlideImpl.instance
