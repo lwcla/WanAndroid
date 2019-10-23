@@ -53,7 +53,7 @@ class SystemTreeDetailAty : BasicAty() {
 
     override fun initEvent() {
         toolbar.setNavigationOnClickListener {
-            finish()
+            finishAfterTransition()
         }
     }
 

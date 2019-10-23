@@ -60,5 +60,6 @@
         <activity android:name=".aty.SearchResultAty" />
         <activity android:name=".aty.CollectAty" />
         <activity android:name=".aty.SiteCollectAty" />
+        <activity android:name=".aty.ToDoAty" />
     </application>
 </manifest>

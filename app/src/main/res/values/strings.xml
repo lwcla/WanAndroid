@@ -11,6 +11,7 @@
     <string name="add_collect">收藏站外文章</string>
     <string name="edit_site">编辑</string>
     <string name="site_collect">网站收藏</string>
+    <string name="to_do">TODO</string>
     <string name="add_new_collect">新增收藏</string>
     <string name="add_new">新增</string>
     <string name="please_input_title">请输入标题(必填)</string>

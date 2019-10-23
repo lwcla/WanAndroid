@@ -21,6 +21,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.*
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.ref.WeakReference
 import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
@@ -35,7 +36,7 @@ class MyRetrofitUtils private constructor() {
 
     companion object {
         val TAG: String = MyRetrofitUtils::class.java.simpleName
-        const val CONNECT_TIME_OUUT = 15L
+        const val CONNECT_TIME_OUT = 15L
         val instance by lazy { MyRetrofitUtils() }
     }
 
@@ -69,8 +70,8 @@ class MyRetrofitUtils private constructor() {
                 .addInterceptor(httpLoggingInterceptor)
                 .addInterceptor(net)
                 .cookieJar(cookieJar)
-                .connectTimeout(CONNECT_TIME_OUUT, TimeUnit.SECONDS)
-                .readTimeout(CONNECT_TIME_OUUT, TimeUnit.SECONDS)
+                .connectTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
+                .readTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
                 .build()
 
         retrofit = Retrofit.Builder()
@@ -251,11 +252,13 @@ class MyRetrofitUtils private constructor() {
  * 对请求的数据进一步处理
  * @param dataWillNull 返回的data是否为null
  */
-class CallInterceptor<T>(private val context: Context, private val result: RequestResult<T>, private val dataWillNull: Boolean = false) : Callback<BasicData<T>> {
+class CallInterceptor<T>(context: Context, private val result: RequestResult<T>, private val dataWillNull: Boolean = false) : Callback<BasicData<T>> {
 
     companion object {
         val TAG: String = CallInterceptor::class.java.simpleName
     }
+
+    private val ctxReference: WeakReference<Context> = WeakReference(context)
 
     override fun onFailure(call: Call<BasicData<T>>, t: Throwable) {
 
@@ -315,12 +318,14 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
 
             val info: String? = if (data.errorCode == -1001) {
                 //未登录
-                context.getString(R.string.please_login_first)
+                ctxReference.get()?.getString(R.string.please_login_first)
             } else {
                 data.errorMsg
             }
 
-            failed(info ?: context.getString(R.string.data_request_error))
+            val toast = info ?: ctxReference.get()?.getString(R.string.data_request_error)
+
+            failed(toast ?: "")
             return
         }
 
@@ -347,8 +352,8 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
     private fun failed(@StringRes textRes: Int, toFailed: Boolean = true) {
 
         try {
-            val text = context.getString(textRes)
-            failed(text, toFailed)
+            val text = ctxReference.get()?.getString(textRes)
+            failed(text ?: "", toFailed)
         } catch (e: Exception) {
         }
     }
@@ -362,7 +367,9 @@ class CallInterceptor<T>(private val context: Context, private val result: Reque
         }
 
         if (result.toast) {
-            ToastUtils.instance.toast(context, TAG, text)
+            ctxReference.get()?.let {
+                ToastUtils.instance.toast(it, TAG, text)
+            }
         }
 
         result.complete(false)

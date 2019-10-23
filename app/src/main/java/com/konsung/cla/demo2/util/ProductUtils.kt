@@ -104,6 +104,14 @@ open class ProductUtils {
         }
     }
 
+    open fun startToDoAty(context: Context?) {
+        context?.let {
+            val intent = Intent()
+            intent.setClass(it, ToDoAty::class.java)
+            it.startActivity(intent)
+        }
+    }
+
     open fun setWebAty(context: Context, intent: Intent) {
         intent.setClass(context, WebViewAty::class.java)
     }

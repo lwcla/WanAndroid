@@ -98,6 +98,8 @@ open class MainActivity : BasicAty(), View.OnClickListener {
                 //退出登录
                 R.id.logout -> logoutPresenter.logout()
 
+                R.id.to_do -> App.productUtils.startToDoAty(this)
+
                 //收藏列表
                 R.id.menu_collect, R.id.add_link, R.id.site_collect -> {
 
