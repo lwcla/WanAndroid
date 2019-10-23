@@ -33,6 +33,7 @@ class ToDoAty : BasicAty() {
 
     override fun initView() {
         setSupportActionBar(toolbar)
+        supportActionBar?.title = getString(R.string.to_do)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 

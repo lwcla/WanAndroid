@@ -32,15 +32,7 @@ import javax.net.ssl.SSLHandshakeException
 
 class MyRetrofitUtils private constructor() {
 
-    private var retrofit: Retrofit
-
-    companion object {
-        val TAG: String = MyRetrofitUtils::class.java.simpleName
-        const val CONNECT_TIME_OUT = 15L
-        val instance by lazy { MyRetrofitUtils() }
-    }
-
-    init {
+    private val infoApi: InfoApi by lazy {
 
         val context = AppUtils.getContext()
 
@@ -74,175 +66,180 @@ class MyRetrofitUtils private constructor() {
                 .readTimeout(CONNECT_TIME_OUT, TimeUnit.SECONDS)
                 .build()
 
-        retrofit = Retrofit.Builder()
+        val retrofit = Retrofit.Builder()
                 .client(okHttpClient)
                 .baseUrl(BaseConfig.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
+
+        retrofit.create(InfoApi::class.java)
     }
 
-    private fun getRetrofit(): InfoApi {
-        return retrofit.create(InfoApi::class.java)
+    companion object {
+        val TAG: String = MyRetrofitUtils::class.java.simpleName
+        const val CONNECT_TIME_OUT = 15L
+        val instance by lazy { MyRetrofitUtils() }
     }
+
 
     fun addSite(context: Context, name: String, link: String, result: RequestResult<SiteCollectBean>) {
-        getRetrofit()
+        infoApi
                 .addSite(name, link)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun collect(context: Context, id: Int, result: RequestResult<String>) {
-        getRetrofit()
+        infoApi
                 .collect(id)
                 .enqueue(CallInterceptor(context, result, true))
     }
 
     fun collectLink(context: Context, title: String, author: String, link: String, result: RequestResult<HomeData.DatasBean>) {
-        getRetrofit()
+        infoApi
                 .collectLink(title, author, link)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun editSite(context: Context, id: Int, name: String, link: String, result: RequestResult<SiteCollectBean>) {
-        getRetrofit()
+        infoApi
                 .editSite(id, name, link)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>) {
-        getRetrofit()
+        infoApi
                 .fetchCollectList(page)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
-        getRetrofit()
+        infoApi
                 .loadBanner()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetNavigationList(context: Context, result: RequestResult<List<NavigationBean>>) {
-        getRetrofit()
+        infoApi
                 .fetNavigationList()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchNewestProject(context: Context, page: Int, result: RequestResult<HomeData>) {
-        getRetrofit()
+        infoApi
                 .fetchNewestProject(page)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchProjectTree(context: Context, page: Int, cId: Int, result: RequestResult<HomeData>) {
-        getRetrofit()
+        infoApi
                 .fetchProjectTree(page, cId)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>) {
-        getRetrofit()
+        infoApi
                 .fetchTreeList()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchSearchHotKey(context: Context, result: RequestResult<List<SearchKey>>) {
-        getRetrofit()
+        infoApi
                 .fetchSearchHotKey()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<HomeData>) {
-        getRetrofit()
+        infoApi
                 .fetchSearchResult(page, key)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchSearchResultByAuthor(context: Context, page: Int, author: String, result: RequestResult<HomeData>) {
-        getRetrofit()
+        infoApi
                 .fetchSearchResultByAuthor(page, author)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchCollectSiteList(context: Context, result: RequestResult<List<SiteCollectBean>>) {
-        getRetrofit()
+        infoApi
                 .fetchCollectSiteList()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchWxSearchResult(context: Context, wxId: Int, page: Int, key: String, result: RequestResult<HomeData>) {
-        getRetrofit()
+        infoApi
                 .fetchWxSearchResult(wxId, page, key)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchSystemTreeDetail(context: Context, page: Int, cid: Int, result: RequestResult<HomeData>) {
-        getRetrofit()
+        infoApi
                 .fetchSystemTreeDetail(page, cid)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchWxArticleTitle(context: Context, result: RequestResult<List<ProjectTitleBean>>) {
-        getRetrofit()
+        infoApi
                 .fetchWxArticleTitle()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun fetchWxArticleDetail(context: Context, cId: Int, page: Int, result: RequestResult<HomeData>) {
-        getRetrofit()
+        infoApi
                 .fetchWxArticleDetail(cId, page)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun loadCommonWeb(context: Context, result: RequestResult<List<CommonWebBean>>) {
-        getRetrofit()
+        infoApi
                 .loadCommonWeb()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun loadHome(context: Context, page: Int, result: RequestResult<HomeData>) {
-        getRetrofit()
+        infoApi
                 .loadHomeData(page)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun loadProjectTitle(context: Context, result: RequestResult<List<ProjectTitleBean>>) {
-        getRetrofit()
+        infoApi
                 .loadProjectTitle()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun loadTopArticle(context: Context, result: RequestResult<List<HomeData.DatasBean>>) {
-        getRetrofit()
+        infoApi
                 .loadTopArticle()
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>) {
-        getRetrofit()
+        infoApi
                 .register(userName, password1, password2)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>) {
-        getRetrofit()
+        infoApi
                 .login(userName, passWord)
                 .enqueue(CallInterceptor(context, result))
     }
 
     fun logout(context: Context, result: RequestResult<String>) {
-        getRetrofit()
+        infoApi
                 .logout()
                 .enqueue(CallInterceptor(context, result, true))
     }
 
     fun unCollect(context: Context, id: Int, result: RequestResult<String>) {
-        getRetrofit()
+        infoApi
                 .unCollect(id)
                 .enqueue(CallInterceptor(context, result, true))
     }
 
     fun unCollectInList(context: Context, id: Int, originId: Int, result: RequestResult<String>) {
-        getRetrofit()
+        infoApi
                 .unCollectInList(id, originId)
                 .enqueue(CallInterceptor(context, result, true))
     }
