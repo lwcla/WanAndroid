@@ -262,6 +262,10 @@ class CallInterceptor<T>(context: Context, private val result: RequestResult<T>,
 
     override fun onFailure(call: Call<BasicData<T>>, t: Throwable) {
 
+        if (ctxReference.get() == null) {
+            return
+        }
+
         Debug.info(TAG, "CallInterceptor onFailure t=$t")
 
         if (t is NoNetworkException) {
@@ -302,6 +306,10 @@ class CallInterceptor<T>(context: Context, private val result: RequestResult<T>,
     }
 
     override fun onResponse(call: Call<BasicData<T>>, response: Response<BasicData<T>>) {
+
+        if (ctxReference.get() == null) {
+            return
+        }
 
         if (!response.isSuccessful) {
             failed(R.string.data_request_error)
