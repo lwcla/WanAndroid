@@ -8,7 +8,7 @@ import com.cla.system.tree.list.adapter.SystemTreeListAdapter
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.ui.BasicFragment
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.ui.SpaceDecoration
 import com.konsung.basic.util.AppUtils
 

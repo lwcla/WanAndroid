@@ -10,38 +10,34 @@ import android.view.animation.DecelerateInterpolator
 import androidx.annotation.StringRes
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.konsung.basic.bean.UserDto
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.dialog.BasicDialog
+import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.LogoutPresenter
 import com.konsung.basic.presenter.LogoutView
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.ui.BasicPresenter
 import com.konsung.basic.ui.HeightView
 import com.konsung.basic.util.FileUtils
 import com.konsung.basic.util.SpUtils
 import com.konsung.basic.util.Utils
-import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.presenter.LoginPresenter
-import com.konsung.cla.demo2.presenter.LoginView
-import com.konsung.cla.demo2.presenter.RegisterPresenter
-import com.konsung.cla.demo2.presenter.RegisterView
+import com.konsung.cla.demo2.presenter.*
 import jp.wasabeef.blurry.Blurry
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
  * 登录
  */
-class LoginAty : BasicAty(), View.OnClickListener {
+class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView {
 
     companion object {
         val TAG: String = LoginAty::class.java.simpleName
     }
 
     private val heightView by lazy { HeightView(tilPassWord2) }
-    private val registerPresenter by lazy { initRegisterPresenter() }
-    private val loginPresenter by lazy { initLoginPresenter() }
+    private val registerPresenter: RegisterPresenter by lazy { RegisterPresenterImpl(this) }
+    private val loginPresenter: LoginPresenter by lazy { LoginPresenterImpl(this) }
     private val logoutPresenter by lazy { initLogoutPresenter() }
 
     private var animatorSet: AnimatorSet? = null
@@ -49,8 +45,10 @@ class LoginAty : BasicAty(), View.OnClickListener {
     override fun getLayoutId(): Int = R.layout.activity_login
 
     override fun initPresenter(): List<BasicPresenter>? {
-        return listOf(registerPresenter, loginPresenter, logoutPresenter)
+        return listOf(logoutPresenter)
     }
+
+    override fun initPresenterList(): List<Presenter>? = listOf(registerPresenter, loginPresenter)
 
     override fun initView() {
         initBg()
@@ -164,11 +162,65 @@ class LoginAty : BasicAty(), View.OnClickListener {
         registerPresenter.register(userName, pass1, pass2)
     }
 
+    private fun initLogoutPresenter(): LogoutPresenter {
+
+        val view = object : LogoutView() {
+
+            override fun success(refreshData: Boolean) {
+                llLogout.visibility = View.GONE
+                llLogin.visibility = View.VISIBLE
+            }
+        }
+
+        return LogoutPresenter(this, view)
+    }
+
+    override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
+        //弹窗被手动关闭，取消登录
+        loginPresenter.stop()
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.imvBg -> hideSoftKeyboard(this)
+
+            R.id.rlRegister -> showRegister(tilPassWord2.visibility != View.GONE)
+
+            R.id.cardViewLogout -> logoutPresenter.logout()
+
+            R.id.cardViewLogin -> {
+                resetEditStatus()
+                val login: Boolean = tilPassWord2.visibility == View.GONE
+                if (login) {
+                    //去登录
+                    login()
+                } else {
+                    //去注册
+                    register()
+                }
+            }
+        }
+    }
+
+    override fun loginResult(success: Boolean, errorInfo: String) {
+        dismissLoadingDialog()
+
+        if (success) {
+            finishAfterTransition()
+        } else {
+            if (errorInfo.contains("账号")) {
+                tilUser.error = errorInfo
+            } else if (errorInfo.contains("密码")) {
+                tilPassWord.error = errorInfo
+            }
+        }
+    }
+
     /**
      * 显示注册
      * @param login 是否切换为登录状态
      */
-    private fun showRegister(login: Boolean) {
+    override fun showRegister(login: Boolean) {
 
         if (login && tilPassWord2.visibility == View.GONE) {
             //已经是登录状态
@@ -262,86 +314,4 @@ class LoginAty : BasicAty(), View.OnClickListener {
             })
         }
     }
-
-    private fun initRegisterPresenter(): RegisterPresenter {
-
-        val view = object : RegisterView() {
-
-            override fun success(t: UserDto, refreshData: Boolean) {
-                toast(TAG, R.string.registered_success)
-                showRegister(true)
-            }
-        }
-
-        return RegisterPresenter(this, view)
-    }
-
-    private fun initLoginPresenter(): LoginPresenter {
-
-        val view = object : LoginView() {
-
-            override fun success(t: UserDto, refreshData: Boolean) {
-                toast(TAG, R.string.login_success)
-                SpUtils.putString(context, BaseConfig.USER_NAME, t.username)
-//                App.productUtils.startMainAty(context)
-                finishAfterTransition()
-            }
-
-            override fun failed(string: String) {
-                if (string.contains("账号")) {
-                    tilUser.error = string
-                } else if (string.contains("密码")) {
-                    tilPassWord.error = string
-                }
-            }
-
-            override fun complete(success: Boolean) {
-                dismissLoadingDialog()
-            }
-
-        }
-
-        return LoginPresenter(this, view)
-    }
-
-    private fun initLogoutPresenter(): LogoutPresenter {
-
-        val view = object : LogoutView() {
-
-            override fun success(refreshData: Boolean) {
-                llLogout.visibility = View.GONE
-                llLogin.visibility = View.VISIBLE
-            }
-        }
-
-        return LogoutPresenter(this, view)
-    }
-
-    override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
-        //弹窗被手动关闭，取消登录
-        loginPresenter.stop()
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.imvBg -> hideSoftKeyboard(this)
-
-            R.id.rlRegister -> showRegister(tilPassWord2.visibility != View.GONE)
-
-            R.id.cardViewLogout -> logoutPresenter.logout()
-
-            R.id.cardViewLogin -> {
-                resetEditStatus()
-                val login: Boolean = tilPassWord2.visibility == View.GONE
-                if (login) {
-                    //去登录
-                    login()
-                } else {
-                    //去注册
-                    register()
-                }
-            }
-        }
-    }
-
 }

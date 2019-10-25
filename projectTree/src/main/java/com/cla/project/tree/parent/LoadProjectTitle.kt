@@ -1,13 +1,12 @@
 package com.cla.project.tree.parent
 
 import android.content.Context
-import com.cla.project.tree.R
 import com.konsung.basic.bean.project.ProjectTitleBean
-import com.konsung.basic.ui.BasePresenter2
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.BasicPresenter2
+import com.konsung.basic.presenter.BasicView
+import com.konsung.basic.presenter.UiView
 
-class LoadProjectTitle(uiView: UiView?, view: LoadProjectTitleView?) : BasePresenter2<List<ProjectTitleBean>, LoadProjectTitleView>(uiView, view) {
+class LoadProjectTitle(uiView: UiView?, view: LoadProjectTitleView?) : BasicPresenter2<List<ProjectTitleBean>, LoadProjectTitleView>(uiView, view) {
 
     override fun success(context: Context, t: List<ProjectTitleBean>) {
         val beanList = mutableListOf<ProjectTitleBean>()

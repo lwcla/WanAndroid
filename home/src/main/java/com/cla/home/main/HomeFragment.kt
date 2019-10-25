@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.cla.home.R
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.BannerData
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.ui.HomeDataFragment
 import com.konsung.basic.util.AppUtils
 

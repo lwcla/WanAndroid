@@ -10,6 +10,7 @@ import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
+import com.konsung.basic.config.RequestData
 import com.konsung.basic.config.RequestResult
 
 class HttpHelperImpl {
@@ -138,6 +139,11 @@ interface HttpHelper {
     fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>)
 
     /**
+     * 登录
+     */
+    fun login(context: Context, userName: String, passWord: String, result: RequestData<UserDto>)
+
+    /**
      * 退出登录
      */
     fun logout(context: Context, result: RequestResult<String>)
@@ -146,6 +152,11 @@ interface HttpHelper {
      * 注册
      */
     fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>)
+
+    /**
+     * 注册
+     */
+    fun register(context: Context, userName: String, password1: String, password2: String, result: RequestData<UserDto>)
 
     /**
      * 取消收藏

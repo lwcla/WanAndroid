@@ -2,10 +2,10 @@ package com.cla.home.main
 
 import android.content.Context
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.ui.HomePresenter
-import com.konsung.basic.ui.HomeView
-import com.konsung.basic.ui.UiView
-import com.konsung.basic.ui.UiViewAdapter
+import com.konsung.basic.presenter.HomePresenter
+import com.konsung.basic.presenter.HomeView
+import com.konsung.basic.presenter.UiView
+import com.konsung.basic.presenter.UiViewAdapter
 import com.konsung.basic.util.Debug
 
 class HomeDataPresenter(uiView: UiView?, view: HomeView?) : HomePresenter(uiView, view) {

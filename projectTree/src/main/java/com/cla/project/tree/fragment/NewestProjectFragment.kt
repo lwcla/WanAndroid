@@ -1,7 +1,7 @@
 package com.cla.project.tree.fragment
 
-import com.konsung.basic.ui.HomeView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.HomeView
+import com.konsung.basic.presenter.UiView
 
 /**
  * 最新项目fragment

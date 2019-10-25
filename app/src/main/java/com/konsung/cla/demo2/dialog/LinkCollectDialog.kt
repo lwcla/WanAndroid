@@ -13,7 +13,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.presenter.CollectLinkPresenter
 import com.konsung.basic.presenter.CollectLinkView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 

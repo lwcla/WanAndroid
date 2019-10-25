@@ -22,7 +22,8 @@ import com.konsung.basic.presenter.LogoutView
 import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.FragmentRefresh
 import com.konsung.basic.util.*
 import com.konsung.cla.demo2.App
@@ -40,17 +41,16 @@ import kotlin.system.exitProcess
 
 
 open class MainActivity : BasicAty(), View.OnClickListener {
-
     companion object {
+
         val TAG: String = MainActivity::class.java.simpleName
     }
-
     private var tvHeadName: TextView? = null
+
     private var linkCollectDialog: LinkCollectDialog? = null
-
     private val collectReceiver = CollectReceiver()
-    private val logoutPresenter by lazy { initLogoutPresenter() }
 
+    private val logoutPresenter by lazy { initLogoutPresenter() }
     private var lastBackTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +73,8 @@ open class MainActivity : BasicAty(), View.OnClickListener {
     override fun getLayoutId(): Int = R.layout.activity_main
 
     override fun initPresenter(): List<BasicPresenter>? = listOf(logoutPresenter)
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
         Debug.info(TAG, "MainActivity initView")

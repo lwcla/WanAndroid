@@ -3,14 +3,11 @@ package com.konsung.basic.presenter
 import android.content.Context
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.net.cookie.PersistentCookieJar
-import com.konsung.basic.ui.BasePresenter2
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
 import com.konsung.basic.util.R
 import com.konsung.basic.util.SpUtils
 import com.konsung.basic.util.toast
 
-class LogoutPresenter(uiView: UiView?, view: LogoutView) : BasePresenter2<String, LogoutView>(uiView, view) {
+class LogoutPresenter(uiView: UiView?, view: LogoutView) : BasicPresenter2<String, LogoutView>(uiView, view) {
 
     companion object {
         val TAG: String = LogoutPresenter::class.java.simpleName

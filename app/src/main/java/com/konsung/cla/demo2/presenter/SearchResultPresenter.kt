@@ -1,8 +1,8 @@
 package com.konsung.cla.demo2.presenter
 
-import com.konsung.basic.ui.HomePresenter
-import com.konsung.basic.ui.HomeView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.HomePresenter
+import com.konsung.basic.presenter.HomeView
+import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.dialog.ChooseWxSearchDialog

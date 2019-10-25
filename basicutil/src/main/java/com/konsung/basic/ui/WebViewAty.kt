@@ -17,19 +17,21 @@ import com.konsung.basic.config.BaseConfig.Companion.WEB_TITLE
 import com.konsung.basic.config.BaseConfig.Companion.WEB_URL
 import com.konsung.basic.dialog.ShareDialog
 import com.konsung.basic.dialog.ShareDialogListener
+import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.util.*
 import kotlinx.android.synthetic.main.activity_web.*
 
 
 class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
-
     companion object {
+
         val TAG: String = WebViewAty::class.java.simpleName
     }
-
     private var mAgentWeb: AgentWeb? = null
+
     private val collectPresenter by lazy { initCollectPresenter() }
     private lateinit var link: String
     private var artId: Int = -1
@@ -37,8 +39,9 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
     private var collect = false
     private var needCollect = false
     private var shareDialog: ShareDialog? = null
-
     override fun getLayoutId(): Int = R.layout.activity_web
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
 

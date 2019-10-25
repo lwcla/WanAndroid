@@ -16,6 +16,9 @@ import androidx.core.content.ContextCompat
 import com.konsung.basic.dialog.BasicDialog
 import com.konsung.basic.dialog.DismissListener
 import com.konsung.basic.dialog.LoadingDialog
+import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
+import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.StatusBarUtil
@@ -30,6 +33,7 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
 
     protected var initDelay = 0L //用来延迟初始化界面，如果延迟了初始化，那么在onStart,onResume中处理界面相关的数据时，就需要特殊处理
     private var presenters: List<BasicPresenter>? = null
+    private var presenterList: List<Presenter>? = null
     protected lateinit var context: Context
     private var loadingDialog: LoadingDialog? = null
     protected val myHandler by lazy { MyHandler(this) }
@@ -47,6 +51,7 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
         context = this
 
         presenters = initPresenter()
+        presenterList = initPresenterList()
         if (initDelay > 0) {
             myHandler.postDelayed(initRunnable, initDelay)
         } else {
@@ -83,6 +88,12 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
         super.onDestroy()
         Debug.info(TAG, "onDestroy $this")
         presenters?.let {
+            for (p in it) {
+                p.destroy()
+            }
+        }
+
+        presenterList?.let {
             for (p in it) {
                 p.destroy()
             }
@@ -199,6 +210,8 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
     abstract fun getLayoutId(): Int
 
     abstract fun initPresenter(): List<BasicPresenter>?
+
+    abstract fun initPresenterList(): List<Presenter>?
 
     abstract fun initView()
 

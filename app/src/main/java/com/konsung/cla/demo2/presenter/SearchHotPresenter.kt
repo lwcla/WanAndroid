@@ -2,11 +2,11 @@ package com.konsung.cla.demo2.presenter
 
 import android.content.Context
 import com.konsung.basic.bean.search.SearchKey
-import com.konsung.basic.ui.BasePresenter2
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.BasicPresenter2
+import com.konsung.basic.presenter.BasicView
+import com.konsung.basic.presenter.UiView
 
-class SearchHotPresenter(uiView: UiView?, view: SearchHotView?) : BasePresenter2<List<SearchKey>, SearchHotView>(uiView, view) {
+class SearchHotPresenter(uiView: UiView?, view: SearchHotView?) : BasicPresenter2<List<SearchKey>, SearchHotView>(uiView, view) {
 
     override fun success(context: Context, t: List<SearchKey>) {
 

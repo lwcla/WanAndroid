@@ -16,7 +16,8 @@ import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
 import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.util.ConvertUtils
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
@@ -35,26 +36,25 @@ import kotlinx.android.synthetic.main.activity_search.*
  * 搜索页面
  */
 class SearchAty : BasicAty(), View.OnClickListener {
-
     companion object {
+
         val TAG: String = SearchAty::class.java.simpleName
         const val INIT_DETAIL = 300L
     }
-
     init {
         initDelay = INIT_DETAIL
     }
 
     private val searchHotPresenter by lazy { initSearchHotPresenter() }
-    private val historyKeyPresenter by lazy { initHistoryKeyPresenter() }
 
+    private val historyKeyPresenter by lazy { initHistoryKeyPresenter() }
     private var hotSearchAdapter: SearchKeyAdapter? = null
+
     private var historyKeyAdapter: SearchKeyAdapter? = null
     private var filterAdapter: SearchKeyAdapter? = null
-
     private var wxName: String = ""
-    private var wxId: Int = -1
 
+    private var wxId: Int = -1
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         window.enterTransition = Explode().setDuration(INIT_DETAIL)
@@ -72,6 +72,8 @@ class SearchAty : BasicAty(), View.OnClickListener {
     override fun getLayoutId(): Int = R.layout.activity_search
 
     override fun initPresenter(): List<BasicPresenter>? = listOf(searchHotPresenter, historyKeyPresenter)
+
+    override fun initPresenterList(): List<Presenter>?  = null
 
     override fun initView() {
         StringUtils.instance.loadTextIcon(context, tvBack)

@@ -42,8 +42,10 @@
     <string name="please_confirm_pass_word">确认密码</string>
     <string name="login">登录</string>
     <string name="login_success">登录成功</string>
+    <string name="login_failed">登录失败</string>
     <string name="registered">注册</string>
     <string name="registered_success">注册成功</string>
+    <string name="registered_failed">注册失败</string>
     <string name="there_is_no_account_to_registered">还没有账号？前去注册</string>
     <string name="you_already_have_an_account_log_in">已经有账号了，去登录</string>
     <string name="account_can_not_be_empty">账号不能为空</string>

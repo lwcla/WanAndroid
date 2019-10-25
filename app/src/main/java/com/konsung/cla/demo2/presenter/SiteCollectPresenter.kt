@@ -2,16 +2,16 @@ package com.konsung.cla.demo2.presenter
 
 import android.content.Context
 import com.konsung.basic.bean.site.SiteCollectBean
-import com.konsung.basic.ui.BasePresenter2
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.BasicPresenter2
+import com.konsung.basic.presenter.BasicView
+import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
 
 /**
  * 网站收藏
  */
-class SiteCollectPresenter(uiView: UiView?, view: SiteCollectView?) : BasePresenter2<List<SiteCollectBean>, SiteCollectView>(uiView, view) {
+class SiteCollectPresenter(uiView: UiView?, view: SiteCollectView?) : BasicPresenter2<List<SiteCollectBean>, SiteCollectView>(uiView, view) {
 
     override fun success(context: Context, t: List<SiteCollectBean>) {
         val list = t.reversed()
@@ -26,7 +26,7 @@ class SiteCollectPresenter(uiView: UiView?, view: SiteCollectView?) : BasePresen
 open class SiteCollectView : BasicView<List<SiteCollectBean>>()
 
 
-class AddSiteCollectPresenter(uiView: UiView?, view: AddSiteCollectView?) : BasePresenter2<SiteCollectBean, AddSiteCollectView>(uiView, view) {
+class AddSiteCollectPresenter(uiView: UiView?, view: AddSiteCollectView?) : BasicPresenter2<SiteCollectBean, AddSiteCollectView>(uiView, view) {
 
     companion object {
         val TAG: String = AddSiteCollectPresenter::class.java.simpleName

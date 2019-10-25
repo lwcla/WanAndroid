@@ -3,14 +3,11 @@ package com.konsung.basic.presenter
 import android.content.Context
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.config.BaseConfig
-import com.konsung.basic.ui.BasePresenter2
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
 
-class CollectLinkPresenter(uiView: UiView?, view: CollectLinkView?) : BasePresenter2<HomeData.DatasBean, CollectLinkView>(uiView, view) {
+class CollectLinkPresenter(uiView: UiView?, view: CollectLinkView?) : BasicPresenter2<HomeData.DatasBean, CollectLinkView>(uiView, view) {
 
     override fun success(context: Context, t: HomeData.DatasBean) {
         t.collect = true

@@ -10,6 +10,7 @@ import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
+import com.konsung.basic.presenter.HomeView
 import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.receiver.CollectResult
 import com.konsung.basic.util.AppUtils

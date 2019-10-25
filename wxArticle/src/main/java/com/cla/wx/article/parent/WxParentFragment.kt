@@ -6,7 +6,7 @@ import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.presenter.LoadWxArticleTitle
 import com.konsung.basic.presenter.LoadWxArticleTitleView
 import com.konsung.basic.ui.BasicFragment
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.ui.VpBasicFragment
 
 /**

@@ -14,13 +14,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.konsung.basic.bean.ScreenImageData
 import com.konsung.basic.config.BaseConfig
+import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
 import kotlinx.android.synthetic.main.activity_screen_image.*
 
 class ScreenImageAty : BasicAty() {
-
     companion object {
+
         const val INIT_DELAY = 500L
     }
 
@@ -37,6 +39,8 @@ class ScreenImageAty : BasicAty() {
     override fun getLayoutId(): Int = R.layout.activity_screen_image
 
     override fun initPresenter(): List<BasicPresenter>? = null
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
     }

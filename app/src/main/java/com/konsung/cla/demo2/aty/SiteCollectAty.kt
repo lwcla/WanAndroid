@@ -4,7 +4,8 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.RefreshRecyclerView
 import com.konsung.basic.ui.SpaceDecoration
 import com.konsung.basic.view.MultipleStatusView
@@ -20,18 +21,19 @@ import kotlinx.android.synthetic.main.activity_site_collect.*
  * 收藏的网站
  */
 class SiteCollectAty : BasicAty(), View.OnClickListener {
-
     private val multiplyStatusView by lazy { findViewById<MultipleStatusView>(R.id.multiplyStatusView) }
-    private val refreshRv by lazy { multiplyStatusView.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
 
+    private val refreshRv by lazy { multiplyStatusView.findViewById<RefreshRecyclerView>(R.id.refreshRv) }
     private val siteCollectPresenter by lazy { initSiteCollectPresenter() }
 
     private var siteCollectAdapter: SiteCollectAdapter? = null
-    private var siteCollectDialog: SiteCollectDialog? = null
 
+    private var siteCollectDialog: SiteCollectDialog? = null
     override fun getLayoutId(): Int = R.layout.activity_site_collect
 
     override fun initPresenter(): List<BasicPresenter>? = listOf(siteCollectPresenter)
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
         showLoadView()

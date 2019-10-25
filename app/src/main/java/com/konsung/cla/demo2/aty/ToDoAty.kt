@@ -2,8 +2,9 @@ package com.konsung.cla.demo2.aty
 
 import android.os.Bundle
 import android.transition.Explode
+import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.ui.BasicPresenter
 import com.konsung.cla.demo2.R
 import kotlinx.android.synthetic.main.activity_to_do.*
 
@@ -11,8 +12,8 @@ import kotlinx.android.synthetic.main.activity_to_do.*
  * todo页面
  */
 class ToDoAty : BasicAty() {
-
     companion object {
+
         val TAG: String = ToDoAty::class.java.simpleName
         const val INIT_DETAIL = 300L
     }
@@ -30,6 +31,8 @@ class ToDoAty : BasicAty() {
     override fun getLayoutId(): Int = R.layout.activity_to_do
 
     override fun initPresenter(): List<BasicPresenter>? = null
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
         setSupportActionBar(toolbar)

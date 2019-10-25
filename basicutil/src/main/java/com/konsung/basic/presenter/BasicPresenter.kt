@@ -1,57 +1,12 @@
-package com.konsung.basic.ui
+package com.konsung.basic.presenter
 
 import android.content.Context
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.config.RequestResult
 import com.konsung.basic.net.HttpHelper
 import com.konsung.basic.net.HttpHelperImpl
+import com.konsung.basic.ui.RefreshRecyclerView
 import java.lang.ref.WeakReference
-
-interface UiView {
-
-    fun getUiContext(): Context?
-
-    fun loadComplete(success: Boolean)
-
-    fun showContentView()
-
-    fun showErrorView()
-
-    fun showNoNetworkView()
-
-    fun showLoadView()
-
-    fun showEmptyView()
-}
-
-abstract class UiViewAdapter : UiView {
-
-    override fun getUiContext(): Context? = null
-
-    override fun loadComplete(success: Boolean) {
-
-    }
-
-    override fun showContentView() {
-
-    }
-
-    override fun showLoadView() {
-
-    }
-
-    override fun showErrorView() {
-
-    }
-
-    override fun showNoNetworkView() {
-
-    }
-
-    override fun showEmptyView() {
-
-    }
-}
 
 abstract class BasicPresenter(uiView: UiView?) {
 
@@ -68,7 +23,7 @@ abstract class BasicPresenter(uiView: UiView?) {
     abstract fun destroy()
 }
 
-abstract class BasePresenter1<T, V : BasicView<T>>(uiView: UiView?, var view: V?) : BasicPresenter(uiView) {
+abstract class BasicPresenter1<T, V : BasicView<T>>(uiView: UiView?, var view: V?) : BasicPresenter(uiView) {
 
     /**
      * activity销毁时调用这个方法
@@ -79,7 +34,7 @@ abstract class BasePresenter1<T, V : BasicView<T>>(uiView: UiView?, var view: V?
 
 }
 
-abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : BasePresenter1<T, V>(uiView, view) {
+abstract class BasicPresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : BasicPresenter1<T, V>(uiView, view) {
 
     /**
      * result放在这里是为了每次请求之前都要先停止之前的请求
@@ -241,7 +196,7 @@ abstract class BasePresenter2<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
     }
 }
 
-abstract class BasePresenter3<T, V : BasicView<T>>(uiView: UiView?, view: V?) : BasePresenter2<T, V>(uiView, view) {
+abstract class BasicPresenter3<T, V : BasicView<T>>(uiView: UiView?, view: V?) : BasicPresenter2<T, V>(uiView, view) {
 
     var pageStart = 0
     var page = pageStart
@@ -275,7 +230,7 @@ abstract class BasePresenter3<T, V : BasicView<T>>(uiView: UiView?, view: V?) : 
 /**
  * 请求HomeData数据的presenter
  */
-abstract class HomePresenter(uiView: UiView?, view: HomeView?) : BasePresenter3<HomeData, HomeView>(uiView, view) {
+abstract class HomePresenter(uiView: UiView?, view: HomeView?) : BasicPresenter3<HomeData, HomeView>(uiView, view) {
 
     companion object {
         val TAG: String = HomePresenter::class.java.simpleName

@@ -4,7 +4,7 @@ import com.cla.home.common.CommonWebFragment
 import com.cla.home.main.HomeFragment
 import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.ui.BasicFragment
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.ui.VpBasicFragment
 
 /**

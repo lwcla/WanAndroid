@@ -2,11 +2,11 @@ package com.cla.navigation
 
 import android.content.Context
 import com.konsung.basic.bean.navigation.NavigationBean
-import com.konsung.basic.ui.BasePresenter2
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.BasicPresenter2
+import com.konsung.basic.presenter.BasicView
+import com.konsung.basic.presenter.UiView
 
-class LoadNavigation(uiView: UiView?, view: LoadNavigationView?) : BasePresenter2<List<NavigationBean>, LoadNavigationView>(uiView, view) {
+class LoadNavigation(uiView: UiView?, view: LoadNavigationView?) : BasicPresenter2<List<NavigationBean>, LoadNavigationView>(uiView, view) {
 
     override fun success(context: Context, t: List<NavigationBean>) {
         val list = mutableListOf<NavigationBean>()

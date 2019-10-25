@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.textfield.TextInputEditText
 import com.konsung.basic.bean.site.SiteCollectBean
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.presenter.AddSiteCollectPresenter

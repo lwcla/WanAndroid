@@ -10,6 +10,7 @@ import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.bean.tree.SystemTreeListBean
+import com.konsung.basic.config.RequestData
 import com.konsung.basic.config.RequestResult
 
 class RequestUtils private constructor() : HttpHelper {
@@ -111,7 +112,15 @@ class RequestUtils private constructor() : HttpHelper {
         request.register(context, userName, password1, password2, result)
     }
 
+    override fun register(context: Context, userName: String, password1: String, password2: String, result: RequestData<UserDto>) {
+        request.register(context, userName, password1, password2, result)
+    }
+
     override fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>) {
+        request.login(context, userName, passWord, result)
+    }
+
+    override fun login(context: Context, userName: String, passWord: String, result: RequestData<UserDto>) {
         request.login(context, userName, passWord, result)
     }
 

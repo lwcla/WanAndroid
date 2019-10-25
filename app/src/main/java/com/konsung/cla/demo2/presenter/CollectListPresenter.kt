@@ -2,9 +2,9 @@ package com.konsung.cla.demo2.presenter
 
 import android.content.Context
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.ui.HomePresenter
-import com.konsung.basic.ui.HomeView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.HomePresenter
+import com.konsung.basic.presenter.HomeView
+import com.konsung.basic.presenter.UiView
 
 class CollectListPresenter(uiView: UiView?, view: HomeView) : HomePresenter(uiView, view) {
 

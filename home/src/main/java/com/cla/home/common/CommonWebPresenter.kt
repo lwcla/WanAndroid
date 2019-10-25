@@ -1,11 +1,11 @@
 package com.cla.home.common
 
 import com.konsung.basic.bean.CommonWebBean
-import com.konsung.basic.ui.BasePresenter2
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.BasicPresenter2
+import com.konsung.basic.presenter.BasicView
+import com.konsung.basic.presenter.UiView
 
-class CommonWebPresenter(uiView: UiView?, view: CommonWebView?) : BasePresenter2<List<CommonWebBean>, CommonWebView>(uiView, view) {
+class CommonWebPresenter(uiView: UiView?, view: CommonWebView?) : BasicPresenter2<List<CommonWebBean>, CommonWebView>(uiView, view) {
 
     fun load() {
         request { ctx, result ->

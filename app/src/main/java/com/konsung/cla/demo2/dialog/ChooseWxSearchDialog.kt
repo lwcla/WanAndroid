@@ -16,7 +16,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.presenter.LoadWxArticleTitle
 import com.konsung.basic.presenter.LoadWxArticleTitleView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.ConvertUtils
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R

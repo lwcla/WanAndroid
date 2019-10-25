@@ -5,9 +5,6 @@ import android.content.Intent
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.config.RequestResult
-import com.konsung.basic.ui.BasePresenter1
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
@@ -16,7 +13,7 @@ import com.konsung.basic.util.toast
  * 收藏
  * @param isCollectListPage 是否在我的收藏页面
  */
-class CollectPresenter(uiView: UiView?, view: CollectView?, private val isCollectListPage: Boolean = false) : BasePresenter1<String, CollectView>(uiView, view) {
+class CollectPresenter(uiView: UiView?, view: CollectView?, private val isCollectListPage: Boolean = false) : BasicPresenter1<String, CollectView>(uiView, view) {
 
     companion object {
         val TAG: String = CollectPresenter::class.java.simpleName

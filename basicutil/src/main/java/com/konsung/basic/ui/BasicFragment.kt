@@ -15,8 +15,10 @@ import com.konsung.basic.adapter.BaseAdapterHelper
 import com.konsung.basic.net.NetStateChangeObserver
 import com.konsung.basic.net.NetworkStatusCallback
 import com.konsung.basic.net.NetworkType
+import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
+import com.konsung.basic.presenter.UiView
 import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.receiver.CollectResult
 import com.konsung.basic.util.Debug

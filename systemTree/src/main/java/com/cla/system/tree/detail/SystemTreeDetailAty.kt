@@ -12,7 +12,8 @@ import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.VpFragmentPagerAdapter
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
@@ -26,12 +27,11 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import net.lucode.hackware.magicindicator.buildins.commonnavigator.indicators.LinePagerIndicator
 
 class SystemTreeDetailAty : BasicAty() {
-
     companion object {
+
         val TAG: String = SystemTreeDetailAty::class.java.simpleName
         const val INIT_DETAIL = 300L
     }
-
     init {
         initDelay = INIT_DETAIL
     }
@@ -45,6 +45,8 @@ class SystemTreeDetailAty : BasicAty() {
     override fun getLayoutId(): Int = R.layout.activity_system_tree_detail
 
     override fun initPresenter(): List<BasicPresenter>? = null
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
         setSupportActionBar(toolbar)

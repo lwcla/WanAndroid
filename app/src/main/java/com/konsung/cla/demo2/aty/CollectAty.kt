@@ -6,7 +6,8 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.HomeDataAty
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.CollectListAdapter
@@ -17,11 +18,10 @@ import com.konsung.cla.demo2.presenter.CollectListPresenter
  * 我的收藏
  */
 class CollectAty : HomeDataAty(), View.OnClickListener {
-
     companion object {
+
         val TAG: String = CollectAty::class.java.simpleName
     }
-
     init {
         refreshAfterScrollTop = false
         isCollectListPage = true
@@ -34,6 +34,8 @@ class CollectAty : HomeDataAty(), View.OnClickListener {
     private var linkCollectDialog: LinkCollectDialog? = null
 
     override fun initPresenter(): List<BasicPresenter>? = listOf(collectListPresenter, collectPresenter)
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
         viewStub.layoutResource = R.layout.view_collect_title

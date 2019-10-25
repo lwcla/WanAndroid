@@ -1,8 +1,6 @@
 package com.konsung.basic.config
 
-import com.konsung.basic.presenter.BasicView
-
-abstract class RequestResult<T>(private val view: BasicView<T>?) {
+abstract class RequestData<T> {
 
     /**
      * 是否在拿到请求结果时就弹出toast提示
@@ -27,23 +25,27 @@ abstract class RequestResult<T>(private val view: BasicView<T>?) {
      */
     var refreshData = true
 
-    open fun success(t: T) {
-        view?.success(t, refreshData)
+    open fun complete(success: Boolean) {
+
     }
 
-    open fun success() {
-        view?.success(refreshData)
+    open fun empty() {
+
     }
 
     open fun failed(message: String) {
-        view?.failed(message)
+
+    }
+
+    open fun success(t: T) {
+
+    }
+
+    open fun success() {
+
     }
 
     open fun noNetwork() {
-        view?.noNetwork()
-    }
 
-    open fun complete(success:Boolean) {
-        view?.complete(success)
     }
 }

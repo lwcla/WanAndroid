@@ -1,12 +1,12 @@
 package com.cla.home.main
 
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.ui.BasePresenter2
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.BasicPresenter2
+import com.konsung.basic.presenter.BasicView
+import com.konsung.basic.presenter.UiView
 
 
-open class TopArticlePresenter(uiView: UiView?, view: TopArticleView) : BasePresenter2<List<HomeData.DatasBean>, TopArticleView>(uiView, view) {
+open class TopArticlePresenter(uiView: UiView?, view: TopArticleView) : BasicPresenter2<List<HomeData.DatasBean>, TopArticleView>(uiView, view) {
 
     companion object {
         val TAG: String = TopArticlePresenter::class.java.simpleName

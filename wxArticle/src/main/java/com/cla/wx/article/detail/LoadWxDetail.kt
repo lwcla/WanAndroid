@@ -1,8 +1,8 @@
 package com.cla.wx.article.detail
 
-import com.konsung.basic.ui.HomePresenter
-import com.konsung.basic.ui.HomeView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.HomePresenter
+import com.konsung.basic.presenter.HomeView
+import com.konsung.basic.presenter.UiView
 
 class LoadWxDetail(uiView: UiView?, view: HomeView?, private val cId: Int) : HomePresenter(uiView, view) {
 

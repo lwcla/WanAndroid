@@ -4,7 +4,8 @@ import com.chad.library.adapter.base.BaseViewHolder
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.config.BaseConfig
-import com.konsung.basic.ui.BasicPresenter
+import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.HomeDataAty
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.toast
@@ -13,18 +14,20 @@ import com.konsung.cla.demo2.adapter.SearchResultAdapter
 import com.konsung.cla.demo2.presenter.SearchResultPresenter
 
 class SearchResultAty : HomeDataAty() {
-
     companion object {
+
         val TAG: String = SearchResultAty::class.java.simpleName
     }
 
     private val searchResultPresenter by lazy { SearchResultPresenter(this, homeView, getKey(), getWxId()) }
 
     private var key: String? = null
+
     private var searchForWxArticle = false
     private var wxId = -1
-
     override fun initPresenter(): List<BasicPresenter>? = listOf(searchResultPresenter, collectPresenter)
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     private fun getKey(): String? {
 

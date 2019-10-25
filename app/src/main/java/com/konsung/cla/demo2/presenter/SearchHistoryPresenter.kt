@@ -2,11 +2,11 @@ package com.konsung.cla.demo2.presenter
 
 import com.konsung.basic.bean.search.SearchKey
 import com.konsung.basic.db.DbFactory
-import com.konsung.basic.ui.BasePresenter1
-import com.konsung.basic.ui.BasicView
-import com.konsung.basic.ui.UiView
+import com.konsung.basic.presenter.BasicPresenter1
+import com.konsung.basic.presenter.BasicView
+import com.konsung.basic.presenter.UiView
 
-class SearchHistoryPresenter(uiView: UiView?, view: SearchHistoryView?) : BasePresenter1<List<SearchKey>, SearchHistoryView>(uiView, view) {
+class SearchHistoryPresenter(uiView: UiView?, view: SearchHistoryView?) : BasicPresenter1<List<SearchKey>, SearchHistoryView>(uiView, view) {
 
     fun clear() {
         DbFactory.getDb().clearSearchHistory()

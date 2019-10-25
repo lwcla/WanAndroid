@@ -4,6 +4,7 @@ import android.widget.TextView
 import com.chad.library.adapter.base.BaseViewHolder
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.HomeData
+import com.konsung.basic.presenter.HomeView
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
