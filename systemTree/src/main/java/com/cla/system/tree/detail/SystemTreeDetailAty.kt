@@ -11,10 +11,10 @@ import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.ui.BasicFragment
+import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.Presenter
-import com.konsung.basic.ui.VpFragmentPagerAdapter
+import com.konsung.basic.ui.fragment.VpFragmentPagerAdapter
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
 import com.konsung.basic.view.ColorTransitionPagerTitleView

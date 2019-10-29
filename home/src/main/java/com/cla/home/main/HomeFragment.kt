@@ -7,7 +7,7 @@ import com.cla.home.R
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.presenter.BasicPresenter
-import com.konsung.basic.ui.HomeDataFragment
+import com.konsung.basic.ui.fragment.HomeDataFragment
 import com.konsung.basic.util.AppUtils
 
 /**

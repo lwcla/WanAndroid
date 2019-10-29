@@ -12,7 +12,7 @@ import com.cla.navigation.utils.PinyinComparator
 import com.cla.navigation.view.SideBar
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.navigation.NavigationBean
-import com.konsung.basic.ui.BasicFragment
+import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.ConvertUtils

@@ -1,4 +1,4 @@
-package com.konsung.basic.ui
+package com.konsung.basic.view
 
 import android.graphics.Rect
 import android.view.View

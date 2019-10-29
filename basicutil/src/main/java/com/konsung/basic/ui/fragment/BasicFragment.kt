@@ -1,4 +1,4 @@
-package com.konsung.basic.ui
+package com.konsung.basic.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
@@ -21,6 +21,7 @@ import com.konsung.basic.presenter.CollectView
 import com.konsung.basic.presenter.UiView
 import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.receiver.CollectResult
+import com.konsung.basic.view.RefreshRecyclerView
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.view.MultipleStatusView

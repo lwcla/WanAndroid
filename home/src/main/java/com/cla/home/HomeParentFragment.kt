@@ -3,9 +3,9 @@ package com.cla.home
 import com.cla.home.common.CommonWebFragment
 import com.cla.home.main.HomeFragment
 import com.konsung.basic.bean.TwoBean
-import com.konsung.basic.ui.BasicFragment
+import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
-import com.konsung.basic.ui.VpBasicFragment
+import com.konsung.basic.ui.fragment.VpBasicFragment
 
 /**
  * 首页

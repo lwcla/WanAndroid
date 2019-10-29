@@ -5,7 +5,7 @@ import com.cla.wx.article.R
 import com.cla.wx.article.adapter.WxDetailAdapter
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.presenter.BasicPresenter
-import com.konsung.basic.ui.HomeDataFragment
+import com.konsung.basic.ui.fragment.HomeDataFragment
 
 class WxDetailFragment : HomeDataFragment() {
 

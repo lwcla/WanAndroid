@@ -5,7 +5,7 @@ import com.cla.project.tree.ProjectAdapter
 import com.cla.project.tree.R
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.presenter.BasicPresenter
-import com.konsung.basic.ui.HomeDataFragment
+import com.konsung.basic.ui.fragment.HomeDataFragment
 import com.konsung.basic.presenter.HomeView
 
 abstract class ProjectFragment : HomeDataFragment() {

@@ -22,8 +22,8 @@ import com.konsung.basic.presenter.LogoutView
 import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.ui.BasicFragment
-import com.konsung.basic.ui.FragmentRefresh
+import com.konsung.basic.ui.fragment.BasicFragment
+import com.konsung.basic.ui.fragment.FragmentRefresh
 import com.konsung.basic.util.*
 import com.konsung.cla.demo2.App
 import com.konsung.cla.demo2.R

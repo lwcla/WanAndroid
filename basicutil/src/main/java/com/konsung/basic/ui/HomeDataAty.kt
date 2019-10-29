@@ -18,6 +18,7 @@ import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.toast
 import com.konsung.basic.view.MultipleStatusView
+import com.konsung.basic.view.RefreshRecyclerView
 import kotlinx.android.synthetic.main.activity_home_data.*
 
 abstract class HomeDataAty : BasicAty(), CollectResult {

@@ -5,7 +5,7 @@ import com.cla.system.tree.R
 import com.cla.system.tree.detail.adapter.SystemTreeDetailAdapter
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.presenter.BasicPresenter
-import com.konsung.basic.ui.HomeDataFragment
+import com.konsung.basic.ui.fragment.HomeDataFragment
 
 class SystemTreeDetailFragment : HomeDataFragment() {
 

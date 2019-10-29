@@ -5,9 +5,9 @@ import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.presenter.LoadWxArticleTitle
 import com.konsung.basic.presenter.LoadWxArticleTitleView
-import com.konsung.basic.ui.BasicFragment
+import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
-import com.konsung.basic.ui.VpBasicFragment
+import com.konsung.basic.ui.fragment.VpBasicFragment
 
 /**
  * 公众号

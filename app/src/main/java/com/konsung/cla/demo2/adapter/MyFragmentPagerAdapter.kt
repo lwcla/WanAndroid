@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.konsung.basic.bean.ThreeBean
-import com.konsung.basic.ui.BasicFragment
+import com.konsung.basic.ui.fragment.BasicFragment
 
 class MyFragmentPagerAdapter(fm: FragmentManager, private val fragmentList: List<ThreeBean<String, Int, BasicFragment>>) : FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 

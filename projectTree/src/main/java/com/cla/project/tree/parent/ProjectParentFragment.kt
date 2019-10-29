@@ -5,9 +5,9 @@ import com.cla.project.tree.fragment.NewestProjectFragment
 import com.cla.project.tree.fragment.ProjectTreeFragment
 import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.bean.project.ProjectTitleBean
-import com.konsung.basic.ui.BasicFragment
+import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
-import com.konsung.basic.ui.VpBasicFragment
+import com.konsung.basic.ui.fragment.VpBasicFragment
 
 /**
  * 项目分类

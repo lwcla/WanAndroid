@@ -5,7 +5,7 @@ import com.konsung.basic.bean.HomeData
 import com.konsung.basic.config.RequestResult
 import com.konsung.basic.net.HttpHelper
 import com.konsung.basic.net.HttpHelperImpl
-import com.konsung.basic.ui.RefreshRecyclerView
+import com.konsung.basic.view.RefreshRecyclerView
 import java.lang.ref.WeakReference
 
 abstract class BasicPresenter(uiView: UiView?) {

@@ -1,4 +1,4 @@
-package com.konsung.basic.ui
+package com.konsung.basic.view
 
 import android.content.Context
 import android.util.AttributeSet
@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.konsung.basic.config.ImageLoadUtil
+import com.konsung.basic.ui.fragment.FragmentRefresh
 import com.konsung.basic.util.R
 import com.scwang.smartrefresh.header.MaterialHeader
 import com.scwang.smartrefresh.layout.SmartRefreshLayout

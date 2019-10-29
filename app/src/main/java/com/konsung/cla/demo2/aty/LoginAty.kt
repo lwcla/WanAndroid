@@ -17,7 +17,7 @@ import com.konsung.basic.presenter.LogoutPresenterImpl
 import com.konsung.basic.presenter.LogoutView
 import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.ui.HeightView
+import com.konsung.basic.view.HeightView
 import com.konsung.basic.util.FileUtils
 import com.konsung.basic.util.SpUtils
 import com.konsung.basic.util.Utils

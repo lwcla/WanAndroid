@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.cla.system.tree.R
 import com.cla.system.tree.view.TreeListContentView
 import com.konsung.basic.bean.tree.SystemTreeListBean
-import com.konsung.basic.ui.HeightView
+import com.konsung.basic.view.HeightView
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.Utils

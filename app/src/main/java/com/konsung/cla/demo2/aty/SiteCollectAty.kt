@@ -6,8 +6,8 @@ import com.konsung.basic.bean.site.SiteCollectBean
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.Presenter
-import com.konsung.basic.ui.RefreshRecyclerView
-import com.konsung.basic.ui.SpaceDecoration
+import com.konsung.basic.view.RefreshRecyclerView
+import com.konsung.basic.view.SpaceDecoration
 import com.konsung.basic.view.MultipleStatusView
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.EditListener

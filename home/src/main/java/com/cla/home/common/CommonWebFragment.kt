@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.cla.home.R
 import com.konsung.basic.bean.CommonWebBean
-import com.konsung.basic.ui.BasicFragment
+import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.Debug

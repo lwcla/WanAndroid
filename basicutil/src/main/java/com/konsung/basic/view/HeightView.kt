@@ -1,4 +1,4 @@
-package com.konsung.basic.ui
+package com.konsung.basic.view
 
 import android.view.View
 import android.view.ViewGroup

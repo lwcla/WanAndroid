@@ -1,4 +1,4 @@
-package com.konsung.basic.ui
+package com.konsung.basic.ui.fragment
 
 import android.content.Context
 import android.graphics.Color
