@@ -1,39 +1,66 @@
 package com.konsung.basic.presenter
 
 import android.content.Context
-import com.konsung.basic.config.BaseConfig
+import com.konsung.basic.config.RequestData
+import com.konsung.basic.model.BaseModel
+import com.konsung.basic.model.Model
 import com.konsung.basic.net.cookie.PersistentCookieJar
-import com.konsung.basic.util.R
-import com.konsung.basic.util.SpUtils
-import com.konsung.basic.util.toast
 
-class LogoutPresenter(uiView: UiView?, view: LogoutView) : BasicPresenter2<String, LogoutView>(uiView, view) {
+/**
+ * 退出登录presenter实现类
+ */
+class LogoutPresenterImpl(uiView: LogoutView?) : BasePresenter1<String, LogoutView, LogoutModel>(uiView, LogoutModelImpl()), LogoutPresenter {
 
-    companion object {
-        val TAG: String = LogoutPresenter::class.java.simpleName
-    }
-
-    override fun success(context: Context) {
-        val cookieJar = PersistentCookieJar(context)
-        cookieJar.clear()
-        context.toast(TAG, R.string.logout_success)
-        super.success(context)
-    }
-
-    fun logout() {
-
-        val context = getUiView()?.getUiContext() ?: return
-        val userName = SpUtils.getString(context, BaseConfig.USER_NAME, "")
-
-        if (userName.isNullOrEmpty()) {
-            //现在是未登陆状态
-            return
+    override fun success(refreshData: Boolean) {
+        getContext()?.let {
+            val cookieJar = PersistentCookieJar(it)
+            cookieJar.clear()
+            getUiView()?.logoutResult(true, "")
         }
+    }
 
-        request { ctx, result ->
+    override fun failed(message: String, refreshData: Boolean) {
+        getUiView()?.logoutResult(false, message)
+    }
+
+    override fun logout() {
+        request { context, _, requestData -> model.logout(context, requestData) }
+    }
+}
+
+/**
+ * LogoutMode实现类
+ */
+class LogoutModelImpl : BaseModel<String>(), LogoutModel {
+    override fun logout(context: Context?, requestData: RequestData<String>) {
+        request(context, requestData) { ctx, result ->
             httpHelper.logout(ctx, result)
         }
     }
 }
 
-open class LogoutView : BasicView<String>()
+/**
+ * 退出登录Presenter
+ */
+interface LogoutPresenter : Presenter {
+    /**
+     * 退出登录
+     */
+    fun logout()
+}
+
+interface LogoutModel : Model {
+    /**
+     * 退出登录
+     */
+    fun logout(context: Context?, requestData: RequestData<String>)
+}
+
+interface LogoutView : UiView {
+    /**
+     * 退出登录结果
+     * @param success 成功或者失败
+     * @param errorInfo 错误信息
+     */
+    fun logoutResult(success: Boolean, errorInfo: String)
+}

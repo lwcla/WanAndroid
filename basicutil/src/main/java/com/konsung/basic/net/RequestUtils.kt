@@ -128,6 +128,10 @@ class RequestUtils private constructor() : HttpHelper {
         request.logout(context, result)
     }
 
+    override fun logout(context: Context, result: RequestData<String>) {
+        request.logout(context, result)
+    }
+
     override fun unCollect(context: Context, id: Int, result: RequestResult<String>) {
         request.unCollect(context, id, result)
     }

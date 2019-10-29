@@ -10,36 +10,22 @@ import com.konsung.basic.presenter.BasePresenter1
 import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.SpUtils
-import com.konsung.basic.util.toast
-import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.aty.LoginAty
 
 /**
  * 登录presenter实现类
  */
-class LoginPresenterImpl(view: LoginView) : BasePresenter1<UserDto, LoginView, LoginModel>(view), LoginPresenter {
-
-    override fun complete(success: Boolean, refreshData: Boolean) {
-        if (success) {
-            getContext()?.toast(LoginAty.TAG, R.string.login_success)
-        } else {
-            getContext()?.toast(LoginAty.TAG, R.string.login_failed)
-        }
-    }
+class LoginPresenterImpl(view: LoginView) : BasePresenter1<UserDto, LoginView, LoginModel>(view, LoginModelImpl()), LoginPresenter {
 
     override fun success(t: UserDto, refreshData: Boolean) {
         getContext()?.let {
             SpUtils.putString(it, BaseConfig.USER_NAME, t.username)
+            getUiView()?.loginResult(true, "")
         }
-
-        getUiView()?.loginResult(true, "")
     }
 
     override fun failed(message: String, refreshData: Boolean) {
         getUiView()?.loginResult(false, message)
     }
-
-    override fun initModel(): LoginModel = LoginModelImpl()
 
     override fun login(userName: String, pass: String) {
         request { ctx, _, result ->

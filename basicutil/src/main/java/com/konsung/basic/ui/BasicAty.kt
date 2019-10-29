@@ -11,30 +11,23 @@ import android.view.inputmethod.InputMethodManager
 import androidx.annotation.ColorRes
 import androidx.annotation.LayoutRes
 import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.konsung.basic.dialog.BasicDialog
 import com.konsung.basic.dialog.DismissListener
 import com.konsung.basic.dialog.LoadingDialog
-import com.konsung.basic.presenter.BasicPresenter
-import com.konsung.basic.presenter.Presenter
-import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.util.StatusBarUtil
 import java.lang.ref.WeakReference
 
 
-abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
+abstract class BasicAty : MvpAty(), DismissListener {
 
     companion object {
         val TAG: String = BasicAty::class.java.simpleName
     }
 
     protected var initDelay = 0L //用来延迟初始化界面，如果延迟了初始化，那么在onStart,onResume中处理界面相关的数据时，就需要特殊处理
-    private var presenters: List<BasicPresenter>? = null
-    private var presenterList: List<Presenter>? = null
-    protected lateinit var context: Context
     private var loadingDialog: LoadingDialog? = null
     protected val myHandler by lazy { MyHandler(this) }
     private val initRunnable = Runnable {
@@ -48,10 +41,6 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
         setContentView(getLayoutId())
         Debug.info(TAG, "onCreate $this initDelay=$initDelay ")
         initStatusBar()
-        context = this
-
-        presenters = initPresenter()
-        presenterList = initPresenterList()
         if (initDelay > 0) {
             myHandler.postDelayed(initRunnable, initDelay)
         } else {
@@ -87,17 +76,6 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
     override fun onDestroy() {
         super.onDestroy()
         Debug.info(TAG, "onDestroy $this")
-        presenters?.let {
-            for (p in it) {
-                p.destroy()
-            }
-        }
-
-        presenterList?.let {
-            for (p in it) {
-                p.destroy()
-            }
-        }
     }
 
     private fun initStatusBar() {
@@ -180,38 +158,8 @@ abstract class BasicAty : AppCompatActivity(), UiView, DismissListener {
 
     }
 
-    override fun getUiContext(): Context? = context
-
-    override fun loadComplete(success: Boolean) {
-
-    }
-
-    override fun showContentView() {
-
-    }
-
-    override fun showErrorView() {
-
-    }
-
-    override fun showLoadView() {
-
-    }
-
-    override fun showNoNetworkView() {
-
-    }
-
-    override fun showEmptyView() {
-
-    }
-
     @LayoutRes
     abstract fun getLayoutId(): Int
-
-    abstract fun initPresenter(): List<BasicPresenter>?
-
-    abstract fun initPresenterList(): List<Presenter>?
 
     abstract fun initView()
 

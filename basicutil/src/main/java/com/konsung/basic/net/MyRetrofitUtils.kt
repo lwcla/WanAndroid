@@ -245,6 +245,12 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result, true))
     }
 
+    fun logout(context: Context, result: RequestData<String>) {
+        infoApi
+                .logout()
+                .enqueue(ResultInterceptor(context, result, true))
+    }
+
     fun unCollect(context: Context, id: Int, result: RequestResult<String>) {
         infoApi
                 .unCollect(id)
@@ -322,13 +328,13 @@ class ResultInterceptor<T>(context: Context, private val result: RequestData<T>,
         }
 
         if (!response.isSuccessful) {
-            failed(R.string.data_request_error)
+            failed(R.string.data_request_failed)
             return
         }
 
         val data = response.body()
         if (data == null) {
-            failed(R.string.data_request_error)
+            failed(R.string.data_request_failed)
             return
         }
 
@@ -341,7 +347,7 @@ class ResultInterceptor<T>(context: Context, private val result: RequestData<T>,
                 data.errorMsg
             }
 
-            val toast = info ?: ctxReference.get()?.getString(R.string.data_request_error)
+            val toast = info ?: ctxReference.get()?.getString(R.string.data_request_failed)
 
             failed(toast ?: "")
             return
@@ -359,7 +365,7 @@ class ResultInterceptor<T>(context: Context, private val result: RequestData<T>,
 
         val resultData = data.data
         if (resultData == null) {
-            failed(R.string.data_request_error)
+            failed(R.string.data_request_failed)
             return
         }
 

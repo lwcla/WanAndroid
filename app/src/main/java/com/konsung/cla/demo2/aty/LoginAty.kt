@@ -12,8 +12,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.konsung.basic.config.BaseConfig
 import com.konsung.basic.dialog.BasicDialog
-import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.LogoutPresenter
+import com.konsung.basic.presenter.LogoutPresenterImpl
 import com.konsung.basic.presenter.LogoutView
 import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.BasicAty
@@ -21,6 +21,7 @@ import com.konsung.basic.ui.HeightView
 import com.konsung.basic.util.FileUtils
 import com.konsung.basic.util.SpUtils
 import com.konsung.basic.util.Utils
+import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.presenter.*
 import jp.wasabeef.blurry.Blurry
@@ -29,7 +30,7 @@ import kotlinx.android.synthetic.main.activity_login.*
 /**
  * 登录
  */
-class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView {
+class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView, LogoutView {
 
     companion object {
         val TAG: String = LoginAty::class.java.simpleName
@@ -38,17 +39,13 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView {
     private val heightView by lazy { HeightView(tilPassWord2) }
     private val registerPresenter: RegisterPresenter by lazy { RegisterPresenterImpl(this) }
     private val loginPresenter: LoginPresenter by lazy { LoginPresenterImpl(this) }
-    private val logoutPresenter by lazy { initLogoutPresenter() }
+    private val logoutPresenter: LogoutPresenter by lazy { LogoutPresenterImpl(this) }
 
     private var animatorSet: AnimatorSet? = null
 
     override fun getLayoutId(): Int = R.layout.activity_login
 
-    override fun initPresenter(): List<BasicPresenter>? {
-        return listOf(logoutPresenter)
-    }
-
-    override fun initPresenterList(): List<Presenter>? = listOf(registerPresenter, loginPresenter)
+    override fun initPresenterList(): List<Presenter>? = listOf(registerPresenter, loginPresenter, logoutPresenter)
 
     override fun initView() {
         initBg()
@@ -162,19 +159,6 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView {
         registerPresenter.register(userName, pass1, pass2)
     }
 
-    private fun initLogoutPresenter(): LogoutPresenter {
-
-        val view = object : LogoutView() {
-
-            override fun success(refreshData: Boolean) {
-                llLogout.visibility = View.GONE
-                llLogin.visibility = View.VISIBLE
-            }
-        }
-
-        return LogoutPresenter(this, view)
-    }
-
     override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
         //弹窗被手动关闭，取消登录
         loginPresenter.stop()
@@ -202,10 +186,14 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView {
         }
     }
 
+    /**
+     * 登录结果
+     */
     override fun loginResult(success: Boolean, errorInfo: String) {
         dismissLoadingDialog()
 
         if (success) {
+            toast(TAG, R.string.login_success)
             finishAfterTransition()
         } else {
             if (errorInfo.contains("账号")) {
@@ -217,24 +205,39 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView {
     }
 
     /**
-     * 显示注册
-     * @param login 是否切换为登录状态
+     * 退出登录结果
      */
-    override fun showRegister(login: Boolean) {
+    override fun logoutResult(success: Boolean, errorInfo: String) {
+        if (success) {
+            toast(TAG, R.string.logout_success)
+            llLogout.visibility = View.GONE
+            llLogin.visibility = View.VISIBLE
+        }
+    }
 
-        if (login && tilPassWord2.visibility == View.GONE) {
+    /**
+     * 显示注册
+     * @param toLoginView 是否切换为登录状态
+     */
+    override fun showRegister(toLoginView: Boolean) {
+
+        if (toLoginView) {
+            toast(TAG, R.string.registered_success)
+        }
+
+        if (toLoginView && tilPassWord2.visibility == View.GONE) {
             //已经是登录状态
             return
         }
 
-        if (!login && tilPassWord2.visibility == View.VISIBLE) {
+        if (!toLoginView && tilPassWord2.visibility == View.VISIBLE) {
             //已经是注册状态
             return
         }
 
         resetEditStatus()
 
-        if (!login) {
+        if (!toLoginView) {
             //切换到注册状态时，清空确认密码的输入框
             etPassWord2.setText("")
         }
@@ -257,7 +260,7 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView {
         val registerHeight1: Float
         val registerHeight2: Float
 
-        if (login) {
+        if (toLoginView) {
             inputHeight1 = height
             inputHeight2 = 0
 
@@ -298,7 +301,7 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView {
             start()
             addListener(object : AnimatorListenerAdapter() {
                 override fun onAnimationEnd(animation: Animator) {
-                    if (login) {
+                    if (toLoginView) {
                         tilPassWord2.visibility = View.GONE
                         btnRegister.visibility = View.GONE
                         tvLogin.visibility = View.GONE

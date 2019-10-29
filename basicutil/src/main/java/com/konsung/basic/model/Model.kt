@@ -60,6 +60,14 @@ abstract class BaseModel<T> {
         result?.complete(success)
     }
 
+    /**
+     * 请求
+     * @param context context
+     * @param result 请求结果回调
+     * @param toast 是否弹出错误提示
+     * @param request 请求
+     *
+     */
     inline fun request(context: Context?, result: RequestData<T>, toast: Boolean = true, request: (Context, RequestData<T>) -> Unit) {
 
         val ctx = context ?: return
@@ -128,6 +136,7 @@ abstract class BaseModel<T> {
         }
 
         requestData!!.toast = toast
+
         return requestData!!
     }
 

@@ -9,24 +9,21 @@ interface Presenter {
     fun destroy()
 }
 
-abstract class BasePresenter<V : UiView, M : Model>(private var uiView: V?) : Presenter {
+abstract class BasePresenter<V : UiView, M : Model>(private var uiView: V?, val model: M) : Presenter {
 
-    val model: M by lazy { initModel() }
+    private val reference: WeakReference<V?> = WeakReference(uiView)
 
-    private val ctxReference: WeakReference<V?> = WeakReference(uiView)
+    fun getContext(): Context? = reference.get()?.getUiContext()
 
-    fun getContext(): Context? = ctxReference.get()?.getUiContext()
-
-    fun getUiView(): V? = ctxReference.get()
+    fun getUiView(): V? = reference.get()
 
     override fun destroy() {
+        reference.clear()
         uiView = null
     }
-
-    abstract fun initModel(): M
 }
 
-abstract class BasePresenter1<T, V : UiView, M : Model>(uiView: V?) : BasePresenter<V, M>(uiView) {
+abstract class BasePresenter1<T, V : UiView, M : Model>(uiView: V?, model: M) : BasePresenter<V, M>(uiView, model) {
 
     var pageStart = 0
     var page = pageStart
@@ -208,7 +205,7 @@ abstract class BasePresenter1<T, V : UiView, M : Model>(uiView: V?) : BasePresen
     }
 }
 
-abstract class RefreshPresenter<T, V : UiView, M : Model>(uiView: V?) : BasePresenter1<T, V, M>(uiView) {
+abstract class RefreshPresenter<T, V : UiView, M : Model>(uiView: V?, model: M) : BasePresenter1<T, V, M>(uiView, model) {
 
     inline fun refresh(request3: (Context, Int, RequestData<T>) -> Unit) {
         page = pageStart

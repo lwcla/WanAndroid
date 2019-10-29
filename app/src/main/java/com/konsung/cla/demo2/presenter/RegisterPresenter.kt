@@ -10,24 +10,11 @@ import com.konsung.basic.model.Model
 import com.konsung.basic.presenter.BasePresenter1
 import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.presenter.UiView
-import com.konsung.basic.util.toast
-import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.aty.LoginAty
 
 /**
  * 注册Presenter实现类
  */
-class RegisterPresenterImpl(view: RegisterView) : BasePresenter1<UserDto, RegisterView, RegisterModel>(view), RegisterPresenter {
-
-    override fun initModel(): RegisterModel = RegisterModelImpl()
-
-    override fun complete(success: Boolean, refreshData: Boolean) {
-        if (success) {
-            getContext()?.toast(LoginAty.TAG, R.string.registered_success)
-        } else {
-            getContext()?.toast(LoginAty.TAG, R.string.registered_failed)
-        }
-    }
+class RegisterPresenterImpl(view: RegisterView) : BasePresenter1<UserDto, RegisterView, RegisterModel>(view, RegisterModelImpl()), RegisterPresenter {
 
     override fun success(t: UserDto, refreshData: Boolean) {
         val userInfo = UserInfo()
@@ -78,7 +65,7 @@ interface RegisterPresenter : Presenter {
 interface RegisterView : UiView {
     /**
      * 显示注册
-     * @param login 是否切换为登录状态
+     * @param toLoginView 是否切换为登录状态
      */
-    fun showRegister(login: Boolean)
+    fun showRegister(toLoginView: Boolean)
 }

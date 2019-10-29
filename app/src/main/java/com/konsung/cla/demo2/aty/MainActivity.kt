@@ -17,13 +17,12 @@ import com.cla.system.tree.list.SystemTreeListFragment
 import com.cla.wx.article.parent.WxParentFragment
 import com.konsung.basic.bean.ThreeBean
 import com.konsung.basic.config.BaseConfig
-import com.konsung.basic.presenter.LogoutPresenter
+import com.konsung.basic.presenter.LogoutPresenterImpl
 import com.konsung.basic.presenter.LogoutView
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.ui.BasicFragment
-import com.konsung.basic.presenter.BasicPresenter
-import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.FragmentRefresh
 import com.konsung.basic.util.*
 import com.konsung.cla.demo2.App
@@ -40,17 +39,19 @@ import net.lucode.hackware.magicindicator.buildins.commonnavigator.abs.IPagerTit
 import kotlin.system.exitProcess
 
 
-open class MainActivity : BasicAty(), View.OnClickListener {
+open class MainActivity : BasicAty(), LogoutView, View.OnClickListener {
+
     companion object {
 
         val TAG: String = MainActivity::class.java.simpleName
     }
+
     private var tvHeadName: TextView? = null
 
     private var linkCollectDialog: LinkCollectDialog? = null
     private val collectReceiver = CollectReceiver()
 
-    private val logoutPresenter by lazy { initLogoutPresenter() }
+    private val logoutPresenter by lazy { LogoutPresenterImpl(this) }
     private var lastBackTime = 0L
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,9 +73,7 @@ open class MainActivity : BasicAty(), View.OnClickListener {
 
     override fun getLayoutId(): Int = R.layout.activity_main
 
-    override fun initPresenter(): List<BasicPresenter>? = listOf(logoutPresenter)
-
-    override fun initPresenterList(): List<Presenter>? = null
+    override fun initPresenterList(): List<Presenter>? = listOf(logoutPresenter)
 
     override fun initView() {
         Debug.info(TAG, "MainActivity initView")
@@ -206,18 +205,6 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         rlHead.setOnClickListener(this)
 
         tvHeadName = headView.findViewById<TextView>(R.id.tvInfo)
-    }
-
-    private fun initLogoutPresenter(): LogoutPresenter {
-
-        val view = object : LogoutView() {
-
-            override fun success(refreshData: Boolean) {
-                resetUserName()
-            }
-        }
-
-        return LogoutPresenter(this, view)
     }
 
     /**
@@ -360,5 +347,14 @@ open class MainActivity : BasicAty(), View.OnClickListener {
         }
 
         return super.onKeyDown(keyCode, event)
+    }
+
+    /**
+     * 退出登录
+     */
+    override fun logoutResult(success: Boolean, errorInfo: String) {
+        if (success) {
+            resetUserName()
+        }
     }
 }
