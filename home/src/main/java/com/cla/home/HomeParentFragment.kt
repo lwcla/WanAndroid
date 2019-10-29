@@ -3,8 +3,9 @@ package com.cla.home
 import com.cla.home.common.CommonWebFragment
 import com.cla.home.main.HomeFragment
 import com.konsung.basic.bean.TwoBean
-import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
+import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.ui.fragment.VpBasicFragment
 
 /**
@@ -13,6 +14,8 @@ import com.konsung.basic.ui.fragment.VpBasicFragment
 class HomeParentFragment : VpBasicFragment() {
 
     override fun initPresenters(): List<BasicPresenter>? = null
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
         val homeFragment = HomeFragment()

@@ -7,6 +7,7 @@ import com.konsung.basic.presenter.LoadWxArticleTitle
 import com.konsung.basic.presenter.LoadWxArticleTitleView
 import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.fragment.VpBasicFragment
 
 /**
@@ -17,6 +18,8 @@ class WxParentFragment : VpBasicFragment() {
     private val loadWxArticleTitle by lazy { initLoadWxArticleTitle() }
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(loadWxArticleTitle)
+
+    override fun initPresenterList(): List<Presenter>?  =  null
 
     override fun initView() {
 

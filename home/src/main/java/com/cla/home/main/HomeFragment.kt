@@ -7,6 +7,7 @@ import com.cla.home.R
 import com.konsung.basic.adapter.BasicDataQuickAdapter
 import com.konsung.basic.bean.BannerData
 import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.fragment.HomeDataFragment
 import com.konsung.basic.util.AppUtils
 
@@ -29,6 +30,8 @@ class HomeFragment : HomeDataFragment() {
     override fun initPresenters(): List<BasicPresenter>? {
         return listOf(loadBanner, loadHomeData, collectPresenter)
     }
+
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
         super.initView()

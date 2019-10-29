@@ -8,6 +8,7 @@ import com.cla.home.R
 import com.konsung.basic.bean.CommonWebBean
 import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.Debug
 
@@ -28,6 +29,8 @@ class CommonWebFragment : BasicFragment() {
     override fun getLayoutId(): Int = R.layout.fragment_common_web
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(commonPresenter)
+
+    override fun initPresenterList(): List<Presenter>?  =  null
 
     override fun initView() {
         rvCommon = showView?.findViewById(R.id.rvCommon)

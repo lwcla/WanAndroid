@@ -7,6 +7,7 @@ import com.konsung.basic.bean.TwoBean
 import com.konsung.basic.bean.project.ProjectTitleBean
 import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.fragment.VpBasicFragment
 
 /**
@@ -17,6 +18,8 @@ class ProjectParentFragment : VpBasicFragment() {
     private val projectTitlePresenter by lazy { initProjectTitlePresenter() }
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(projectTitlePresenter)
+
+    override fun initPresenterList(): List<Presenter>?  =  null
 
     override fun initView() {
         projectTitlePresenter.load()

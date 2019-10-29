@@ -9,6 +9,7 @@ import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.bean.tree.SystemTreeTitle
 import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.view.SpaceDecoration
 import com.konsung.basic.util.AppUtils
 
@@ -23,6 +24,8 @@ class SystemTreeListFragment : BasicFragment() {
     override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(loadTreeList)
+
+    override fun initPresenterList(): List<Presenter>?  =  null
 
     override fun initView() {
         refreshRv = showView?.findViewById(R.id.refreshRv)

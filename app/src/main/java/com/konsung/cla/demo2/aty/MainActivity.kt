@@ -337,7 +337,6 @@ open class MainActivity : BasicAty(), LogoutView, View.OnClickListener {
                 return if (time - lastBackTime < 1000) {
                     finish()
                     exitProcess(0)
-                    true
                 } else {
                     lastBackTime = time
                     toast(TAG, R.string.press_again_to_exit_the_application)

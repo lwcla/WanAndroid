@@ -14,6 +14,7 @@ import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.navigation.NavigationBean
 import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.presenter.BasicPresenter
+import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.ConvertUtils
 import java.util.*
@@ -35,6 +36,8 @@ class NavigationFragment : BasicFragment() {
     override fun getLayoutId(): Int = R.layout.fragment_navigation
 
     override fun initPresenters(): List<BasicPresenter>? = listOf(loadNavigation)
+
+    override fun initPresenterList(): List<Presenter>?  =  null
 
     override fun initView() {
         refreshRv = showView?.findViewById(R.id.refreshRv)

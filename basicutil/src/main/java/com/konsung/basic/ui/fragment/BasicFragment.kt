@@ -10,24 +10,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.annotation.LayoutRes
-import androidx.fragment.app.Fragment
 import com.konsung.basic.adapter.BaseAdapterHelper
 import com.konsung.basic.net.NetStateChangeObserver
 import com.konsung.basic.net.NetworkStatusCallback
 import com.konsung.basic.net.NetworkType
-import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.CollectPresenter
 import com.konsung.basic.presenter.CollectView
-import com.konsung.basic.presenter.UiView
 import com.konsung.basic.receiver.CollectReceiver
 import com.konsung.basic.receiver.CollectResult
-import com.konsung.basic.view.RefreshRecyclerView
 import com.konsung.basic.util.Debug
 import com.konsung.basic.util.R
 import com.konsung.basic.view.MultipleStatusView
+import com.konsung.basic.view.RefreshRecyclerView
 import java.lang.ref.WeakReference
 
-abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, CollectResult {
+abstract class BasicFragment : MvpFragment(), NetStateChangeObserver, CollectResult {
 
     companion object {
         val TAG: String = BasicFragment::class.java.simpleName
@@ -47,7 +44,6 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     protected var multiplyStatusView: MultipleStatusView? = null
     protected var refreshRv: RefreshRecyclerView? = null
 
-    private var presenter: List<BasicPresenter>? = null
     protected val collectPresenter by lazy { initCollectPresenter() }
     protected var dataListAdapterHelper: BaseAdapterHelper? = null
 
@@ -67,7 +63,6 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Debug.info(TAG, "onCreate $this")
-        presenter = initPresenters()
         CollectReceiver.registerObserver(this)
         NetworkStatusCallback.registerObserver(this)
     }
@@ -132,12 +127,6 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
 
         if (loadHandler) {
             myHandler.removeCallbacksAndMessages(null)
-        }
-
-        presenter?.let {
-            for (p in it) {
-                p.destroy()
-            }
         }
     }
 
@@ -241,10 +230,7 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
         dataListAdapterHelper?.refreshCollectStatus(position, toCollect)
     }
 
-    override fun getUiContext(): Context? = context
-
     override fun loadComplete(success: Boolean) {
-
         //加载成功的话，由自己来处理,主要是显示是否还有数据
         if (!success) {
             refreshRv?.finishLoadMore(success)
@@ -293,8 +279,6 @@ abstract class BasicFragment : Fragment(), UiView, NetStateChangeObserver, Colle
 
     @LayoutRes
     abstract fun getLayoutId(): Int
-
-    abstract fun initPresenters(): List<BasicPresenter>?
 
     /**
      * 初始化界面元素，整个生命周期中只会执行一次
