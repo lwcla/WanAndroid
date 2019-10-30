@@ -26,7 +26,7 @@ abstract class BasicAty : MvpAty(), DismissListener {
     companion object {
         val TAG: String = BasicAty::class.java.simpleName
 
-        val HIDE_LOAD_DIALOG = 0x101
+        const val HIDE_LOAD_DIALOG = 0x101
     }
 
     protected var initDelay = 0L //用来延迟初始化界面，如果延迟了初始化，那么在onStart,onResume中处理界面相关的数据时，就需要特殊处理
