@@ -1,6 +1,7 @@
 package com.konsung.cla.demo2.presenter
 
 import android.content.Context
+import androidx.annotation.StringRes
 import com.konsung.basic.bean.UserDto
 import com.konsung.basic.bean.UserInfo
 import com.konsung.basic.config.RequestData
@@ -10,6 +11,8 @@ import com.konsung.basic.model.Model
 import com.konsung.basic.presenter.BasePresenter1
 import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.presenter.UiView
+import com.konsung.cla.demo2.R
+import com.konsung.cla.demo2.aty.LoginAty
 
 /**
  * 注册Presenter实现类
@@ -21,11 +24,40 @@ class RegisterPresenterImpl(view: RegisterView) : BasePresenter1<UserDto, Regist
         userInfo.userName = t.username
         userInfo.passWord = t.password
         DbFactory.getDb().saveUserInfo(userInfo)
-        getUiView()?.showRegister(true)
+        getUiView()?.registerSuccess()
+    }
+
+    override fun failed(message: String, refreshData: Boolean) {
+        getUiView()?.registerFailed(message)
     }
 
     override fun register(userName: String, pass1: String, pass2: String) {
+
+        getUiView()?.clearErrorInfo()
+
+        if (userName.isEmpty()) {
+            getUiView()?.showErrorInfo(LoginAty.LoginInputType.USER, R.string.account_can_not_be_empty)
+            return
+        }
+
+        if (pass1.isEmpty()) {
+            getUiView()?.showErrorInfo(LoginAty.LoginInputType.PASS, R.string.pass_word_can_not_be_empty)
+            return
+        }
+
+        if (pass2.isEmpty()) {
+            getUiView()?.showErrorInfo(LoginAty.LoginInputType.PASS2, R.string.pass_word2_can_not_be_empty)
+            return
+        }
+
+        if (pass1 != pass2) {
+            getUiView()?.showErrorInfo(LoginAty.LoginInputType.PASS2, R.string.inconsistent_password_input)
+            return
+        }
+
+
         request { ctx, _, result ->
+            getUiView()?.showTipDialog(R.string.register_please_wait)
             model.register(ctx, userName, pass1, pass2, result)
         }
     }
@@ -64,8 +96,27 @@ interface RegisterPresenter : Presenter {
  */
 interface RegisterView : UiView {
     /**
-     * 显示注册
-     * @param toLoginView 是否切换为登录状态
+     * 清除所有的错误信息
      */
-    fun showRegister(toLoginView: Boolean)
+    fun clearErrorInfo()
+
+    /**
+     * 注册成功
+     */
+    fun registerSuccess()
+
+    /**
+     * 注册失败
+     */
+    fun registerFailed(error: String)
+
+    /**
+     * 显示提示弹窗
+     */
+    fun showTipDialog(@StringRes info: Int)
+
+    /**
+     * 显示错误信息
+     */
+    fun showErrorInfo(inputType: LoginAty.LoginInputType, @StringRes error: Int)
 }

@@ -17,11 +17,11 @@ import com.konsung.basic.presenter.LogoutPresenterImpl
 import com.konsung.basic.presenter.LogoutView
 import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.BasicAty
-import com.konsung.basic.view.HeightView
 import com.konsung.basic.util.FileUtils
 import com.konsung.basic.util.SpUtils
 import com.konsung.basic.util.Utils
 import com.konsung.basic.util.toast
+import com.konsung.basic.view.HeightView
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.presenter.*
 import jp.wasabeef.blurry.Blurry
@@ -34,6 +34,12 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView, Logo
 
     companion object {
         val TAG: String = LoginAty::class.java.simpleName
+    }
+
+    enum class LoginInputType {
+        USER,//账号
+        PASS,//密码
+        PASS2//确认密码
     }
 
     private val heightView by lazy { HeightView(tilPassWord2) }
@@ -93,125 +99,14 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView, Logo
     }
 
     /**
-     * 登录
+     * 显示错误信息
      */
-    private fun login() {
-//        hideSoftKeyboard(this)
-        resetEditStatus()
-
-        val userName = etUser.text.toString()
-        if (userName.isEmpty()) {
-            showError(tilUser, etUser, R.string.account_can_not_be_empty)
-            return
-        }
-
-        val pass = etPassWord.text.toString()
-        if (pass.isEmpty()) {
-            showError(tilPassWord, etPassWord, R.string.pass_word_can_not_be_empty)
-            return
-        }
-
-        showLoadingDialog(R.string.login_please_wait, false)
-        loginPresenter.login(userName, pass)
-    }
-
-    private fun resetEditStatus() {
-        tilUser.error = ""
-        tilPassWord.error = ""
-        tilPassWord2.error = ""
-    }
-
     private fun showError(tvInput: TextInputLayout, etInput: TextInputEditText, @StringRes errorRes: Int) {
-        tvInput.error = getString(errorRes)
-        etInput.requestFocus()
-        showKeyboard(etInput)
-    }
-
-    /**
-     * 注册
-     */
-    private fun register() {
-        resetEditStatus()
-
-        val userName = etUser.text.toString()
-        if (userName.isEmpty()) {
-            showError(tilUser, etUser, R.string.account_can_not_be_empty)
-            return
-        }
-
-        val pass1 = etPassWord.text.toString()
-        if (pass1.isEmpty()) {
-            showError(tilPassWord, etPassWord, R.string.pass_word_can_not_be_empty)
-            return
-        }
-
-        val pass2 = etPassWord2.text.toString()
-        if (pass2.isEmpty()) {
-            showError(tilPassWord2, etPassWord2, R.string.pass_word2_can_not_be_empty)
-            return
-        }
-
-        if (pass1 != pass2) {
-            showError(tilPassWord2, etPassWord2, R.string.inconsistent_password_input)
-            return
-        }
-
-        registerPresenter.register(userName, pass1, pass2)
-    }
-
-    override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
-        //弹窗被手动关闭，取消登录
-        loginPresenter.stop()
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            R.id.imvBg -> hideSoftKeyboard(this)
-
-            R.id.rlRegister -> showRegister(tilPassWord2.visibility != View.GONE)
-
-            R.id.cardViewLogout -> logoutPresenter.logout()
-
-            R.id.cardViewLogin -> {
-                resetEditStatus()
-                val login: Boolean = tilPassWord2.visibility == View.GONE
-                if (login) {
-                    //去登录
-                    login()
-                } else {
-                    //去注册
-                    register()
-                }
-            }
-        }
-    }
-
-    /**
-     * 登录结果
-     */
-    override fun loginResult(success: Boolean, errorInfo: String) {
-        dismissLoadingDialog()
-
-        if (success) {
-            toast(TAG, R.string.login_success)
-            finishAfterTransition()
-        } else {
-            if (errorInfo.contains("账号")) {
-                tilUser.error = errorInfo
-            } else if (errorInfo.contains("密码")) {
-                tilPassWord.error = errorInfo
-            }
-        }
-    }
-
-    /**
-     * 退出登录结果
-     */
-    override fun logoutResult(success: Boolean, errorInfo: String) {
-        if (success) {
-            toast(TAG, R.string.logout_success)
-            llLogout.visibility = View.GONE
-            llLogin.visibility = View.VISIBLE
+        try {
+            tvInput.error = getString(errorRes)
+            etInput.requestFocus()
+            showKeyboard(etInput)
+        } catch (e: Exception) {
         }
     }
 
@@ -219,7 +114,7 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView, Logo
      * 显示注册
      * @param toLoginView 是否切换为登录状态
      */
-    override fun showRegister(toLoginView: Boolean) {
+    private fun showRegister(toLoginView: Boolean) {
 
         if (toLoginView) {
             toast(TAG, R.string.registered_success)
@@ -235,7 +130,7 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView, Logo
             return
         }
 
-        resetEditStatus()
+        clearErrorInfo()
 
         if (!toLoginView) {
             //切换到注册状态时，清空确认密码的输入框
@@ -316,5 +211,86 @@ class LoginAty : BasicAty(), View.OnClickListener, RegisterView, LoginView, Logo
                 }
             })
         }
+    }
+
+    override fun clearErrorInfo() {
+        tilUser.error = ""
+        tilPassWord.error = ""
+        tilPassWord2.error = ""
+    }
+
+    override fun dismiss(dialog: BasicDialog, clickCancel: Boolean) {
+        //弹窗被手动关闭，取消登录
+        loginPresenter.stop()
+        registerPresenter.stop()
+        logoutPresenter.stop()
+    }
+
+    override fun onClick(v: View) {
+        when (v.id) {
+            R.id.imvBg -> hideSoftKeyboard(this)
+
+            R.id.rlRegister -> showRegister(tilPassWord2.visibility != View.GONE)
+
+            R.id.cardViewLogout -> logoutPresenter.logout()
+
+            R.id.cardViewLogin -> {
+                val toLogin: Boolean = tilPassWord2.visibility == View.GONE
+                if (toLogin) {
+                    //去登录
+                    loginPresenter.login(etUser.text.toString(), etPassWord.text.toString())
+                } else {
+                    //去注册
+                    registerPresenter.register(etUser.text.toString(), etPassWord.text.toString(), etPassWord2.text.toString())
+                }
+            }
+        }
+    }
+
+    override fun loadComplete(success: Boolean) {
+        dismissLoadingDialog()
+    }
+
+    override fun loginSuccess() {
+        toast(TAG, R.string.login_success)
+        finishAfterTransition()
+    }
+
+    override fun loginFailed(error: String) {
+        if (error.contains("账号")) {
+            tilUser.error = error
+        } else if (error.contains("密码")) {
+            tilPassWord.error = error
+        }
+    }
+
+    override fun logoutSuccess() {
+        toast(TAG, R.string.logout_success)
+        llLogout.visibility = View.GONE
+        llLogin.visibility = View.VISIBLE
+    }
+
+    override fun logoutFailed(error: String) {
+
+    }
+
+    override fun registerSuccess() {
+        showRegister(true)
+    }
+
+    override fun registerFailed(error: String) {
+
+    }
+
+    override fun showErrorInfo(inputType: LoginInputType, error: Int) {
+        when (inputType) {
+            LoginInputType.USER -> showError(tilUser, etUser, error)
+            LoginInputType.PASS -> showError(tilPassWord, etPassWord, error)
+            LoginInputType.PASS2 -> showError(tilPassWord2, etPassWord2, error)
+        }
+    }
+
+    override fun showTipDialog(info: Int) {
+        showLoadingDialog(info, false)
     }
 }

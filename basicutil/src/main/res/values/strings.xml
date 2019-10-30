@@ -55,6 +55,8 @@
     <string name="loading_please_wait">加载中，请稍等</string>
     <string name="submit_please_wait">数据提交中，请稍等</string>
     <string name="login_please_wait">登录中，请稍等</string>
+    <string name="register_please_wait">注册中，请稍等</string>
+    <string name="logout_please_wait">退出登录中，请稍等</string>
     <string name="press_again_to_exit_the_application">再按一次退出应用</string>
     <string name="tag_placed_at_the_top">置顶</string>
     <string name="tag_new">新</string>

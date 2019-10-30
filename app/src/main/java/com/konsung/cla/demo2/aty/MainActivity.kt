@@ -42,7 +42,6 @@ import kotlin.system.exitProcess
 open class MainActivity : BasicAty(), LogoutView, View.OnClickListener {
 
     companion object {
-
         val TAG: String = MainActivity::class.java.simpleName
     }
 
@@ -348,12 +347,16 @@ open class MainActivity : BasicAty(), LogoutView, View.OnClickListener {
         return super.onKeyDown(keyCode, event)
     }
 
-    /**
-     * 退出登录
-     */
-    override fun logoutResult(success: Boolean, errorInfo: String) {
-        if (success) {
-            resetUserName()
-        }
+    override fun logoutSuccess() {
+        dismissLoadingDialog()
+        resetUserName()
+    }
+
+    override fun logoutFailed(error: String) {
+        dismissLoadingDialog()
+    }
+
+    override fun showTipDialog(info: Int) {
+        showLoadingDialog(info, false)
     }
 }

@@ -20,7 +20,7 @@ class RequestUtils private constructor() : HttpHelper {
 
     private val request = MyRetrofitUtils.instance
 
-    override fun addSite(context: Context, name: String, link: String, result: RequestResult<SiteCollectBean>) {
+    override fun addSite(context: Context, name: String, link: String, result: RequestData<SiteCollectBean>) {
         request.addSite(context, name, link, result)
     }
 
@@ -32,7 +32,7 @@ class RequestUtils private constructor() : HttpHelper {
         request.collectLink(context, title, author, link, result)
     }
 
-    override fun editSite(context: Context, id: Int, name: String, link: String, result: RequestResult<SiteCollectBean>) {
+    override fun editSite(context: Context, id: Int, name: String, link: String, result: RequestData<SiteCollectBean>) {
         request.editSite(context, id, name, link, result)
     }
 
@@ -108,24 +108,12 @@ class RequestUtils private constructor() : HttpHelper {
         request.loadTopArticle(context, result)
     }
 
-    override fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>) {
-        request.register(context, userName, password1, password2, result)
-    }
-
     override fun register(context: Context, userName: String, password1: String, password2: String, result: RequestData<UserDto>) {
         request.register(context, userName, password1, password2, result)
     }
 
-    override fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>) {
-        request.login(context, userName, passWord, result)
-    }
-
     override fun login(context: Context, userName: String, passWord: String, result: RequestData<UserDto>) {
         request.login(context, userName, passWord, result)
-    }
-
-    override fun logout(context: Context, result: RequestResult<String>) {
-        request.logout(context, result)
     }
 
     override fun logout(context: Context, result: RequestData<String>) {

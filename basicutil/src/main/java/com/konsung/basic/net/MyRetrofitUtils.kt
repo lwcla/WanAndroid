@@ -83,10 +83,10 @@ class MyRetrofitUtils private constructor() {
     }
 
 
-    fun addSite(context: Context, name: String, link: String, result: RequestResult<SiteCollectBean>) {
+    fun addSite(context: Context, name: String, link: String, result: RequestData<SiteCollectBean>) {
         infoApi
                 .addSite(name, link)
-                .enqueue(CallInterceptor(context, result))
+                .enqueue(ResultInterceptor(context, result))
     }
 
     fun collect(context: Context, id: Int, result: RequestResult<String>) {
@@ -101,10 +101,10 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun editSite(context: Context, id: Int, name: String, link: String, result: RequestResult<SiteCollectBean>) {
+    fun editSite(context: Context, id: Int, name: String, link: String, result: RequestData<SiteCollectBean>) {
         infoApi
                 .editSite(id, name, link)
-                .enqueue(CallInterceptor(context, result))
+                .enqueue(ResultInterceptor(context, result))
     }
 
     fun fetchCollectList(context: Context, page: Int, result: RequestResult<HomeData>) {
@@ -215,34 +215,16 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>) {
-        infoApi
-                .register(userName, password1, password2)
-                .enqueue(CallInterceptor(context, result))
-    }
-
     fun register(context: Context, userName: String, password1: String, password2: String, result: RequestData<UserDto>) {
         infoApi
                 .register(userName, password1, password2)
                 .enqueue(ResultInterceptor(context, result))
     }
 
-    fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>) {
-        infoApi
-                .login(userName, passWord)
-                .enqueue(CallInterceptor(context, result))
-    }
-
     fun login(context: Context, userName: String, passWord: String, result: RequestData<UserDto>) {
         infoApi
                 .login(userName, passWord)
                 .enqueue(ResultInterceptor(context, result))
-    }
-
-    fun logout(context: Context, result: RequestResult<String>) {
-        infoApi
-                .logout()
-                .enqueue(CallInterceptor(context, result, true))
     }
 
     fun logout(context: Context, result: RequestData<String>) {

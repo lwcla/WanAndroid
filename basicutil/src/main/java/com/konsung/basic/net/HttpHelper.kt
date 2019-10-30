@@ -26,7 +26,7 @@ interface HttpHelper {
     /**
      * 网址收藏
      */
-    fun addSite(context: Context, name: String, link: String, result: RequestResult<SiteCollectBean>)
+    fun addSite(context: Context, name: String, link: String, result: RequestData<SiteCollectBean>)
 
     /**
      * 收藏
@@ -41,7 +41,7 @@ interface HttpHelper {
     /**
      * 编辑收藏的网站
      */
-    fun editSite(context: Context, id: Int, name: String, link: String, result: RequestResult<SiteCollectBean>)
+    fun editSite(context: Context, id: Int, name: String, link: String, result: RequestData<SiteCollectBean>)
 
     /**
      * 我的收藏列表
@@ -136,27 +136,12 @@ interface HttpHelper {
     /**
      * 登录
      */
-    fun login(context: Context, userName: String, passWord: String, result: RequestResult<UserDto>)
-
-    /**
-     * 登录
-     */
     fun login(context: Context, userName: String, passWord: String, result: RequestData<UserDto>)
 
     /**
      * 退出登录
      */
-    fun logout(context: Context, result: RequestResult<String>)
-
-    /**
-     * 退出登录
-     */
     fun logout(context: Context, result: RequestData<String>)
-
-    /**
-     * 注册
-     */
-    fun register(context: Context, userName: String, password1: String, password2: String, result: RequestResult<UserDto>)
 
     /**
      * 注册

@@ -6,6 +6,11 @@ import com.konsung.basic.model.Model
 import java.lang.ref.WeakReference
 
 interface Presenter {
+    /**
+     * 停止
+     */
+    fun stop()
+
     fun destroy()
 }
 
@@ -159,11 +164,7 @@ abstract class BasePresenter1<T, V : UiView, M : Model>(uiView: V?, model: M) : 
                     return
                 }
 
-                //如果之前已经成功获取数据，并且这一次是刷新全部数据的话，那么就去显示没有网络视图
-                //否则只需要提示错误信息就可以了
-                if (refreshData) {
-                    getUiView()?.showNoNetworkView()
-                }
+                getUiView()?.loadComplete(success)
 
                 presenter.complete(success, refreshData)
             }
@@ -179,7 +180,12 @@ abstract class BasePresenter1<T, V : UiView, M : Model>(uiView: V?, model: M) : 
                     return
                 }
 
-                getUiView()?.loadComplete(refreshData)
+                //如果之前已经成功获取数据，并且这一次是刷新全部数据的话，那么就去显示没有网络视图
+                //否则只需要提示错误信息就可以了
+                if (refreshData) {
+                    getUiView()?.showNoNetworkView()
+                }
+
                 presenter.noNetwork(refreshData)
             }
         }
@@ -192,7 +198,7 @@ abstract class BasePresenter1<T, V : UiView, M : Model>(uiView: V?, model: M) : 
     /**
      * 停止上一次的请求
      */
-    open fun stop() {
+    override fun stop() {
         result?.stop = true
     }
 

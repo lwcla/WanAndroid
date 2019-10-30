@@ -12,13 +12,12 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.google.android.material.textfield.TextInputEditText
 import com.konsung.basic.bean.site.SiteCollectBean
-import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
-import com.konsung.cla.demo2.presenter.AddSiteCollectPresenter
-import com.konsung.cla.demo2.presenter.AddSiteCollectView
+import com.konsung.cla.demo2.presenter.AddSitePresenterImpl
+import com.konsung.cla.demo2.presenter.AddSiteView
 
-class SiteCollectDialog : DialogFragment(), UiView {
+class SiteCollectDialog : DialogFragment(), AddSiteView {
 
     companion object {
         val TAG: String = SiteCollectDialog::class.java.simpleName
@@ -27,7 +26,7 @@ class SiteCollectDialog : DialogFragment(), UiView {
     private var llContent: LinearLayout? = null
     private var llLoading: LinearLayout? = null
 
-    private val siteCollectPresenter2 by lazy { initSiteCollectPresenter2() }
+    private val siteCollectPresenter2 by lazy { AddSitePresenterImpl(this) }
 
     var siteCollectResult: SiteCollectResult? = null
 
@@ -94,39 +93,47 @@ class SiteCollectDialog : DialogFragment(), UiView {
 
     private fun isAddNew() = siteId == -1 || position == -1
 
-    private fun initSiteCollectPresenter2(): AddSiteCollectPresenter {
-
-        val view = object : AddSiteCollectView() {
-
-            override fun success(t: SiteCollectBean, refreshData: Boolean) {
-                if (isAddNew()) {
-                    siteCollectResult?.addSuccess(t)
-                } else {
-                    siteCollectResult?.editSuccess(t, position)
-                }
-
-                dismissAllowingStateLoss()
-            }
-
-            override fun failed(string: String) {
-                llContent?.visibility = View.VISIBLE
-                llLoading?.visibility = View.GONE
-            }
-        }
-
-        return AddSiteCollectPresenter(this, view)
-    }
-
     fun show(manager: FragmentManager, tag: String?, siteId: Int = -1, position: Int = -1) {
         this.siteId = siteId
         this.position = position
         super.show(manager, tag)
     }
 
+    override fun addSiteSuccess(bean: SiteCollectBean) {
+        toast(TAG, R.string.collect_success)
+        siteCollectResult?.addSuccess(bean)
+    }
+
+    override fun addSiteFailed(error: String) {
+        toast(TAG, R.string.collect_failed)
+    }
+
+    override fun deleteSiteSuccess(bean: SiteCollectBean) {
+        toast(TAG, R.string.delete_success)
+    }
+
+    override fun deleteSiteFailed(error: String) {
+        toast(TAG, R.string.delete_failed)
+    }
+
+    override fun editSiteSuccess(bean: SiteCollectBean) {
+        siteCollectResult?.editSuccess(bean, position)
+        toast(TAG, R.string.edit_success)
+    }
+
+    override fun editSiteFailed(error: String) {
+        toast(TAG, R.string.edit_failed)
+    }
+
     override fun getUiContext(): Context? = context
 
     override fun loadComplete(success: Boolean) {
-
+        if (success) {
+            dismissAllowingStateLoss()
+        } else {
+            llContent?.visibility = View.VISIBLE
+            llLoading?.visibility = View.GONE
+        }
     }
 
     override fun showContentView() {

@@ -23,7 +23,11 @@ class LoadingDialog : BasicDialog() {
     }
 
     override fun initData(view: View) {
-        tvTitle?.setText(textRes)
+        try {
+            tvTitle?.setText(textRes)
+        } catch (e: Exception) {
+            tvTitle?.setText(R.string.loading_please_wait)
+        }
     }
 
     fun show(manager: FragmentManager, tag: String?, textRes: Int = R.string.loading_please_wait, cancel: Boolean = true) {

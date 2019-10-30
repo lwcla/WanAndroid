@@ -25,11 +25,14 @@ abstract class BasicAty : MvpAty(), DismissListener {
 
     companion object {
         val TAG: String = BasicAty::class.java.simpleName
+
+        val HIDE_LOAD_DIALOG = 0x101
     }
 
     protected var initDelay = 0L //用来延迟初始化界面，如果延迟了初始化，那么在onStart,onResume中处理界面相关的数据时，就需要特殊处理
     private var loadingDialog: LoadingDialog? = null
-    protected val myHandler by lazy { MyHandler(this) }
+    val myHandler by lazy { MyHandler(this) }
+
     private val initRunnable = Runnable {
         initView()
         initEvent()
@@ -93,11 +96,7 @@ abstract class BasicAty : MvpAty(), DismissListener {
     }
 
     fun dismissLoadingDialog() {
-        if (loadingDialog != null && loadingDialog?.isVisible == true) {
-            loadingDialog?.dismissAllowingStateLoss()
-        }
-
-        loadingDialog = null
+        myHandler.sendEmptyMessageDelayed(HIDE_LOAD_DIALOG, 500)
     }
 
     /**
@@ -131,7 +130,7 @@ abstract class BasicAty : MvpAty(), DismissListener {
     }
 
     fun showLoadingDialog(@StringRes textRes: Int = R.string.loading_please_wait, cancel: Boolean = true) {
-
+        myHandler.removeMessages(HIDE_LOAD_DIALOG)
         val tag = LoadingDialog::class.java.simpleName
 
         try {
@@ -178,6 +177,17 @@ abstract class BasicAty : MvpAty(), DismissListener {
             }
 
             val aty = reference.get() ?: return
+
+            when (msg.what) {
+
+                HIDE_LOAD_DIALOG -> {
+                    if (aty.loadingDialog != null && aty.loadingDialog?.isVisible == true) {
+                        aty.loadingDialog?.dismissAllowingStateLoss()
+                    }
+
+                    aty.loadingDialog = null
+                }
+            }
 
             aty.handleMessage(msg)
         }
