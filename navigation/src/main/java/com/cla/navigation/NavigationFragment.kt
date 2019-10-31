@@ -116,11 +116,11 @@ class NavigationFragment : BasicFragment() {
         sideBar?.refreshLabels(nameSet.toList())
 
         //设置标签颜色
-        decoration.setLabelColor(ContextCompat.getColor(context!!, R.color.normal_color1))
+        decoration.setLabelColor(ContextCompat.getColor(context!!, R.color.black_13))
         //设置标签高度
         decoration.setLabelHeight(ConvertUtils.dp2px(context!!, 25.toFloat()))
         //设置标签字体颜色
-        decoration.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+        decoration.setTextColor(ContextCompat.getColor(context!!, R.color.black))
         //设置标签字体大小
         decoration.setTextSize(ConvertUtils.sp2px(context!!, 15.toFloat()))
 

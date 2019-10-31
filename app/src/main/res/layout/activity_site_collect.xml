@@ -65,6 +65,6 @@
         android:src="@mipmap/scroll_to_top"
         app:fab_colorNormal="@color/white"
         app:fab_colorPressed="@color/white"
-        app:fab_colorRipple="@color/normal_color_13" />
+        app:fab_colorRipple="@color/black_13" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
