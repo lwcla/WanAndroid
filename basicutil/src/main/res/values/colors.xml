@@ -9,6 +9,10 @@
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
     <color name="red">#FF0033</color>
+    <color name="red_45">#73FF0033</color>
+    <color name="red_35">#59FF0033</color>
+    <color name="red_25">#40FF0033</color>
+    <color name="red_13">#0DFF0033</color>
     <color name="bg_menu">#f4f7fd</color>
     <color name="btn_search_color">#0D72D9</color>
     <color name="normal_color_45">#73000000</color>

@@ -66,8 +66,8 @@ abstract class VpBasicFragment : BasicFragment() {
             override fun getTitleView(context: Context?, index: Int): IPagerTitleView {
                 val clipPagerTitleView = ColorTransitionPagerTitleView(context)
                 clipPagerTitleView.text = StringUtils.instance.formHtml(titleList?.get(index)?.a)
-                clipPagerTitleView.normalColor = ContextCompat.getColor(context!!, R.color.normal_color2)
-                clipPagerTitleView.selectedColor = Color.WHITE
+                clipPagerTitleView.normalColor = ContextCompat.getColor(context!!, R.color.normal_color_45)
+                clipPagerTitleView.selectedColor = Color.RED
 
                 clipPagerTitleView.setOnClickListener {
 
@@ -87,7 +87,7 @@ abstract class VpBasicFragment : BasicFragment() {
 
             override fun getIndicator(context: Context): IPagerIndicator? {
                 val indicator = LinePagerIndicator(context)
-                indicator.setColors(Color.WHITE)
+                indicator.setColors(Color.RED)
                 return indicator
             }
         }

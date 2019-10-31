@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentManager
 abstract class BasicDialog : DialogFragment() {
 
     companion object {
-        val TAG = BasicDialog::class.java.simpleName
+        val TAG: String = BasicDialog::class.java.simpleName
     }
 
     var rootView: View? = null
