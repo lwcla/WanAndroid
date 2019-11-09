@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
 import com.konsung.basic.bean.search.SearchKey
-import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.Presenter
+import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.util.ConvertUtils
 import com.konsung.basic.util.StringUtils
 import com.konsung.basic.util.toast
@@ -41,6 +41,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
         val TAG: String = SearchAty::class.java.simpleName
         const val INIT_DETAIL = 300L
     }
+
     init {
         initDelay = INIT_DETAIL
     }
@@ -73,7 +74,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
     override fun initPresenter(): List<BasicPresenter>? = listOf(searchHotPresenter, historyKeyPresenter)
 
-    override fun initPresenterList(): List<Presenter>?  = null
+    override fun initPresenterList(): List<Presenter>? = null
 
     override fun initView() {
         StringUtils.instance.loadTextIcon(context, tvBack)
