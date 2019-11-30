@@ -3,6 +3,7 @@ package com.konsung.cla.demo2.aty
 import android.content.Context
 import android.content.IntentFilter
 import android.os.Bundle
+import android.transition.Fade
 import android.view.KeyEvent
 import android.view.View
 import android.widget.TextView
@@ -43,6 +44,11 @@ open class MainActivity : BasicAty(), LogoutView, View.OnClickListener {
 
     companion object {
         val TAG: String = MainActivity::class.java.simpleName
+        const val INIT_DELAY = 300L
+    }
+
+    init {
+        initDelay = INIT_DELAY * 2
     }
 
     private var tvHeadName: TextView? = null
@@ -55,6 +61,9 @@ open class MainActivity : BasicAty(), LogoutView, View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        window.enterTransition = Fade().setDuration(INIT_DELAY)
+        window.exitTransition = Fade().setDuration(INIT_DELAY)
 
         val intentFilter = IntentFilter(BaseConfig.COLLECT_RESULT_ACTION)
         LocalBroadcastManager.getInstance(this).registerReceiver(collectReceiver, intentFilter)
@@ -334,6 +343,7 @@ open class MainActivity : BasicAty(), LogoutView, View.OnClickListener {
 
                 val time = System.currentTimeMillis()
                 return if (time - lastBackTime < 1000) {
+
                     finish()
                     exitProcess(0)
                 } else {

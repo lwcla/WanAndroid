@@ -24,10 +24,11 @@ open class ProductUtils {
         }
     }
 
-    open fun startMainAty(context: Context) {
+    open fun startMainAty(activity: Activity) {
         val intent = Intent()
-        intent.setClass(context, MainActivity::class.java)
-        context.startActivity(intent)
+        intent.setClass(activity, MainActivity::class.java)
+//        activity.startActivity(intent)
+        activity.startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(activity).toBundle())
     }
 
     open fun startSearchAty(context: Context?) {

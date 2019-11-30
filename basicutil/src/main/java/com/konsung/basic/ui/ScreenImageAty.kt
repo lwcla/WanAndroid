@@ -21,8 +21,8 @@ import com.konsung.basic.util.toast
 import kotlinx.android.synthetic.main.activity_screen_image.*
 
 class ScreenImageAty : BasicAty() {
-    companion object {
 
+    companion object {
         const val INIT_DELAY = 500L
     }
 
