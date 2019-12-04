@@ -6,7 +6,7 @@ import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.presenter.UiView
 
 /**
- * 搜索记录presenter
+ * 搜索记录presenter实现类
  */
 class LoadSearchHistoryPresenterImpl(private var uiView: LoadSearchHistoryView?) : LoadSearchHistoryPresenter {
 
