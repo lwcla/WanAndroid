@@ -5,31 +5,10 @@ import com.konsung.basic.db.DbFactory
 import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.presenter.UiView
 
-//class SearchHistoryPresenter(uiView: UiView?, view: SearchHistoryView?) : BasicPresenter1<List<SearchKey>, SearchHistoryView>(uiView, view) {
-//
-//    fun clear() {
-//        DbFactory.getDb().clearSearchHistory()
-//        view?.success(listOf(), true)
-//    }
-//
-//    fun load() {
-//        val keys = DbFactory.getDb().loadSearchKey()
-//        view?.success(keys, true)
-//    }
-//
-//    fun save(searchKey: SearchKey) {
-//
-//        if (view == null) {
-//            return
-//        }
-//
-//        DbFactory.getDb().saveSearchKey(searchKey)
-//    }
-//}
-//
-//open class SearchHistoryView : BasicView<List<SearchKey>>()
-
-class LoadSearchHistoryPresenterImpl(private val uiView: LoadSearchHistoryView?) : LoadSearchHistoryPresenter {
+/**
+ * 搜索记录presenter
+ */
+class LoadSearchHistoryPresenterImpl(private var uiView: LoadSearchHistoryView?) : LoadSearchHistoryPresenter {
 
     private val model: LoadSearchHistoryModel = LoadSearchHistoryModelImpl()
 
@@ -65,7 +44,7 @@ class LoadSearchHistoryPresenterImpl(private val uiView: LoadSearchHistoryView?)
     }
 
     override fun destroy() {
-
+        uiView = null
     }
 }
 
