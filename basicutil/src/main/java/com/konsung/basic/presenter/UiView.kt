@@ -7,27 +7,27 @@ interface UiView {
     fun getUiContext(): Context?
 
     fun loadComplete(success: Boolean) {
-        //空实现
+        //默认空实现
     }
 
     fun showContentView() {
-        //空实现
+        //默认空实现
     }
 
     fun showErrorView() {
-        //空实现
+        //默认空实现
     }
 
     fun showNoNetworkView() {
-        //空实现
+        //默认空实现
     }
 
     fun showLoadView() {
-        //空实现
+        //默认空实现
     }
 
     fun showEmptyView() {
-        //空实现
+        //默认空实现
     }
 }
 

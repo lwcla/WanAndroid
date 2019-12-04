@@ -105,23 +105,23 @@ interface LoadSearchHistoryModel {
 interface LoadSearchHistoryView : UiView {
 
     /**
+     * 加载记录成功
+     */
+    fun loadSearchHistorySuccess(list: List<SearchKey>)
+
+    /**
      * 清除记录成功
      */
     fun clearSearchHistorySuccess() {
-        //空实现
+        //默认空实现
     }
 
     /**
      * 清除记录失败
      */
     fun clearSearchHistoryFailed(error: String) {
-        //空实现
+        //默认空实现
     }
-
-    /**
-     * 加载记录成功
-     */
-    fun loadSearchHistorySuccess(list: List<SearchKey>)
 
     /**
      * 加载记录失败
@@ -134,13 +134,13 @@ interface LoadSearchHistoryView : UiView {
      * 保存记录成功
      */
     fun saveSearchHistorySuccess() {
-        //空实现
+        //默认空实现
     }
 
     /**
      * 保存记录失败
      */
     fun saveSearchHistoryFailed(error: String) {
-        //空实现
+        //默认空实现
     }
 }
