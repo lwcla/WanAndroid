@@ -25,6 +25,16 @@ android {
         }
     }
 
+    // 签名配置
+    signingConfigs {
+        releaseConfig {
+            keyAlias 'key.keystore'
+            keyPassword '123456'
+            storeFile file('key.keystore')
+            storePassword '123456'
+        }
+    }
+
     productFlavors {
         //monday
         monday {

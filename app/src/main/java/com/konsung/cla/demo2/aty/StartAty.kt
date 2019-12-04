@@ -16,6 +16,7 @@ import java.util.concurrent.ScheduledFuture
 import java.util.concurrent.TimeUnit
 import kotlin.concurrent.thread
 
+//TODO 启动逻辑需要修改，这个动画不合适
 class StartAty : AppCompatActivity() {
 
     companion object {

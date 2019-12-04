@@ -24,12 +24,13 @@ import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.util.*
 import kotlinx.android.synthetic.main.activity_web.*
 
-
+//TODO 当前网页收藏状态下，打开网页中的另外一个链接，还是收藏状态
 class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
     companion object {
 
         val TAG: String = WebViewAty::class.java.simpleName
     }
+
     private var mAgentWeb: AgentWeb? = null
 
     private val collectPresenter by lazy { initCollectPresenter() }
