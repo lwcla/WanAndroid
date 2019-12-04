@@ -14,7 +14,7 @@ import com.konsung.basic.util.AppUtils
 /**
  * 首页
  */
-class HomeFragment : HomeDataFragment() {
+class HomeFragment : HomeDataFragment(), LoadBannerView {
 
     init {
         needDelayInitView = false
@@ -22,16 +22,16 @@ class HomeFragment : HomeDataFragment() {
 
     private var headView: BannerHeadView? = null
 
-    private val loadBanner by lazy { initLoadBanner() }
+    private val loadBanner: LoadBannerPresenter by lazy { LoadBannerPresenterImpl(this) }
     private val loadHomeData by lazy { HomeDataPresenter(this, homeView) }
 
     var homeIndex = 0
 
     override fun initPresenters(): List<BasicPresenter>? {
-        return listOf(loadBanner, loadHomeData, collectPresenter)
+        return listOf(loadHomeData, collectPresenter)
     }
 
-    override fun initPresenterList(): List<Presenter>? = null
+    override fun initPresenterList(): List<Presenter>? = listOf(loadBanner)
 
     override fun initView() {
         super.initView()
@@ -80,7 +80,7 @@ class HomeFragment : HomeDataFragment() {
     }
 
     override fun initData() {
-        loadBanner.load()
+        loadBanner.loadBanner()
         loadHomeData.loadWithTopData()
     }
 
@@ -101,31 +101,23 @@ class HomeFragment : HomeDataFragment() {
         loadHomeData.loadMore()
     }
 
-    private fun initLoadBanner(): BannerPresenter {
-
-        val view = object : LoadBannerView() {
-
-            override fun success(t: List<BannerData>, refreshData: Boolean) {
-                headView?.setData(t, resume)
-            }
-
-            override fun failed(string: String) {
-                headView?.error()
-            }
-        }
-
-        return BannerPresenter(this, view)
-    }
-
     /**
      *刷新数据
      */
     override fun resetData() {
         if (headView?.loadSuccess != true) {
-            loadBanner.load()
+            loadBanner.loadBanner()
         }
 
         loadHomeData.loadWithTopData()
+    }
+
+    override fun loadBannerSuccess(t: List<BannerData>) {
+        headView?.setData(t, resume)
+    }
+
+    override fun loadBannerFailed(error: String) {
+        headView?.error()
     }
 
     override fun getScrollIndex(): Int = homeIndex

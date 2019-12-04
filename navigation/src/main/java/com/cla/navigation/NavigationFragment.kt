@@ -12,20 +12,19 @@ import com.cla.navigation.utils.PinyinComparator
 import com.cla.navigation.view.SideBar
 import com.konsung.basic.bean.HomeData
 import com.konsung.basic.bean.navigation.NavigationBean
-import com.konsung.basic.ui.fragment.BasicFragment
-import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.Presenter
+import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.util.AppUtils
 import com.konsung.basic.util.ConvertUtils
 import java.util.*
 
 
-class NavigationFragment : BasicFragment() {
+class NavigationFragment : BasicFragment(), LoadNavigationView {
 
     private var sideBar: SideBar? = null
     private var text: TextView? = null
 
-    private val loadNavigation by lazy { initLoadNavigation() }
+    private val loadNavigation: LoadNavigationPresenter by lazy { LoadNavigationPresenterImpl(this) }
 
     private var manager: LinearLayoutManager? = null
     private var navigationAdapter: NavigationAdapter? = null
@@ -35,9 +34,7 @@ class NavigationFragment : BasicFragment() {
 
     override fun getLayoutId(): Int = R.layout.fragment_navigation
 
-    override fun initPresenters(): List<BasicPresenter>? = listOf(loadNavigation)
-
-    override fun initPresenterList(): List<Presenter>?  =  null
+    override fun initPresenterList(): List<Presenter>? = listOf(loadNavigation)
 
     override fun initView() {
         refreshRv = showView?.findViewById(R.id.refreshRv)
@@ -146,23 +143,19 @@ class NavigationFragment : BasicFragment() {
         }
     }
 
-    private fun initLoadNavigation(): LoadNavigation {
-
-        val view = object : LoadNavigationView() {
-
-            override fun success(t: List<NavigationBean>, refreshData: Boolean) {
-                showData(t)
-            }
-        }
-
-        return LoadNavigation(this, view)
-    }
-
     override fun resetData() {
-        loadNavigation.load()
+        loadNavigation.loadNavigation()
     }
 
     override fun refreshView() {
         refreshRv?.refreshDataAfterScrollTop()
+    }
+
+    override fun loadNavigationFailed(error: String) {
+
+    }
+
+    override fun loadNavigationSuccess(list: List<NavigationBean>) {
+        showData(list)
     }
 }

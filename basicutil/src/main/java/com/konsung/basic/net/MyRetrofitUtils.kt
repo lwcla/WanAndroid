@@ -95,10 +95,10 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result, true))
     }
 
-    fun collectLink(context: Context, title: String, author: String, link: String, result: RequestResult<HomeData.DatasBean>) {
+    fun collectLink(context: Context, title: String, author: String, link: String, result: RequestData<HomeData.DatasBean>) {
         infoApi
                 .collectLink(title, author, link)
-                .enqueue(CallInterceptor(context, result))
+                .enqueue(ResultInterceptor(context, result))
     }
 
     fun editSite(context: Context, id: Int, name: String, link: String, result: RequestData<SiteCollectBean>) {
@@ -113,16 +113,16 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
+    fun loadBanner(context: Context, result: RequestData<List<BannerData>>) {
         infoApi
                 .loadBanner()
-                .enqueue(CallInterceptor(context, result))
+                .enqueue(ResultInterceptor(context, result))
     }
 
-    fun fetNavigationList(context: Context, result: RequestResult<List<NavigationBean>>) {
+    fun fetNavigationList(context: Context, result: RequestData<List<NavigationBean>>) {
         infoApi
                 .fetNavigationList()
-                .enqueue(CallInterceptor(context, result))
+                .enqueue(ResultInterceptor(context, result))
     }
 
     fun fetchNewestProject(context: Context, page: Int, result: RequestResult<HomeData>) {
@@ -137,16 +137,16 @@ class MyRetrofitUtils private constructor() {
                 .enqueue(CallInterceptor(context, result))
     }
 
-    fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>) {
+    fun fetchTreeList(context: Context, result: RequestData<List<SystemTreeListBean>>) {
         infoApi
                 .fetchTreeList()
-                .enqueue(CallInterceptor(context, result))
+                .enqueue(ResultInterceptor(context, result))
     }
 
-    fun fetchSearchHotKey(context: Context, result: RequestResult<List<SearchKey>>) {
+    fun fetchSearchHotKey(context: Context, result: RequestData<List<SearchKey>>) {
         infoApi
                 .fetchSearchHotKey()
-                .enqueue(CallInterceptor(context, result))
+                .enqueue(ResultInterceptor(context, result))
     }
 
     fun fetchSearchResult(context: Context, page: Int, key: String, result: RequestResult<HomeData>) {

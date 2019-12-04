@@ -7,25 +7,23 @@ import com.cla.system.tree.R
 import com.cla.system.tree.list.adapter.SystemTreeListAdapter
 import com.konsung.basic.bean.tree.SystemTreeListBean
 import com.konsung.basic.bean.tree.SystemTreeTitle
-import com.konsung.basic.ui.fragment.BasicFragment
-import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.Presenter
-import com.konsung.basic.view.SpaceDecoration
+import com.konsung.basic.ui.fragment.BasicFragment
 import com.konsung.basic.util.AppUtils
+import com.konsung.basic.view.SpaceDecoration
 
 /**
  * 体系分类列表
  */
-class SystemTreeListFragment : BasicFragment() {
+class SystemTreeListFragment : BasicFragment(), LoadSystemTreeListView {
 
-    private val loadTreeList: LoadSystemTreeList by lazy { initLoadSystemTreeList() }
+    private val loadTreeList: LoadSystemTreeListPresenter by lazy { LoadSystemTreeListPresenterImpl(this) }
     private val systemAdapter = SystemTreeListAdapter(mutableListOf())
 
     override fun getLayoutId(): Int = R.layout.view_fresh_rv
 
-    override fun initPresenters(): List<BasicPresenter>? = listOf(loadTreeList)
 
-    override fun initPresenterList(): List<Presenter>?  =  null
+    override fun initPresenterList(): List<Presenter>? = listOf(loadTreeList)
 
     override fun initView() {
         refreshRv = showView?.findViewById(R.id.refreshRv)
@@ -77,26 +75,21 @@ class SystemTreeListFragment : BasicFragment() {
         resetData()
     }
 
-    private fun initLoadSystemTreeList(): LoadSystemTreeList {
-
-        val view = object : LoadSystemTreeListView() {
-
-            override fun success(t: List<SystemTreeListBean>, refreshData: Boolean) {
-                systemAdapter.update(t)
-
-                refreshRv?.finishRefresh()
-            }
-        }
-
-        return LoadSystemTreeList(this, view)
-    }
-
     override fun resetData() {
-        loadTreeList.refresh()
+        loadTreeList.loadSystemTreeList()
     }
 
     override fun refreshView() {
         refreshRv?.refreshDataAfterScrollTop()
     }
 
+    override fun loadSystemTreeListSuccess(list: List<SystemTreeListBean>) {
+        systemAdapter.update(list)
+
+        refreshRv?.finishRefresh()
+    }
+
+    override fun loadSystemTreeListFailed(error: String) {
+
+    }
 }

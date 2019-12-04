@@ -28,7 +28,7 @@ class RequestUtils private constructor() : HttpHelper {
         request.collect(context, id, result)
     }
 
-    override fun collectLink(context: Context, title: String, author: String, link: String, result: RequestResult<HomeData.DatasBean>) {
+    override fun collectLink(context: Context, title: String, author: String, link: String, result: RequestData<HomeData.DatasBean>) {
         request.collectLink(context, title, author, link, result)
     }
 
@@ -40,7 +40,7 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchCollectList(context, page, result)
     }
 
-    override fun fetNavigationList(context: Context, result: RequestResult<List<NavigationBean>>) {
+    override fun fetNavigationList(context: Context, result: RequestData<List<NavigationBean>>) {
         request.fetNavigationList(context, result)
     }
 
@@ -52,11 +52,11 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchProjectTree(context, page, cId, result)
     }
 
-    override fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>) {
+    override fun fetchTreeList(context: Context, result: RequestData<List<SystemTreeListBean>>) {
         request.fetchTreeList(context, result)
     }
 
-    override fun fetchSearchHotKey(context: Context, result: RequestResult<List<SearchKey>>) {
+    override fun fetchSearchHotKey(context: Context, result: RequestData<List<SearchKey>>) {
         request.fetchSearchHotKey(context, result)
     }
 
@@ -88,7 +88,7 @@ class RequestUtils private constructor() : HttpHelper {
         request.fetchWxArticleDetail(context, cId, page, result)
     }
 
-    override fun loadBanner(context: Context, result: RequestResult<List<BannerData>>) {
+    override fun loadBanner(context: Context, result: RequestData<List<BannerData>>) {
         request.loadBanner(context, result)
     }
 

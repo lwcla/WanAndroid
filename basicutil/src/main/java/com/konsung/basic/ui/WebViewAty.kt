@@ -3,12 +3,14 @@ package com.konsung.basic.ui
 import android.content.Context
 import android.view.KeyEvent
 import android.view.View
+import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.widget.RelativeLayout
 import androidx.core.content.ContextCompat
 import com.just.agentweb.AgentWeb
 import com.just.agentweb.DefaultWebClient
 import com.just.agentweb.WebChromeClient
+import com.just.agentweb.WebViewClient
 import com.konsung.basic.config.BaseConfig.Companion.IS_COLLECT
 import com.konsung.basic.config.BaseConfig.Companion.NEED_COLLECT
 import com.konsung.basic.config.BaseConfig.Companion.WEB_ARTICLE_ID
@@ -69,6 +71,7 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
         StringUtils.instance.loadTextIcon(context, tvMore)
 
         val webChromeClient: WebChromeClient? = object : WebChromeClient() {
+
             override fun onReceivedTitle(view: WebView, title: String) {
                 super.onReceivedTitle(view, title)
                 tvTitle.setTextColor(ContextCompat.getColor(context, R.color.white))
@@ -76,10 +79,19 @@ class WebViewAty : BasicAty(), View.OnClickListener, ShareDialogListener {
             }
         }
 
+        val webViewClient: WebViewClient? = object : WebViewClient() {
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                println("WebViewAty.shouldOverrideUrlLoading request=$request")
+                return super.shouldOverrideUrlLoading(view, request)
+            }
+        }
+
         mAgentWeb = AgentWeb.with(this)
                 .setAgentWebParent(rlWebView as RelativeLayout, RelativeLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
                 .setWebChromeClient(webChromeClient)
+                .setWebViewClient(webViewClient)
                 .setOpenOtherPageWays(DefaultWebClient.OpenOtherPageWays.ASK)
                 .createAgentWeb()
                 .ready()

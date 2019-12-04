@@ -6,17 +6,29 @@ interface UiView {
 
     fun getUiContext(): Context?
 
-    fun loadComplete(success: Boolean)
+    fun loadComplete(success: Boolean) {
+        //空实现
+    }
 
-    fun showContentView()
+    fun showContentView() {
+        //空实现
+    }
 
-    fun showErrorView()
+    fun showErrorView() {
+        //空实现
+    }
 
-    fun showNoNetworkView()
+    fun showNoNetworkView() {
+        //空实现
+    }
 
-    fun showLoadView()
+    fun showLoadView() {
+        //空实现
+    }
 
-    fun showEmptyView()
+    fun showEmptyView() {
+        //空实现
+    }
 }
 
 abstract class UiViewAdapter : UiView {

@@ -36,7 +36,7 @@ interface HttpHelper {
     /**
      * 收藏站外文章
      */
-    fun collectLink(context: Context, title: String, author: String, link: String, result: RequestResult<HomeData.DatasBean>)
+    fun collectLink(context: Context, title: String, author: String, link: String, result: RequestData<HomeData.DatasBean>)
 
     /**
      * 编辑收藏的网站
@@ -51,7 +51,7 @@ interface HttpHelper {
     /**
      * 导航
      */
-    fun fetNavigationList(context: Context, result: RequestResult<List<NavigationBean>>)
+    fun fetNavigationList(context: Context, result: RequestData<List<NavigationBean>>)
 
     /**
      * 最新项目
@@ -66,7 +66,7 @@ interface HttpHelper {
     /**
      * 搜索热词
      */
-    fun fetchSearchHotKey(context: Context, result: RequestResult<List<SearchKey>>)
+    fun fetchSearchHotKey(context: Context, result: RequestData<List<SearchKey>>)
 
     /**
      * 搜索
@@ -96,7 +96,7 @@ interface HttpHelper {
     /**
      * 体系分类列表
      */
-    fun fetchTreeList(context: Context, result: RequestResult<List<SystemTreeListBean>>)
+    fun fetchTreeList(context: Context, result: RequestData<List<SystemTreeListBean>>)
 
     /**
      * 获取公众号列表
@@ -111,7 +111,7 @@ interface HttpHelper {
     /**
      * 广告
      */
-    fun loadBanner(context: Context, result: RequestResult<List<BannerData>>)
+    fun loadBanner(context: Context, result: RequestData<List<BannerData>>)
 
     /**
      * 常用网站

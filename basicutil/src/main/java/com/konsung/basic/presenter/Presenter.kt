@@ -32,7 +32,6 @@ abstract class BasePresenter1<T, V : UiView, M : Model>(uiView: V?, model: M) : 
 
     var pageStart = 0
     var page = pageStart
-
     /**
      * result放在这里是为了每次请求之前都要先停止之前的请求
      */
@@ -83,6 +82,7 @@ abstract class BasePresenter1<T, V : UiView, M : Model>(uiView: V?, model: M) : 
     inline fun request(refreshData: Boolean = true, page: Int = 0, request: (Context, Int, RequestData<T>) -> Unit) {
 
         val ctx = getContext() ?: return
+
         stop()
         result = setRequestResult(refreshData)
         request.invoke(ctx, page, result!!)

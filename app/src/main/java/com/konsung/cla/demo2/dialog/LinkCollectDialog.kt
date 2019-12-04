@@ -11,19 +11,21 @@ import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.konsung.basic.bean.HomeData
-import com.konsung.basic.presenter.CollectLinkPresenter
+import com.konsung.basic.presenter.CollectLinkPresenterImpl
 import com.konsung.basic.presenter.CollectLinkView
-import com.konsung.basic.presenter.UiView
 import com.konsung.basic.util.toast
 import com.konsung.cla.demo2.R
 
-class LinkCollectDialog : DialogFragment(), UiView {
+/**
+ * 添加站外文章收藏弹窗
+ */
+class LinkCollectDialog : DialogFragment(), CollectLinkView {
 
     companion object {
         val TAG: String = LinkCollectDialog::class.java.simpleName
     }
 
-    private val collectPresenter by lazy { initCollectPresenter() }
+    private val collectPresenter by lazy { CollectLinkPresenterImpl(this) }
 
     private var llInput: LinearLayout? = null
     private var llLoading: LinearLayout? = null
@@ -49,6 +51,7 @@ class LinkCollectDialog : DialogFragment(), UiView {
         val tvSure = view.findViewById<TextView>(R.id.tvSure)
 
         tvCancel.setOnClickListener {
+            //关闭弹窗
             dismissAllowingStateLoss()
         }
 
@@ -68,7 +71,7 @@ class LinkCollectDialog : DialogFragment(), UiView {
                 return@setOnClickListener
             }
 
-
+            //向服务器发送收藏消息时，隐藏输入状态，显示正在加载的ui
             llInput?.visibility = View.INVISIBLE
             llLoading?.visibility = View.VISIBLE
 
@@ -84,51 +87,27 @@ class LinkCollectDialog : DialogFragment(), UiView {
         collectPresenter.destroy()
     }
 
-    private fun initCollectPresenter(): CollectLinkPresenter {
+    override fun collectLinkSuccess(t: HomeData.DatasBean) {
+        collectLinkSuccess?.success(t)
+        dismissAllowingStateLoss()
+    }
 
-        val view = object : CollectLinkView() {
-
-            override fun success(t: HomeData.DatasBean, refreshData: Boolean) {
-                collectLinkSuccess?.success(t)
-                dismissAllowingStateLoss()
-            }
-
-            override fun failed(string: String) {
-                llInput?.visibility = View.VISIBLE
-                llLoading?.visibility = View.GONE
-            }
-        }
-
-        return CollectLinkPresenter(this, view)
+    override fun collectLinkFailed(error: String) {
+        //收藏失败的情况下恢复输入状态
+        llInput?.visibility = View.VISIBLE
+        llLoading?.visibility = View.GONE
     }
 
     override fun getUiContext(): Context? = context
+}
 
-    override fun loadComplete(success: Boolean) {
-
-    }
-
-    override fun showContentView() {
-
-    }
-
-    override fun showErrorView() {
-
-    }
-
-    override fun showNoNetworkView() {
-
-    }
-
-    override fun showLoadView() {
-
-    }
-
-    override fun showEmptyView() {
-
-    }
-
-    interface CollectLinkSuccess {
-        fun success(t: HomeData.DatasBean)
-    }
+/**
+ * 通知收藏成功的接口
+ */
+interface CollectLinkSuccess {
+    /**
+     * 收藏成功
+     * @param t 后台返回的这条收藏成功的数据
+     */
+    fun success(t: HomeData.DatasBean)
 }

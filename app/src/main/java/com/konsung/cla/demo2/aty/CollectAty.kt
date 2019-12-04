@@ -11,6 +11,7 @@ import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.HomeDataAty
 import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.CollectListAdapter
+import com.konsung.cla.demo2.dialog.CollectLinkSuccess
 import com.konsung.cla.demo2.dialog.LinkCollectDialog
 import com.konsung.cla.demo2.presenter.CollectListPresenter
 
@@ -22,6 +23,7 @@ class CollectAty : HomeDataAty(), View.OnClickListener {
 
         val TAG: String = CollectAty::class.java.simpleName
     }
+
     init {
         refreshAfterScrollTop = false
         isCollectListPage = true
@@ -58,7 +60,7 @@ class CollectAty : HomeDataAty(), View.OnClickListener {
         linkCollectDialog = null
         linkCollectDialog = LinkCollectDialog()
 
-        linkCollectDialog?.collectLinkSuccess = object : LinkCollectDialog.CollectLinkSuccess {
+        linkCollectDialog?.collectLinkSuccess = object : CollectLinkSuccess {
 
             override fun success(t: HomeData.DatasBean) {
                 dataAdapter?.addData(0, t)

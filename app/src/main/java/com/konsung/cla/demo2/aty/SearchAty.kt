@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.beloo.widget.chipslayoutmanager.ChipsLayoutManager
 import com.beloo.widget.chipslayoutmanager.SpacingItemDecoration
 import com.konsung.basic.bean.search.SearchKey
-import com.konsung.basic.presenter.BasicPresenter
 import com.konsung.basic.presenter.Presenter
 import com.konsung.basic.ui.BasicAty
 import com.konsung.basic.util.ConvertUtils
@@ -26,16 +25,14 @@ import com.konsung.cla.demo2.R
 import com.konsung.cla.demo2.adapter.SearchKeyAdapter
 import com.konsung.cla.demo2.dialog.ChooseWxArticleNameListener
 import com.konsung.cla.demo2.dialog.ChooseWxSearchDialog
-import com.konsung.cla.demo2.presenter.SearchHistoryPresenter
-import com.konsung.cla.demo2.presenter.SearchHistoryView
-import com.konsung.cla.demo2.presenter.SearchHotPresenter
-import com.konsung.cla.demo2.presenter.SearchHotView
+import com.konsung.cla.demo2.presenter.*
 import kotlinx.android.synthetic.main.activity_search.*
 
 /**
  * 搜索页面
  */
-class SearchAty : BasicAty(), View.OnClickListener {
+class SearchAty : BasicAty(), LoadSearchHotView, LoadSearchHistoryView, View.OnClickListener {
+
     companion object {
 
         val TAG: String = SearchAty::class.java.simpleName
@@ -46,9 +43,9 @@ class SearchAty : BasicAty(), View.OnClickListener {
         initDelay = INIT_DETAIL
     }
 
-    private val searchHotPresenter by lazy { initSearchHotPresenter() }
+    private val searchHotPresenter: LoadSearchHotPresenter by lazy { LoadSearchHotPresenterImpl(this) }
+    private val historyKeyPresenter: LoadSearchHistoryPresenter by lazy { LoadSearchHistoryPresenterImpl(this) }
 
-    private val historyKeyPresenter by lazy { initHistoryKeyPresenter() }
     private var hotSearchAdapter: SearchKeyAdapter? = null
 
     private var historyKeyAdapter: SearchKeyAdapter? = null
@@ -66,15 +63,13 @@ class SearchAty : BasicAty(), View.OnClickListener {
         super.onResume()
 
         if (historyKeyAdapter != null) {
-            historyKeyPresenter.load()
+            historyKeyPresenter.loadSearchHistory()
         }
     }
 
     override fun getLayoutId(): Int = R.layout.activity_search
 
-    override fun initPresenter(): List<BasicPresenter>? = listOf(searchHotPresenter, historyKeyPresenter)
-
-    override fun initPresenterList(): List<Presenter>? = null
+    override fun initPresenterList(): List<Presenter>? = listOf(searchHotPresenter, historyKeyPresenter)
 
     override fun initView() {
         StringUtils.instance.loadTextIcon(context, tvBack)
@@ -132,8 +127,8 @@ class SearchAty : BasicAty(), View.OnClickListener {
     }
 
     override fun initData() {
-        searchHotPresenter.load()
-        historyKeyPresenter.load()
+        searchHotPresenter.loadHotKey()
+        historyKeyPresenter.loadSearchHistory()
     }
 
     private fun setHotKey(t: List<SearchKey>) {
@@ -227,7 +222,7 @@ class SearchAty : BasicAty(), View.OnClickListener {
 
     private fun searchKey(searchKey: SearchKey) {
         val key = searchKey.name
-        historyKeyPresenter.save(searchKey)
+        historyKeyPresenter.saveKey(searchKey)
         App.productUtils.startSearchResultAty(this, key, wxId > 0, wxName, wxId)
     }
 
@@ -265,28 +260,16 @@ class SearchAty : BasicAty(), View.OnClickListener {
         }
     }
 
-    private fun initHistoryKeyPresenter(): SearchHistoryPresenter {
-
-        val view = object : SearchHistoryView() {
-
-            override fun success(t: List<SearchKey>, refreshData: Boolean) {
-                setHistoryKey(t)
-            }
-        }
-
-        return SearchHistoryPresenter(this, view)
+    override fun loadSearchHotSuccess(list: List<SearchKey>) {
+        setHotKey(list)
     }
 
-    private fun initSearchHotPresenter(): SearchHotPresenter {
+    override fun loadSearchHotFailed(error: String) {
 
-        val view = object : SearchHotView() {
+    }
 
-            override fun success(t: List<SearchKey>, refreshData: Boolean) {
-                setHotKey(t)
-            }
-        }
-
-        return SearchHotPresenter(this, view)
+    override fun loadSearchHistorySuccess(list: List<SearchKey>) {
+        setHistoryKey(list)
     }
 
     override fun onClick(v: View) {
